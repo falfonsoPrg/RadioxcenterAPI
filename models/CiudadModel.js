@@ -1,19 +1,22 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize)  => {
-    return sequelize.define("Departamento",{
-        cod_departamento: {
+    return sequelize.define("Ciudad",{
+        cod_ciudad: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false
         },
-        nom_departamento: {
+        nom_ciudad: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        cod_departamento: {
+            type: DataTypes.INTEGER
         }
     },{
-        tableName: 'Departamento',
+        tableName:'Ciudad',
         freezeTableName: true
     })
 }
