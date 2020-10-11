@@ -25,10 +25,10 @@ app.use(cors(
 
 //Fisrt route
 app.get('/',(req,res)=>{
-    res.send('Esta es la API Para Radioxcenter')
+    res.send('Esta es la API Para Radioxenter')
 })
 //Import routes
-
+const DepartamentoRoutes = require('./routes/DepartamentoRoutes')
 
 //Middleware
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -36,9 +36,9 @@ app.use(bodyParser.json())
 app.use(express.static('public'));
 
 //Route Middleware
-
+app.use('/api/departamentos/',DepartamentoRoutes)
 
 //Initialize server 
 app.listen(port,() => {
-    console.log('Server on port ' + port)
+    console.log('Server en el puerto ' + port)
 }) 
