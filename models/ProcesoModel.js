@@ -1,20 +1,22 @@
 const { DataType, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-    return sequelize.define("Forma_De_Pago_Entidad",{
-        cod_forma_de_pago_entidad:{
+    return sequelize.define("Proceso",{
+        cod_proceso: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            allowNull: true
+            allowNull: false
         },
-        nombre_forma_de_pago_entidad: {
+        estado_proceso: {
             type: DataTypes.STRING,
-            allowNull: false,
-            unique: true
+            allowNull: false
+        },
+        cod_usuario: {
+            type: DataTypes.INTEGER
         }
     },{
-        tableName: 'Forma_De_Pago_Entidad',
+        tableName: 'Proceso',
         freezeTableName: true
     })
 }
