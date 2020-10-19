@@ -29,13 +29,14 @@ app.get('/',(req,res)=>{
 })
 //Import routes
 const DepartamentoRoutes = require('./routes/DepartamentoRoutes')
-
+const AutorizacionRoutes = require('./routes/AutorizacionRoutes')
 //Middleware
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('public'));
 
 //Route Middleware
+app.use('/api/',AutorizacionRoutes)
 app.use('/api/departamentos/',DepartamentoRoutes)
 
 //Initialize server 

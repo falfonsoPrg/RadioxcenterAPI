@@ -115,7 +115,19 @@ Doctor.belongsTo(Tipo_pref_entrega, {foreignKey: 'cod_tipo_pref_entrega', source
 var resetDb = { force:false };
 
 sequelize.sync( resetDb ).then( async () => {
-    console.log("Conection DB OK")
+    console.log("Conexion con la base de datos establecida")
+    await Tipo_empleado.findOrCreate({
+        where: {cod_tipo_empleado:1},
+        defaults: {cod_tipo_empleado:1,nombre_tipo_empleado:"Empleado"}
+    })
+    const te = await Tipo_empleado.findAll()
+    console.log(te)
+    await Tipo_documento.findOrCreate({
+        where: {cod_tipo_documento:1},
+        defaults: {cod_tipo_documento:1,nombre_tipo_documento:"Cédula de ciudadania"}
+    })
+    const td = await Tipo_documento.findAll()
+    console.log(td)
 }).catch(err => {
     console.log(err)
 })

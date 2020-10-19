@@ -33,7 +33,7 @@ module.exports = (sequelize) => {
             }
         },
         telefono_empleado: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false
 
         },
@@ -48,19 +48,6 @@ module.exports = (sequelize) => {
         contrasenia_empleado: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        fecha_creado: {
-            type: DataTypes.DATEONLY,
-            allowNull: false,
-            validate: {
-                isDate: true
-            }
-        },
-        fecha_actualizado: {
-            type: DataTypes.DATEONLY,
-            validate: {
-                isDate: true
-            }
         },
         usuario_empleado: {
             type: DataTypes.STRING,

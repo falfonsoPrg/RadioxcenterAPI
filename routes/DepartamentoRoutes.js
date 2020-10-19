@@ -30,22 +30,22 @@ router.get('/', async (req,res)=>{
 
 router.post('/', async (req,res)=>{
     const {error} = CreateDepartamentoValidation(req.body)
-    if(error) return res.status(400).send({
+    if(error) return res.status(422).send({
         error: error.details[0].message
     })
 
     const departamento = await DepartamentoController.createDepartamento(req.body)
-    if(departamento.errors){
+    if(departamento.errors || departamento.name == "SequelizeDatabaseError"){
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })
     }
-    return res.status(204).send()
+    return res.status(201).send()
 })
 
 router.put('/', async (req,res)=>{
     const {error} = UpdateDepartamentoValidation(req.body)
-    if(error) return res.status(400).send({
+    if(error) return res.status(422).send({
         error: error.details[0].message
     })
 
