@@ -37,3 +37,19 @@ module.exports.UpdateDepartamentoValidation = UpdateDepartamentoValidation = (da
     })
     return schema.validate(data)
 }
+
+module.exports.CreateCiudadValidation = CreateCiudadValidation = (data) => {
+    const schema = Joi.object({
+        nom_ciudad: Joi.string().required(),
+        cod_departamento: Joi.number().required()
+    })
+    return schema.validate(data)
+}
+module.exports.UpdateCiudadValidation = UpdateCiudadValidation = (data) => {
+    const schema = Joi.object({
+        cod_ciudad: Joi.number().required(),
+        nom_ciudad: Joi.string(),
+        cod_departamento: Joi.number()
+    })
+    return schema.validate(data)
+}
