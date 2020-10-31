@@ -20,6 +20,11 @@ const EntidadModel = require("../models/EntidadModel");
 const DoctorModel = require("../models/DoctorModel");
 const ServicioModel = require("../models/ServicioModel");
 const PaqueteModel = require("../models/PaqueteModel");
+const ConvenioModel = require("../models/ConvenioModel");
+const EntidadDoctorModel = require("../models/EntidadDoctorModel");
+const TransaccionModel = require("../models/TransaccionModel");
+const TransaccionServicioModel = require("../models/TransaccionServicioModel");
+const ConsentimientoModel = require("../models/ConsentimientoModel");
 
 
 
@@ -69,6 +74,12 @@ const Empleado = EmpleadoModel(sequelize);
 const Doctor =  DoctorModel(sequelize);
 const Servicio = ServicioModel(sequelize);
 const Paquete = PaqueteModel(sequelize);
+const Convenio = ConvenioModel(sequelize);
+const Entidad_doctor = EntidadDoctorModel(sequelize);
+const Transaccion = TransaccionModel(sequelize);
+const Transaccion_Servicio = TransaccionServicioModel(sequelize);
+const Consentimiento = ConsentimientoModel(sequelize);
+
 
 //Create the Relationships
 Departamento.hasMany(Ciudad,{foreignKey: 'cod_departamento', sourceKey:'cod_departamento'});
@@ -111,6 +122,38 @@ Doctor.belongsTo(Tipo_documento, {foreignKey:'cod_tipo_documento', sourceKey: 'c
 
 Tipo_pref_entrega.hasMany(Doctor, {foreignKey: 'cod_tipo_pref_entrega', sourceKey: 'cod_tipo_pref_entrega'});
 Doctor.belongsTo(Tipo_pref_entrega, {foreignKey: 'cod_tipo_pref_entrega', sourceKey: 'cod_tipo_pref_entrega'});
+
+// Relationships Convenio
+Entidad.hasMany(Convenio,{foreignKey: 'cod_entidad', sourceKey: 'cod_entidad'});
+Convenio.belongsTo(Entidad,{foreignKey: 'cod_entidad', sourceKey: 'cod_entidad'});
+
+Servicio.hasMany(Convenio,{foreignKey: 'cod_servicio', sourceKey: 'cod_servicio'});
+Convenio.belongsTo(Servicio,{foreignKey: 'cod_servicio', sourceKey: 'cod_servicio'});
+
+// Relationships Entidad_doctor
+Doctor.hasMany(Entidad_doctor,{foreignKey: 'cod_doctor' , sourceKey: 'cod_doctor'});
+Entidad_doctor.belongsTo(Doctor,{foreignKey: 'cod_doctor' , sourceKey: 'cod_doctor'});
+
+Entidad.hasMany(Entidad_doctor,{foreignKey:'cod_entidad', sourceKey: 'cod_entidad'});
+Entidad_doctor.belongsTo(Entidad,{foreignKey:'cod_entidad', sourceKey: 'cod_entidad'});
+
+// Relationships Transaccion
+Entidad_doctor.hasMany(Transaccion,{foreignKey:'cod_entidad_doctor', sourceKey: 'cod_entidad_doctor'});
+Transaccion.belongsTo(Entidad_doctor,{foreignKey:'cod_entidad_doctor', sourceKey: 'cod_entidad_doctor'});
+
+// Relationships Transaccion_Servicio
+Transaccion.hasMany(Transaccion_Servicio, {foreignKey: 'cod_transaccion', sourceKey: 'cod_transaccion'});
+Transaccion_Servicio.belongsTo(Transaccion, {foreignKey: 'cod_transaccion', sourceKey: 'cod_transaccion'});
+
+Servicio.hasMany(Transaccion_Servicio, {foreignKey: 'cod_servicio', sourceKey: 'cod_servicio'});
+Transaccion_Servicio.belongsTo(Servicio, {foreignKey: 'cod_servicio', sourceKey: 'cod_servicio'});
+
+// Relationships Consentimiento
+Transaccion.hasMany(Consentimiento, {foreignKey: 'cod_transaccion', sourceKey: 'cod_transaccion'});
+Consentimiento.belongsTo(Transaccion, {foreignKey: 'cod_transaccion', sourceKey: 'cod_transaccion'});
+
+Tipo_Consentimiento.hasMany(Consentimiento, {foreignKey: 'cod_tipo_consentimiento', sourceKey:'cod_tipo_consentimiento'});
+Consentimiento.belongsTo(Tipo_Consentimiento, {foreignKey: 'cod_tipo_consentimiento', sourceKey:'cod_tipo_consentimiento'});
 //Sync the database and chekc if the connection is Ok
 var resetDb = { force:false };
 
@@ -154,7 +197,12 @@ module.exports = {
     Entidad,
     Doctor,
     Servicio,
-    Paquete
+    Paquete,
+    Convenio,
+    Entidad_doctor,
+    Transaccion,
+    Transaccion_Servicio,
+    Consentimiento
 
 
 

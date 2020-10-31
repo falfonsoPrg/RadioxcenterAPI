@@ -1,27 +1,21 @@
 const { DataTypes } = require('sequelize');
 
-
 module.exports = (sequelize) => {
-    return sequelize.define("Consentimiento",{
-        cod_consentimiento: {
+    return sequelize.define("Entidad_doctor",{
+        cod_entidad_doctor: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false
         },
-        ubicacion_consentimiento: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        cod_tipo_consentimiento: {
+        cod_doctor: {
             type: DataTypes.INTEGER
         },
-        cod_transaccion: {
+        cod_entidad: {
             type: DataTypes.INTEGER
         }
-
     },{
-        tableName: 'Consentimiento',
-        freezeTableName: true
+        tableName: 'Entidad_doctor',
+        FreezeTableName: true
     })
 }
