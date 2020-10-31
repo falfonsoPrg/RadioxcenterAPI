@@ -53,3 +53,128 @@ module.exports.UpdateCiudadValidation = UpdateCiudadValidation = (data) => {
     })
     return schema.validate(data)
 }
+
+module.exports.CreateTipoEmpleadoValidation = CreateTipoEmpleadoValidation = (data) => {
+    const schema = Joi.object({
+        nombre_tipo_empleado: Joi.string().required()
+    })
+    return schema.validate(data)
+}
+
+module.exports.UpdateTipoEmpleadoValidation =  UpdateTipoEmpleadoValidation = (data) => {
+    const schema = Joi.object({
+        cod_tipo_empleado: Joi.number().required(),
+        nombre_tipo_empleado: Joi.string()
+    })
+    return schema.validate(data)
+}
+
+module.exports.CreateTipoConsentimientoValidation = CreateTipoConsentimientoValidation = (data) => {
+    const schema = Joi.object({
+        nombre_tipo_consentimiento: Joi.string().required()
+    })
+    return schema.validate(data)
+}
+
+module.exports.UpdateTipoConsentimientoValidation = UpdateTipoConsentimientoValidation = (data) => {
+    const schema = Joi.object({
+        cod_tipo_consentimiento: Joi.number().required(),
+        nombre_tipo_consentimiento: Joi.string().required()
+    })
+    return schema.validate(data)
+}
+
+module.exports.CreateTipoFacturacionValidation = CreateTipoFacturacionValidation = (data) => {
+    const schema = Joi.object({
+        nombre_tipo_facturacion: Joi.string().required()
+    })
+    return schema.validate(data)
+}
+
+module.exports.UpdateTipoFacturacionValidation = UpdateTipoFacturacionValidation = (data) => {
+    const schema = Joi.object({
+        cod_tipo_facturacion: Joi.number().required(),
+        nombre_tipo_facturacion: Joi.string().required()
+    })
+    return schema.validate(data)
+}
+
+module.exports.CreateUsuarioValidation = CreateUsuarioValidation = (data) =>{
+    const schema = Joi.object({
+        nombres_usuario: Joi.string().required(),
+        apellidos_usuario: Joi.string().required(),
+        telefono_usuario: Joi.string().required(),
+        direccion_usuario: Joi.string().required(),
+        documento_usuario: Joi.number().required(),
+        ocupacion_usuario: Joi.string().required(),
+        fecha_nacimiento_usuario: Joi.date().required(),
+        correo_usuario: Joi.string().required(),
+        genero_usuario: Joi.string().required(),
+        celular_usuario: Joi.string().required(),
+        cod_sexo: Joi.number().required(),
+        cod_tipo_documento: Joi.number().required(),
+        cod_ciudad: Joi.number().required(),
+        cod_tipo_pref_entrega: Joi.number().required()
+    })
+    return schema.validate(data)
+}
+// espacio para update usuario validate
+
+
+module.exports.CreateTipoDocumentoValidation = CreateTipoDocumentoValidation = (data) =>{
+    const schema = Joi.object({
+        nombre_tipo_documento: Joi.string().required()
+    })
+    return schema.validate(data)
+}
+module.exports.UpdateTipoDocumentoValidation = UpdateTipoDocumentoValidation = (data) =>{
+    const schema= Joi.object({
+        cod_tipo_documento: Joi.number().required(),
+        nombre_tipo_documento: Joi.string().required()
+    })
+    return schema.validate(data)
+}
+
+module.exports.CreateTipoNotaCreditoValidation = CreateTipoNotaCreditoValidation = (data) =>{
+    const schema = Joi.object({
+        nombre_tipo_nota_credito: Joi.string().required()
+    })
+    return schema.validate(data)
+}
+
+module.exports.UpdateTipoNotaCreditoValidation = UpdateTipoNotaCreditoValidation = (data) =>{
+    const schema = Joi.object({
+        cod_tipo_nota_credito: Joi.number().required(),
+        nombre_tipo_nota_credito: Joi.string().required()
+    })
+    return schema.validate(data)
+}
+
+module.exports.CreateTipoPrefEntregaValidation = CreateTipoPrefEntregaValidation = (data) =>{
+    const schema = Joi.object({
+        nombre_tipo_pref_entrega: Joi.string().required()
+    })
+    return schema.validate(data)
+}
+module.exports.UpdateTipoPrefEntregaValidation = UpdateTipoPrefEntregaValidation = (data) =>{
+    const schema = Joi.object({
+        cod_tipo_pref_entrega: Joi.number().required(),
+        nombre_tipo_pref_entrega: Joi.string().required()
+    })
+    return schema.validate(data)
+}
+
+module.exports.CreateSexoValidation = CreateSexoValidation = (data) =>{
+    const schema = Joi.object({
+        nombre_sexo: Joi.string().required()
+    })
+    return schema.validate(data)
+}
+
+module.exports.UpdateSexoValidation = UpdateSexoValidation = (data) =>{
+    const schema = Joi.object({
+        cod_sexo: Joi.number().required(),
+        nombre_sexo: Joi.string().required()
+    })
+    return schema.validate(data)
+}
