@@ -39,6 +39,7 @@ const TipoDocumentoRoutes = require('./routes/TipoDocumentoRoutes')
 const TipoNotaCreditoRoutes = require('./routes/TipoNotaCreditoRoutes')
 const TipoPrefEntregaRoutes = require('./routes/TipoPrefEntregaRoutes')
 const SexoRoutes = require('./routes/SexoRoutes')
+const ServicioRoutes = require('./routes/ServicioRoutes')
 //Middleware
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -55,7 +56,8 @@ app.use('/api/usuarios/', UsuarioRoutes)
 app.use('/api/tipoDocumentos/', TipoDocumentoRoutes)
 app.use('/api/tipoNotaCredito/', TipoNotaCreditoRoutes)
 app.use('/api/tipoPrefEntrega/', TipoPrefEntregaRoutes)
-app.use('/api/sexo/', SexoRoutes)
+app.use('/api/sexos/', SexoRoutes)
+app.use('/api/servicios/', ServicioRoutes)
 
 //Initialize server 
 app.listen(port,() => {
