@@ -184,7 +184,7 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
         nombre_servicio: Joi.string().required(),
         descripcion_servicio: Joi.string().required(),
         precio_servicio: Joi.number().required(),
-        iva_servicio: Joi.number
+        iva_servicio: Joi.number()
     })
     return schema.validate(data)
 } 

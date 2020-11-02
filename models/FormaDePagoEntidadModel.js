@@ -6,7 +6,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            allowNull: true
+            allowNull: false
         },
         nombre_forma_de_pago_entidad: {
             type: DataTypes.STRING,
