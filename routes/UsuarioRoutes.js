@@ -34,6 +34,7 @@ router.post('/', async(req,res)=>{
     })
 
     const usuario = await UsuarioController.createUsuario(req.body)
+
     if (usuario.errors || usuario.name == "SequelizeDatabaseError"){
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar

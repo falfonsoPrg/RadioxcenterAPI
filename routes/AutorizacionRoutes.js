@@ -49,7 +49,8 @@ router.post('/login', async (req,res)=>{
     const token = jwt.sign({documento_empleado:encontroEmpleado[0].documento_empleado},process.env.JWTOKEN,{
         expiresIn: "1d"
     })
-    res.header('auth-token',token).send({token:token})
+    encontroEmpleado[0].contrasenia_empleado = null;
+    res.header('auth-token',token).send({token:token, respuesta:encontroEmpleado[0]})
 })
 
 
