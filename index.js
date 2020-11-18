@@ -40,6 +40,8 @@ const TipoNotaCreditoRoutes = require('./routes/TipoNotaCreditoRoutes')
 const TipoPrefEntregaRoutes = require('./routes/TipoPrefEntregaRoutes')
 const SexoRoutes = require('./routes/SexoRoutes')
 const ServicioRoutes = require('./routes/ServicioRoutes')
+const TipoPago = require('./routes/TipoPagoRoutes')
+const Paquete = require('./routes/PaqueteRoutes')
 //Middleware
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -58,7 +60,8 @@ app.use('/api/tipoNotaCredito/', TipoNotaCreditoRoutes)
 app.use('/api/tipoPrefEntrega/', TipoPrefEntregaRoutes)
 app.use('/api/sexos/', SexoRoutes)
 app.use('/api/servicios/', ServicioRoutes)
-
+app.use('/api/tipoPago/', TipoPago)
+app.use('/api/paquete/', Paquete)
 //Initialize server 
 app.listen(port,() => {
     console.log('Server en el puerto ' + port)

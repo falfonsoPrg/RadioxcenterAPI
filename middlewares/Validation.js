@@ -189,3 +189,34 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
     return schema.validate(data)
 } 
  // falta crear el de update de servicio
+
+ module.exports.CreateTipoPagoValidation = CreateTipoPagoValidation = (data) =>{
+     const schema = Joi.object({
+         nombre_tipo_pago: Joi.string().required()
+     })
+     return schema.validate(data)
+ }
+
+ module.exports.UpdateTipoPagoValidation = UpdateTipoPagoValidation = (data) =>{
+     const schema = Joi.object({
+         cod_tipo_pago: Joi.number().required(),
+         nombre_tipo_pago: Joi.string().required()
+     })
+     return schema.validate(data)
+ }
+
+ module.exports.CreatePaqueteValidation = CreatePaqueteValidation = (data) =>{
+     const schema = Joi.object({
+         nombre_paquete: Joi.string().required(),
+         precio_paquete: Joi.number().required()
+     })
+     return schema.validate(data)
+ }
+ module.exports.UpdatePaqueteValidation = UpdatePaqueteValidation = (data) =>{
+     const schema = Joi.object({
+         cod_paquete: Joi.number().required(),
+         nombre_paquete: Joi.string().required(),
+         precio_paquete: Joi.number().required()
+     })
+     return schema.validate(data)
+ }
