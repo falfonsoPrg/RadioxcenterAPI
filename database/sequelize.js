@@ -25,7 +25,7 @@ const EntidadDoctorModel = require("../models/EntidadDoctorModel");
 const TransaccionModel = require("../models/TransaccionModel");
 const TransaccionServicioModel = require("../models/TransaccionServicioModel");
 const ConsentimientoModel = require("../models/ConsentimientoModel");
-
+const PaqueteServicioModel = require('../models/PaqueteServicioModel')
 
 
 //Conection with database
@@ -74,6 +74,7 @@ const Empleado = EmpleadoModel(sequelize);
 const Doctor =  DoctorModel(sequelize);
 const Servicio = ServicioModel(sequelize);
 const Paquete = PaqueteModel(sequelize);
+const Paquete_Servicio = PaqueteServicioModel(sequelize);
 const Convenio = ConvenioModel(sequelize);
 const Entidad_doctor = EntidadDoctorModel(sequelize);
 const Transaccion = TransaccionModel(sequelize);
@@ -147,6 +148,13 @@ Transaccion_Servicio.belongsTo(Transaccion, {foreignKey: 'cod_transaccion', sour
 
 Servicio.hasMany(Transaccion_Servicio, {foreignKey: 'cod_servicio', sourceKey: 'cod_servicio'});
 Transaccion_Servicio.belongsTo(Servicio, {foreignKey: 'cod_servicio', sourceKey: 'cod_servicio'});
+
+// Relationships Paquete_Servicio
+Paquete.hasMany(Paquete_Servicio,{foreignKey: 'cod_paquete', sourceKey: 'cod_paquete'})
+Paquete_Servicio.belongsTo(Paquete,{foreignKey: 'cod_paquete', sourceKey: 'cod_paquete'})
+
+Servicio.hasMany(Paquete_Servicio,{foreignKey: 'cod_servicio', sourceKey: 'cod_servicio'})
+Paquete_Servicio.belongsTo(Servicio,{foreignKey: 'cod_servicio', sourceKey: 'cod_servicio'})
 
 // Relationships Consentimiento
 Transaccion.hasMany(Consentimiento, {foreignKey: 'cod_transaccion', sourceKey: 'cod_transaccion'});

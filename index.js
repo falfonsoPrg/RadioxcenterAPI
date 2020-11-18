@@ -60,8 +60,8 @@ app.use('/api/tipoNotaCredito/', TipoNotaCreditoRoutes)
 app.use('/api/tipoPrefEntrega/', TipoPrefEntregaRoutes)
 app.use('/api/sexos/', SexoRoutes)
 app.use('/api/servicios/', ServicioRoutes)
-app.use('/api/tipoPago/', TipoPago)
-app.use('/api/paquete/', Paquete)
+app.use('/api/tipoPagos/', TipoPago)
+app.use('/api/paquetes/', Paquete)
 //Initialize server 
 app.listen(port,() => {
     console.log('Server en el puerto ' + port)
