@@ -40,7 +40,7 @@ router.post('/', async (req,res)=>{
             error: Mensajes.ErrorAlGuardar
         })
     }
-    console.log(ciudad)
+
     return res.status(201).send()
 })
 

@@ -215,8 +215,128 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
  module.exports.UpdatePaqueteValidation = UpdatePaqueteValidation = (data) =>{
      const schema = Joi.object({
          cod_paquete: Joi.number().required(),
-         nombre_paquete: Joi.string().required(),
-         precio_paquete: Joi.number().required()
+         nombre_paquete: Joi.string(),
+         precio_paquete: Joi.number()
+     })
+     return schema.validate(data)
+ }
+
+ module.exports.CreateProcesoValidation = CreateProcesoValidation = (data) =>{
+     const schema = Joi.object({
+         estado_proceso: Joi.string().required(),
+         cod_usuario: Joi.number().required()
+     })
+     return schema.validate(data)
+ }
+
+ module.exports.UpdateProcesoValidation = UpdateProcesoValidation = (data) =>{
+     const schema = Joi.object({
+         cod_proceso: Joi.number().required(),
+         estado_proceso: Joi.string(),
+         cod_usuario: Joi.number()
+     })
+     return schema.validate(data)
+ }
+
+ module.exports.CreateEntidadvalidation = CreateEntidadvalidation = (data) => {
+     const schema = Joi.object({
+         razon_social_entidad: Joi.string().required(),
+         nombre_comercial_entidad: Joi.string().required(),
+         nit_entidad: Joi.string().required(),
+         direccion_entidad: Joi.string().required(),
+         telefono_entidad: Joi.string().required(),
+         nombre_representante: Joi.string().required(),
+         cedula_representante: Joi.number().required(),
+         telefono_representante: Joi.string().required(),
+         correo_representante: Joi.string().required(),
+         nombre_contacto: Joi.string(),
+         cedula_contacto: Joi.number(),
+         telefono_contacto: Joi.string(),
+         correo_contacto: Joi.string(),
+         cod_forma_de_pago_entidad: Joi.number().required(),
+         cod_tipo_facturacion: Joi.number().required()
+     })
+     return schema.validate(data)
+ }
+
+ module.exports.UpdateEntidadValidation = UpdateEntidadValidation = (data) => {
+    const schema = Joi.object({
+        cod_entidad: Joi.number().required(),
+        razon_social_entidad: Joi.string(),
+        nombre_comercial_entidad: Joi.string(),
+        nit_entidad: Joi.string(),
+        direccion_entidad: Joi.string(),
+        telefono_entidad: Joi.string(),
+        nombre_representante: Joi.string(),
+        cedula_representante: Joi.number(),
+        telefono_representante: Joi.string(),
+        correo_representante: Joi.string(),
+        nombre_contacto: Joi.string(),
+        cedula_contacto: Joi.number(),
+        telefono_contacto: Joi.string(),
+        correo_contacto: Joi.string(),
+        cod_forma_de_pago_entidad: Joi.number(),
+        cod_tipo_facturacion: Joi.number()
+    })
+    return schema.validate(data)
+ } 
+
+ module.exports.CreateEntidadDoctorValidation = CreateEntidadDoctorValidation = (data) => {
+     const schema = Joi.object({
+         cod_doctor: Joi.number().required(),
+         cod_entidad: Joi.number().required()
+     })
+     return schema.validate(data)
+ }
+
+ module.exports.UpdateEntidadDoctorValidation = UpdateEntidadDoctorValidation = (data) => {
+    const schema = Joi.object({
+        cod_entidad_doctor: Joi.number().required(),
+        cod_doctor: Joi.number(),
+        cod_entidad: Joi.number()
+    })
+    return schema.validate(data)
+ }
+
+ module.exports.CreateDoctorValidation = CreateDoctorValidation = (data) => {
+     const schema = Joi.object({
+         nombres_doctor: Joi.string().required(),
+         apellidos_doctor: Joi.string().required(),
+         direccion_doctor: Joi.string().required(),
+         telefono_doctor: Joi.string().required(),
+         documento_doctor: Joi.number().required(),
+         correo_doctor: Joi.string().required(),
+         cod_tipo_documento: Joi.number().required(),
+         cod_tipo_pref_entrega: Joi.number().required()
+     })
+     return schema.validate(data)
+ }
+ module.exports.UpdateDoctorValidation = UpdateDoctorValidation = (data) => {
+     const schema = Joi.object({
+         cod_doctor: Joi.number().required(),
+        nombres_doctor: Joi.string(),
+        apellidos_doctor: Joi.string(),
+        direccion_doctor: Joi.string(),
+        telefono_doctor: Joi.string(),
+        documento_doctor: Joi.number(),
+        correo_doctor: Joi.string(),
+        cod_tipo_documento: Joi.number(),
+        cod_tipo_pref_entrega: Joi.number()
+     })
+     return schema.validate(data)
+ }
+
+ module.exports.CreateFormaDePagoEntidadValidation = CreateFormaDePagoEntidadValidation = (data) =>{
+     const schema= Joi.object({
+        nombre_forma_de_pago_entidad: Joi.string().required()
+     })
+     return schema.validate(data)
+ }
+
+ module.exports.UpdateFormaDePagoEntidadValidation = UpdateFormaDePagoEntidadValidation = (data) =>{
+    const schema= Joi.object({
+        cod_forma_de_pago_entidad: Joi.number().required(),
+        nombre_forma_de_pago_entidad: Joi.string().required()
      })
      return schema.validate(data)
  }
