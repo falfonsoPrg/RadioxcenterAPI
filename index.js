@@ -72,7 +72,7 @@ app.use('/api/entidad/', Entidad)
 app.use('/api/entidadDoctor', EntidadDoctor)
 app.use('/api/doctor/',Doctor)
 app.use('/api/formaDePagoEntidad',FormaDePagoEntidad)
-//Initialize server 
+//Inicializa el servidor 
 app.listen(port,() => {
     console.log('Server en el puerto ' + port)
 }) 
