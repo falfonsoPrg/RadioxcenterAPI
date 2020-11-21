@@ -1,4 +1,6 @@
 const router = require('express').Router()
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 const EmpleadoController = require('../controllers/EmpleadoController')
 const Mensajes = require('../middlewares/Mensajes')
 const {UpdateEmpleadoValidation} = require('../middlewares/Validation')
@@ -26,6 +28,35 @@ router.get('/', async(req,res)=>{
     return res.status(404).send({
         error: Mensajes.RegistroNoEncontrado
     })
+})
+
+router.put('/' ,async(req,res)=>{
+    const {error} = UpdateEmpleadoValidation(req.body)
+    if(error) return res.status(422).send({
+        error: error.details[0].message
+    })
+    if(req.body.contrasenia_empleado != null ){
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(req.body.contrasenia_empleado, salt)
+        const empl = req.body
+        empl.contrasenia_empleado= hashedPassword
+        const empleado = await EmpleadoController.updateEmpleado(empl);
+        if(empleado[0]== 0 || empleado.name== "SequelizeForeignKeyConstraintError") {
+            return res.status(404).send({
+                error: Mensajes.ErrorAlActualizar
+            })
+        }
+        return res.status(204).send()
+    } else {
+        const empleado = await EmpleadoController.updateEmpleado(req.body);
+        if(empleado[0]== 0 || empleado.name== "SequelizeForeignKeyConstraintError") {
+            return res.status(404).send({
+                error: Mensajes.ErrorAlActualizar
+            })
+        }
+        return res.status(204).send()
+    }
+
 })
 
 module.exports = router
