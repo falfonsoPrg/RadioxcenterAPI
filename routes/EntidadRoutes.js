@@ -35,6 +35,7 @@ router.post('/', async(req,res)=>{
     })
     const entidad = await EntidadController.createEntidad(req.body)
     if( entidad.errors || entidad.name== "SequelizeDatabaseError"|| entidad.name== "SequelizeForeignKeyConstraintError") {
+        console.log(entidad.name)
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })

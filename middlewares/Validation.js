@@ -266,10 +266,10 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
          cedula_representante: Joi.number().required(),
          telefono_representante: Joi.string().required(),
          correo_representante: Joi.string().required(),
-         nombre_contacto: Joi.string(),
-         cedula_contacto: Joi.number(),
-         telefono_contacto: Joi.string(),
-         correo_contacto: Joi.string(),
+         nombre_contacto: Joi.string().allow(''),
+         cedula_contacto: Joi.number().allow(''),
+         telefono_contacto: Joi.string().allow(''),
+         correo_contacto: Joi.string().allow(''),
          cod_forma_de_pago_entidad: Joi.number().required(),
          cod_tipo_facturacion: Joi.number().required()
      })
