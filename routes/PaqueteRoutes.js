@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const PaqueteController = require('../controllers/PaqueteController')
+const PaqueteServicioController = require('../controllers/PaqueteServicioController')
 const Mensajes = require('../middlewares/Mensajes')
 const {CreatePaqueteValidation, UpdatePaqueteValidation} = require('../middlewares/Validation')
 
@@ -39,7 +40,7 @@ router.post('/', async(req,res)=>{
             error: Mensajes.ErrorAlGuardar
         })
     }
-    return res.status(201).send()
+    return res.status(201).send({respuesta: paquete})
 })
 
 router.put('/', async(req,res)=>{
@@ -54,6 +55,40 @@ router.put('/', async(req,res)=>{
         })
     }
     return res.status(204).send()
+})
+
+//Rutas de la relación muchos a muchos con Servicios
+//  GET /api/paquetes/{idPaquete}/servicios
+//  GET /api/paquetes/{idPaquete}/servicios/{idServicio}
+// POST  /api/paquetes/{idPaquete}/servicios/
+// DELETE  /api/paquetes/{idPaquete}/servicios/{idServicio}
+router.get('/:cod_paquete/servicios', async(req,res)=>{
+    const cod_paquete= req.params.cod_paquete
+    const paqueteServicio = await PaqueteServicioController.getServiciosFromPaquetes(cod_paquete)
+    console.log(paqueteServicio)
+    if(paqueteServicio.length > 0) {
+        return res.send({
+            respuesta: paqueteServicio
+        })
+    }
+
+})
+router.get('/:cod_paquete/servicios/:cod_servicio', async(req,res)=>{
+
+})
+router.post('/:cod_paquete/servicios/', async(req,res)=>{
+    //const {error} = UpdatePaqueteValidation(req.body)
+    req.body.cod_paquete = req.params.cod_paquete
+    const paqueteServicio = await PaqueteServicioController.createPaqueteServicio(req.body)
+    if(paqueteServicio.errors || paqueteServicio.name){
+        return res.status(400).send({
+            error: Mensajes.ErrorAlGuardar
+        })
+    }
+    return res.status(201).send()
+})
+router.delete('/:cod_paquete/servicios/:cod_servicio', async(req,res)=>{
+
 })
 
 module.exports = router

@@ -50,4 +50,19 @@ router.put('/', async(req,res)=>{
     }
     return res.status(204).send()
 })
+
+//Rutas de la relación muchos a muchos con Paquetes
+
+router.get('/:cod_servicio/paquetes', async(req,res)=>{
+
+})
+router.get('/:cod_servicio/paquetes/:cod_paquete', async(req,res)=>{
+
+})
+router.post('/:cod_servicio/paquetes/', async(req,res)=>{
+
+})
+router.delete('/:cod_servicio/paquetes/:cod_paquete', async(req,res)=>{
+
+})
 module.exports = router

@@ -9,10 +9,12 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         cod_paquete: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: false
         },
         cod_servicio: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     },{
         tableName: 'Paquete_servicio' ,

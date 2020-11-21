@@ -172,13 +172,13 @@ sequelize.sync( resetDb ).then( async () => {
         defaults: {cod_tipo_empleado:1,nombre_tipo_empleado:"Empleado"}
     })
     const te = await Tipo_empleado.findAll()
-    console.log(te)
+    //console.log(te)
     await Tipo_documento.findOrCreate({
         where: {cod_tipo_documento:1},
         defaults: {cod_tipo_documento:1,nombre_tipo_documento:"Cédula de ciudadania"}
     })
     const td = await Tipo_documento.findAll()
-    console.log(td)
+    //console.log(td)
 }).catch(err => {
     console.log(err)
 })
@@ -210,8 +210,8 @@ module.exports = {
     Entidad_doctor,
     Transaccion,
     Transaccion_Servicio,
-    Consentimiento
-
+    Consentimiento,
+    Paquete_Servicio,
 
 
 

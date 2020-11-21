@@ -67,10 +67,10 @@ app.use('/api/sexos/', SexoRoutes)
 app.use('/api/servicios/', ServicioRoutes)
 app.use('/api/tipoPagos/', TipoPago)
 app.use('/api/paquetes/', Paquete)
-app.use('/api/proceso/', Proceso)
-app.use('/api/entidad/', Entidad)
+app.use('/api/procesos/', Proceso)
+app.use('/api/entidades/', Entidad)
 app.use('/api/entidadDoctor', EntidadDoctor)
-app.use('/api/doctor/',Doctor)
+app.use('/api/doctores/',Doctor)
 app.use('/api/formaDePagoEntidad',FormaDePagoEntidad)
 //Inicializa el servidor 
 app.listen(port,() => {
