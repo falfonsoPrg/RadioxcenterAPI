@@ -357,3 +357,22 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
      })
      return schema.validate(data)
  }
+
+ module.exports.CreateInformacionRXValidation = CreateInformacionRXValidation = (data)=>{
+    const schema = Joi.object({
+        nit_rx: Joi.string().required(),
+        razon_social: Joi.string().required(),
+        nombre_comercial: Joi.string().required()
+    })
+    return schema.validate(data)
+ }
+
+ module.exports.UpdateInformacionRXValidation = UpdateInformacionRXValidation = (data) =>{
+    const schema = Joi.object({
+        cod_informacion_rx: Joi.number().required(),
+        nit_rx: Joi.string(),
+        razon_social: Joi.string(),
+        nombre_comercial: Joi.string()
+    })
+    return schema.validate(data)
+ }
