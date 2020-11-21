@@ -376,3 +376,26 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
     })
     return schema.validate(data)
  }
+
+ module.exports.CreateConvenioValidation = CreateConvenioValidation = (data) =>{
+     const schema = Joi.object({
+         valor_servicio: Joi.number().required(),
+         fecha_inicial_convenio: Joi.date().required(),
+         fecha_final_convenio: Joi.date().required(),
+         cod_entidad: Joi.number().required(),
+         cod_servicio: Joi.number().required()
+     })
+     return schema.validate(data)
+ }
+
+ module.exports.UpdateConvenioValidation = UpdateConvenioValidation = (data) =>{
+    const schema = Joi.object({
+        cod_convenio: Joi.number().required(),
+        valor_servicio: Joi.number(),
+        fecha_inicial_convenio: Joi.date(),
+        fecha_final_convenio: Joi.date(),
+        cod_entidad: Joi.number(),
+        cod_servicio: Joi.number()
+    })
+    return schema.validate(data)
+ }
