@@ -23,6 +23,23 @@ module.exports.CreateEmpleadoValidation = CreateEmpleadoValidation = (data) => {
     })
     return schema.validate(data)
 }
+module.exports.UpdateEmpleadoValidation = UpdateEmpleadoValidation = (data) => {
+    const schema = Joi.object({
+        cod_empleado: Joi.number().required(),
+        nombres_empleado: Joi.string(),
+        apellidos_empleado: Joi.string(),
+        documento_empleado: Joi.number(),
+        direccion_empleado: Joi.string(),
+        fnacimiento_empleado: Joi.date(),
+        telefono_empleado: Joi.string(),
+        correo_empleado: Joi.string().email(),
+        contrasenia_empleado: Joi.string(),
+        usuario_empleado: Joi.string(),
+        cod_tipo_empleado: Joi.number(),
+        cod_tipo_documento: Joi.number()
+    })
+    return schema.validate(data)
+} 
 
 module.exports.CreateDepartamentoValidation = CreateDepartamentoValidation = (data) => {
     const schema = Joi.object({
