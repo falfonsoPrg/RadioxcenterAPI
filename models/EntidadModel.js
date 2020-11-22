@@ -53,11 +53,11 @@ module.exports = (sequelize) => {
         nombre_contacto: {
             type: DataTypes.STRING,
             allowNull: true
+            
         },
         cedula_contacto: {
             type: DataTypes.INTEGER,
-            allowNull: true,
-            unique: true
+            allowNull: true
         },
         telefono_contacto: {
             type: DataTypes.STRING,
@@ -65,10 +65,7 @@ module.exports = (sequelize) => {
         },
         correo_contacto: {
             type: DataTypes.STRING,
-            allowNull: true,
-            validate: {
-                isEmail: true
-            }
+            allowNull: true
         },
         cod_forma_de_pago_entidad: {
             type: DataTypes.INTEGER

@@ -266,10 +266,10 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
          cedula_representante: Joi.number().required(),
          telefono_representante: Joi.string().required(),
          correo_representante: Joi.string().required(),
-         nombre_contacto: Joi.string(),
-         cedula_contacto: Joi.number(),
-         telefono_contacto: Joi.string(),
-         correo_contacto: Joi.string(),
+         nombre_contacto: Joi.string().allow(''),
+         cedula_contacto: Joi.number().allow(null),
+         telefono_contacto: Joi.string().allow(''),
+         correo_contacto: Joi.string().allow(''),
          cod_forma_de_pago_entidad: Joi.number().required(),
          cod_tipo_facturacion: Joi.number().required()
      })
@@ -356,4 +356,46 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
         nombre_forma_de_pago_entidad: Joi.string().required()
      })
      return schema.validate(data)
+ }
+
+ module.exports.CreateInformacionRXValidation = CreateInformacionRXValidation = (data)=>{
+    const schema = Joi.object({
+        nit_rx: Joi.string().required(),
+        razon_social: Joi.string().required(),
+        nombre_comercial: Joi.string().required()
+    })
+    return schema.validate(data)
+ }
+
+ module.exports.UpdateInformacionRXValidation = UpdateInformacionRXValidation = (data) =>{
+    const schema = Joi.object({
+        cod_informacion_rx: Joi.number().required(),
+        nit_rx: Joi.string(),
+        razon_social: Joi.string(),
+        nombre_comercial: Joi.string()
+    })
+    return schema.validate(data)
+ }
+
+ module.exports.CreateConvenioValidation = CreateConvenioValidation = (data) =>{
+     const schema = Joi.object({
+         valor_servicio: Joi.number().required(),
+         fecha_inicial_convenio: Joi.date().required(),
+         fecha_final_convenio: Joi.date().required(),
+         cod_entidad: Joi.number().required(),
+         cod_servicio: Joi.number().required()
+     })
+     return schema.validate(data)
+ }
+
+ module.exports.UpdateConvenioValidation = UpdateConvenioValidation = (data) =>{
+    const schema = Joi.object({
+        cod_convenio: Joi.number().required(),
+        valor_servicio: Joi.number(),
+        fecha_inicial_convenio: Joi.date(),
+        fecha_final_convenio: Joi.date(),
+        cod_entidad: Joi.number(),
+        cod_servicio: Joi.number()
+    })
+    return schema.validate(data)
  }
