@@ -399,3 +399,18 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
     })
     return schema.validate(data)
  }
+ module.exports.CreatePaqueteServicioValidation = CreatePaqueteServicioValidation = (data)=>{
+     const schema = Joi.object({
+         cod_paquete: Joi.number().required(),
+         cod_servicio: Joi.number().required()
+     })
+     return schema.validate(data)
+ }
+ module.exports.UpdatePaqueteServicioValidation = UpdatePaqueteServicioValidation = (data) =>{
+    const schema = Joi.object({
+        cod_paquete_servicio: Joi.number().required(),
+        cod_paquete: Joi.number(),
+        cod_servicio: Joi.number()
+    })
+    return schema.validate(data)
+ }

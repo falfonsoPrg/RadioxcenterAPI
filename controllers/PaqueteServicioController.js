@@ -9,6 +9,20 @@ PaqueteServicioController.getPaquete = async (cod_paquete) => {
         return error
     }
 }
+PaqueteServicioController.getPaqueteServicio= async(cod_paquete_servicio) => {
+    try {
+        return await Paquete_Servicio.findByPk(cod_paquete_servicio)
+    } catch (error) {
+        return error
+    }
+}
+PaqueteServicioController.getPaqueteServicios = async()=>{
+    try{
+        return await Paquete_Servicio.findAll()
+    } catch (error){
+        return error
+    }
+}
 
 PaqueteServicioController.getServiciosFromPaquetes = async(cod_paquete) => {
     try{
@@ -35,6 +49,18 @@ PaqueteServicioController.updatePaquete = async(pPaquete) => {
             }
         })
     } catch (error) {
+        return error
+    }
+}
+
+PaqueteServicioController.updatePaqueteServicio = async(pPaqueteServicio) => {
+    try {
+        return await Paquete_Servicio.update(pPaqueteServicio,{
+            where: {
+                cod_paquete_servicio: pPaqueteServicio.cod_paquete_servicio
+            }
+        })
+    } catch (error){
         return error
     }
 }

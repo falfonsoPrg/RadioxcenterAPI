@@ -56,4 +56,17 @@ router.put('/', async(req,res)=>{
     return res.status(204).send()
 })
 
+router.get('/entidad/:cod_entidad',async(req,res)=>{
+    const cod_entidad = req.params.cod_entidad
+    const convenio = await ConvenioController.getConvenioxEntidad(cod_entidad)
+    if(convenio.length > 0){
+        return res.send({
+            respuesta: convenio
+        })
+    }
+    return res.status(404).send({
+        error: Mensajes.RegistroNoEncontrado
+    })
+})
+
 module.exports = router

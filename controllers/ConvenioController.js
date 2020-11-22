@@ -17,6 +17,18 @@ ConvenioController.getConvenios = async()=> {
     }
 }
 
+ConvenioController.getConvenioxEntidad = async(pcod_entidad)=>{
+    try {
+        return await Convenio.findAll({
+            where: {
+                cod_entidad: pcod_entidad
+            }
+        })
+    } catch (error){
+        return error
+    }
+}
+
 ConvenioController.createConvenio = async(pConvenio) =>{
     try {
         return await Convenio.create(pConvenio)
