@@ -13,6 +13,9 @@ PaqueteServicioController.getPaquete = async (cod_paquete) => {
 PaqueteServicioController.getServiciosFromPaquetes = async(cod_paquete) => {
     try{
         return await Paquete_Servicio.findAll({
+            where: {
+                cod_paquete : cod_paquete
+            },
             include: Servicio
         })
     } catch (error) {
