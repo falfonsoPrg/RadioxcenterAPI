@@ -3,6 +3,29 @@ const ConvenioController = require('../controllers/ConvenioController')
 const Mensajes = require('../middlewares/Mensajes')
 const {CreateConvenioValidation, UpdateConvenioValidation} = require('../middlewares/Validation')
 
+router.get('/entidad',async(req,res)=>{
+
+    const convenios = await ConvenioController.getConvenios()
+    const all = []
+    
+    for(let i=1; i<= convenios.length; i++){
+        const convenio = await ConvenioController.getConvenioxEntidad(i)
+        if(convenio.length>0){
+            all.push(convenio)
+        }
+    }
+    if(all.length > 0){
+        return res.send({
+            respuesta: all
+        })
+    }
+ 
+
+    return res.status(404).send({
+        error: Mensajes.RegistroNoEncontrado
+    })
+})
+
 router.get('/:cod_convenio', async(req,res)=>{
     const cod_convenio = req.params.cod_convenio
     const convenio = await ConvenioController.getConvenio(cod_convenio)
@@ -18,6 +41,7 @@ router.get('/:cod_convenio', async(req,res)=>{
 
 router.get('/', async(req,res)=>{
     const convenio = await ConvenioController.getConvenios()
+    console.log(convenio)
     if(convenio.length > 0){
         return res.send({
             respuesta: convenio
@@ -56,17 +80,6 @@ router.put('/', async(req,res)=>{
     return res.status(204).send()
 })
 
-router.get('/entidad/:cod_entidad',async(req,res)=>{
-    const cod_entidad = req.params.cod_entidad
-    const convenio = await ConvenioController.getConvenioxEntidad(cod_entidad)
-    if(convenio.length > 0){
-        return res.send({
-            respuesta: convenio
-        })
-    }
-    return res.status(404).send({
-        error: Mensajes.RegistroNoEncontrado
-    })
-})
+
 
 module.exports = router

@@ -1,4 +1,5 @@
-const {Convenio} = require('../database/sequelize')
+const {Convenio, Servicio, Entidad} = require('../database/sequelize')
+
 
 ConvenioController= {}
 ConvenioController.getConvenio = async(cod_convenio) => {
