@@ -1,4 +1,5 @@
 const {Convenio, Servicio, Entidad} = require('../database/sequelize')
+const Sequelize = require("sequelize")
 
 
 ConvenioController= {}
@@ -18,14 +19,27 @@ ConvenioController.getConvenios = async()=> {
     }
 }
 
-ConvenioController.getConvenioxEntidad = async(pcod_entidad)=>{
+ConvenioController.getConveniosFromEntidades = async(cod_entidad) => {
     try {
         return await Convenio.findAll({
             where: {
-                cod_entidad: pcod_entidad
-            }
+                cod_entidad: cod_entidad
+            },
+            include: Servicio,
+            order:[['cod_entidad','DESC']]
         })
-    } catch (error){
+    } catch (error) {
+        return error
+    }
+}
+
+ConvenioController.getConveniosFromAllEntidades = async() => {
+    try {
+        return await Convenio.findAll({
+            include: Servicio,
+            order:[['cod_entidad','ASC']]
+        })
+    } catch (error) {
         return error
     }
 }
@@ -43,6 +57,19 @@ ConvenioController.updateConvenio = async(pConvenio)=>{
         return await Convenio.update(pConvenio, {
             where: {
                 cod_convenio: pConvenio.cod_convenio
+            }
+        })
+    } catch (error) {
+        return error
+    }
+}
+
+ConvenioController.deleteServicioFromEntidad = async(pEntidad, pServicio) => {
+    try {
+        return await Convenio.destroy({
+            where: {
+                cod_entidad: pEntidad,
+                cod_servicio: pServicio
             }
         })
     } catch (error) {

@@ -58,14 +58,14 @@ router.put('/', async(req,res)=>{
 })
 
 //Rutas de la relación muchos a muchos con Servicios
-//  GET /api/paquetes/{idPaquete}/servicios
-//  GET /api/paquetes/{idPaquete}/servicios/{idServicio}
-// POST  /api/paquetes/{idPaquete}/servicios/
+//  GET    /api/paquetes/{idPaquete}/servicios
+//  GET    /api/paquetes/{idPaquete}/servicios/{idServicio}
+// POST    /api/paquetes/{idPaquete}/servicios/
 // DELETE  /api/paquetes/{idPaquete}/servicios/{idServicio}
+
 router.get('/:cod_paquete/servicios', async(req,res)=>{
     const cod_paquete= req.params.cod_paquete
     const paqueteServicio = await PaqueteServicioController.getServiciosFromPaquetes(cod_paquete)
-    console.log(paqueteServicio)
     if(paqueteServicio.length > 0) {
         return res.send({
             respuesta: paqueteServicio
@@ -74,7 +74,10 @@ router.get('/:cod_paquete/servicios', async(req,res)=>{
 
 })
 router.get('/:cod_paquete/servicios/:cod_servicio', async(req,res)=>{
-
+    const bdy = {
+        cod_paquete: req.params.cod_paquete,
+        cod_servicio: req.params.cod_servicio
+    }
 })
 router.post('/:cod_paquete/servicios/', async(req,res)=>{
     //const {error} = UpdatePaqueteValidation(req.body)

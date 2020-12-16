@@ -1,7 +1,18 @@
 const router = require('express').Router()
 const EntidadController = require('../controllers/EntidadController')
-const Mensajes= require('../middlewares/Mensajes')
+const ConvenioController = require('../controllers/ConvenioController')
+const Mensajes = require('../middlewares/Mensajes')
 const {UpdateEntidadValidation, CreateEntidadvalidation} = require('../middlewares/Validation')
+
+router.get('/convenios', async(req,res)=>{
+    const convenios = await ConvenioController.getConveniosFromAllEntidades()
+    if(convenios.length > 0) {
+        return res.send({
+            respuesta: convenios
+        })
+    }
+    return res.status(400).send()
+})
 
 router.get('/:cod_entidad', async(req,res) =>{
     const cod_entidad = req.params.cod_entidad
@@ -57,4 +68,34 @@ router.put('/', async(req,res)=>{
     return res.status(204).send()
 })
 
-module.exports= router
+//Rutas de la relación muchos a muchos con Servicios
+//  GET    /api/entidades/convenios
+//  GET    /api/entidades/{cod_entidad}/convenios
+//  GET    /api/entidades/{cod_entidad}/convenios/{cod_servicio}
+// POST    /api/entidades/{cod_entidad}/convenios/
+// DELETE  /api/entidades/{cod_entidad}/convenios/{cod_servicio}
+
+router.get('/:cod_entidad/convenios', async(req,res)=>{
+    const cod_entidad = req.params.cod_entidad
+    const convenios = await ConvenioController.getConveniosFromEntidades(cod_entidad)
+    if(convenios.length > 0) {
+        return res.send({
+            respuesta: convenios
+        })
+    }
+    return res.status(404).send()
+})
+
+router.delete('/:cod_entidad/convenios/:cod_servicio', async(req,res)=>{
+    const cod_entidad = req.params.cod_entidad
+    const cod_servicio = req.params.cod_servicio
+    const convenios = await ConvenioController.deleteServicioFromEntidad(cod_entidad, cod_servicio)
+    if(convenios != 0) {
+        return res.status(204).send()
+    }
+    return res.status(404).send()
+})
+
+
+
+module.exports = router
