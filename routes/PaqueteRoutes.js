@@ -91,7 +91,7 @@ router.post('/:cod_paquete/servicios/', async(req,res)=>{
     return res.status(201).send()
 })
 router.delete('/:cod_paquete/servicios/:cod_servicio', async(req,res)=>{
-
+    //Recibo 1 arreglo con los servicios que quedan finalmente req.body.servicios_paquete
 })
 
 module.exports = router

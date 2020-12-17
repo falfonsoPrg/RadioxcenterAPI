@@ -1,9 +1,19 @@
-const { Entidad } = require('../database/sequelize')
+const { Entidad,Servicio,Convenio } = require('../database/sequelize')
 
 EntidadController = {}
 EntidadController.getEntidad = async (cod_entidad) => {
     try {
         return await Entidad.findByPk(cod_entidad)
+    } catch (error) {
+        return error
+    }
+}
+EntidadController.getAllFromEntidad = async (cod_entidad) => {
+    try {
+        return await Entidad.findAll({
+            include: {all: true},
+            order:[['cod_entidad','ASC']],
+        })
     } catch (error) {
         return error
     }

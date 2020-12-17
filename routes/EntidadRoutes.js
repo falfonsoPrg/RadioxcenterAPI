@@ -1,14 +1,16 @@
 const router = require('express').Router()
 const EntidadController = require('../controllers/EntidadController')
 const ConvenioController = require('../controllers/ConvenioController')
+const ServicioController = require('../controllers/ServicioController')
 const Mensajes = require('../middlewares/Mensajes')
 const {UpdateEntidadValidation, CreateEntidadvalidation} = require('../middlewares/Validation')
 
 router.get('/convenios', async(req,res)=>{
-    const convenios = await ConvenioController.getConveniosFromAllEntidades()
+    const countConvenios = await ConvenioController.getCountConvenios()
+    const convenios = await EntidadController.getAllFromEntidad();
     if(convenios.length > 0) {
         return res.send({
-            respuesta: convenios
+            respuesta: arr
         })
     }
     return res.status(400).send()
@@ -86,14 +88,34 @@ router.get('/:cod_entidad/convenios', async(req,res)=>{
     return res.status(404).send()
 })
 
-router.delete('/:cod_entidad/convenios/:cod_servicio', async(req,res)=>{
-    const cod_entidad = req.params.cod_entidad
-    const cod_servicio = req.params.cod_servicio
-    const convenios = await ConvenioController.deleteServicioFromEntidad(cod_entidad, cod_servicio)
-    if(convenios != 0) {
-        return res.status(204).send()
+router.put('/:cod_entidad/convenios/', async(req,res)=>{
+    const servicios_convenio = req.body.servicios_convenio
+    const valores_servicios = req.body.valores_servicios
+    const list = await ServicioController.getServicios()
+    const error = servicios_convenio.every(element => list.find(x => x.cod_servicio == element));
+    if(!error){
+        return res.status(400).send({
+            error: Mensajes.ErrorAlActualizar
+        })
     }
-    return res.status(404).send()
+    //Remove all convenios
+    await ConvenioController.deleteAllServiciosFromEntidad(req.params.cod_entidad)
+    //Iterate through servicios_convenio adding them
+    for (let i = 0; i < servicios_convenio.length; i++) {
+        const savedConvenio = await ConvenioController.createConvenio({
+            cod_servicio: servicios_convenio[i],
+            cod_entidad: req.params.cod_entidad,
+            valor_servicio: valores_servicios[i],
+            fecha_inicial_convenio: req.body.fecha_inicial_convenio,
+            fecha_final_convenio: req.body.fecha_final_convenio
+        });
+        if(savedConvenio.errors || savedConvenio.name){
+            return res.status(400).send({
+                error: Mensajes.ErrorAlActualizar
+            })
+        }
+    }
+    return res.status(204).send()
 })
 
 
