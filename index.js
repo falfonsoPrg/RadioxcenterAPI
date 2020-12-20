@@ -6,6 +6,11 @@ const app = express()
 const port = process.env.PORT || 4000
 dotenv.config();
 
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger_output.json')
+
+app.use('/local', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+
 require("./database/sequelize")
 
 //Cors configuration
@@ -76,7 +81,7 @@ app.use('/api/entidades/', Entidad)
 app.use('/api/entidadDoctor', EntidadDoctor)
 app.use('/api/doctores/',Doctor)
 app.use('/api/formaDePagoEntidad',FormaDePagoEntidad)
-app.use('/api/empleado', Empleado)
+app.use('/api/empleados', Empleado)
 app.use('/api/informacionRX', InformacionRX)
 app.use('/api/convenios', Convenio)
 app.use('/api/paqueteServicios', PaqueteServicio)

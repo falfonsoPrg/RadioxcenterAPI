@@ -5,6 +5,11 @@ const Mensajes = require('../middlewares/Mensajes')
 const {CreatePaqueteValidation, UpdatePaqueteValidation} = require('../middlewares/Validation')
 
 router.get('/:cod_paquete', async(req,res)=>{
+    /**
+        #swagger.tags = ['Paquetes']
+        #swagger.path = '/paquetes/{cod_paquete}'
+        #swagger.description = 'Endpoint para obtener un paquete'
+     */
     const cod_paquete= req.params.cod_paquete
     const paquete = await PaqueteController.getPaquete(cod_paquete)
     if(paquete){
@@ -18,6 +23,11 @@ router.get('/:cod_paquete', async(req,res)=>{
 })
 
 router.get('/', async (req,res)=>{
+    /**
+        #swagger.tags = ['Paquetes']
+        #swagger.path = '/paquetes'
+        #swagger.description = 'Endpoint para obtener paquetes'
+     */
     const paquete = await PaqueteController.getPaquetes()
     if(paquete.length > 0) {
         return res.send({
@@ -30,6 +40,20 @@ router.get('/', async (req,res)=>{
 })
 
 router.post('/', async(req,res)=>{
+    /**
+        #swagger.tags = ['Paquetes']
+        #swagger.path = '/paquetes'
+        #swagger.description = 'Endpoint para crear un paquete.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/Paquete'
+            }
+        }]
+     */
     const {error} = CreatePaqueteValidation(req.body)
     if(error) return res.status(422).send({
         error: error.details[0].message
@@ -44,6 +68,20 @@ router.post('/', async(req,res)=>{
 })
 
 router.put('/', async(req,res)=>{
+    /**
+        #swagger.tags = ['Paquetes']
+        #swagger.path = '/paquetes'
+        #swagger.description = 'Endpoint para editar un paquete.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/Paquete'
+            }
+        }]
+     */
     const {error} = UpdatePaqueteValidation(req.body)
     if(error) return res.status(422).send({
         error: error.details[0].message
@@ -57,13 +95,12 @@ router.put('/', async(req,res)=>{
     return res.status(204).send()
 })
 
-//Rutas de la relación muchos a muchos con Servicios
-//  GET    /api/paquetes/{idPaquete}/servicios
-//  GET    /api/paquetes/{idPaquete}/servicios/{idServicio}
-// POST    /api/paquetes/{idPaquete}/servicios/
-// DELETE  /api/paquetes/{idPaquete}/servicios/{idServicio}
-
 router.get('/:cod_paquete/servicios', async(req,res)=>{
+    /**
+        #swagger.tags = ['Paquetes']
+        #swagger.path = '/paquetes/{cod_paquete}/servicios'
+        #swagger.description = 'Endpoint para obtener todos los servicios de un paquete'
+     */
     const cod_paquete= req.params.cod_paquete
     const paqueteServicio = await PaqueteServicioController.getServiciosFromPaquetes(cod_paquete)
     if(paqueteServicio.length > 0) {
@@ -74,13 +111,36 @@ router.get('/:cod_paquete/servicios', async(req,res)=>{
 
 })
 router.get('/:cod_paquete/servicios/:cod_servicio', async(req,res)=>{
+    /**
+        #swagger.tags = ['Paquetes']
+        #swagger.path = '/paquetes/{cod_paquete}/servicios/{cod_servicio}'
+        #swagger.description = 'WIP - Endpoint para obtener un servicio de un paquete - WIP'
+     */
     const bdy = {
         cod_paquete: req.params.cod_paquete,
         cod_servicio: req.params.cod_servicio
     }
 })
 router.post('/:cod_paquete/servicios/', async(req,res)=>{
-    //const {error} = UpdatePaqueteValidation(req.body)
+    /**
+        #swagger.tags = ['Paquetes']
+        #swagger.path = '/paquetes/{cod_paquete}/servicios'
+        #swagger.description = 'Endpoint para crear un servicio de un paquete.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                type:'object',
+                properties:{
+                    cod_servicio:{
+                        type: 'string'
+                    }
+                }
+            }
+        }]
+     */
     req.body.cod_paquete = req.params.cod_paquete
     const paqueteServicio = await PaqueteServicioController.createPaqueteServicio(req.body)
     if(paqueteServicio.errors || paqueteServicio.name){

@@ -6,9 +6,21 @@ const Mensajes = require('../middlewares/Mensajes')
 const {CreateEmpleadoValidation,LoginEmpleadoValidation} = require('../middlewares/Validation')
 
 router.post('/register', async (req,res)=>{
+    /**
+        #swagger.tags = ['Autorización']
+        #swagger.description = 'Endpoint para registrar un usuario.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/CreateEmpleado'
+            }
+        }]
+     */
     const {error} = CreateEmpleadoValidation(req.body)
     if(error) return res.status(422).send({error: error.details[0].message})
-    
     const encontroEmpleado = await Empleado.getEmpleadosP(undefined,undefined,req.body.documento_empleado,req.body.correo_empleado,req.body.usuario_empleado)
     if(encontroEmpleado.length > 0){
         return res.status(422).send({error: Mensajes.RegistroYaSeEncuentraRegistrado})
@@ -32,6 +44,19 @@ router.post('/register', async (req,res)=>{
 
 //Login
 router.post('/login', async (req,res)=>{
+    /**
+        #swagger.tags = ['Autorización']
+        #swagger.description = 'Endpoint para registrar un usuario.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/Login'
+            }
+        }]
+     */
     //Validacion
     const {error} = LoginEmpleadoValidation(req.body)
     if(error) return res.status(422).send({error: error.details[0].message})

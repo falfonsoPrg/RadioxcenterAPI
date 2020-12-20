@@ -4,9 +4,10 @@
   "description": "Esta es la API para radioxcenter",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node swagger.js",
     "test": "nodemon index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "swagger-autogen": "nodemon swagger.js --ignore swagger_output.json"
   },
   "repository": {
     "type": "git",
@@ -32,7 +33,9 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.3.3",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "swagger-autogen": "^2.0.3",
+    "swagger-ui-express": "^4.1.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"

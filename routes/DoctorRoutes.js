@@ -4,6 +4,11 @@ const Mensajes = require('../middlewares/Mensajes')
 const {CreateDoctorValidation, UpdateDoctorValidation} = require('../middlewares/Validation')
 
 router.get('/:cod_doctor', async(req,res)=>{
+    /**
+        #swagger.tags = ['Doctores']
+        #swagger.path = '/doctores/{cod_doctor}'
+        #swagger.description = 'Endpoint para obtener un doctor'
+     */
     const cod_doctor = req.params.cod_doctor
     const doctor = await DoctorController.getDoctor(cod_doctor)
     if(doctor){
@@ -16,6 +21,11 @@ router.get('/:cod_doctor', async(req,res)=>{
     })
 })
 router.get('/', async(req,res)=>{
+    /**
+        #swagger.tags = ['Doctores']
+        #swagger.path = '/doctores'
+        #swagger.description = 'Endpoint para obtener doctores'
+     */
     const doctor = await DoctorController.getDoctores()
     if(doctor.length > 0) {
         return res.send({
@@ -28,12 +38,26 @@ router.get('/', async(req,res)=>{
 })
 
 router.post('/', async(req,res)=>{
+    /**
+        #swagger.tags = ['Doctores']
+        #swagger.path = '/doctores'
+        #swagger.description = 'Endpoint para registrar un doctor.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/Doctor'
+            }
+        }]
+     */
     const {error} = CreateDoctorValidation(req.body)
     if(error) return res.status(422).send({
         error: error.details[0].message
     })
     const doctor = await DoctorController.createDoctor(req.body)
-    if(doctor.errors || doctor.name == "SequelizeDatabaseError" || doctor.name == "SequelizeForeignKeyConstraintError"){
+    if(doctor.errors || doctor.name){
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })
@@ -42,12 +66,26 @@ router.post('/', async(req,res)=>{
 })
 
 router.put('/', async(req,res)=>{
+    /**
+        #swagger.tags = ['Doctores']
+        #swagger.path = '/doctores'
+        #swagger.description = 'Endpoint para editar un doctores.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/Doctor'
+            }
+        }]
+     */
     const {error} = UpdateDoctorValidation(req.body)
     if(error) return res.status(422).send({
         error: error.details[0].message
     })
     const doctor = await DoctorController.updateDoctor(req.body)
-    if(doctor[0]== 0 || doctor.name == "SequelizeForeignKeyConstraintError"){
+    if(doctor[0]== 0 || doctor.name){
         return res.status(404).send({
             error: Mensajes.ErrorAlActualizar
         })
