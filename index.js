@@ -56,6 +56,8 @@ const Empleado = require('./routes/EmpleadoRoutes')
 const InformacionRX = require('./routes/InformacionRXRoutes')
 const Convenio = require('./routes/ConvenioRoutes')
 const PaqueteServicio = require('./routes/PaqueteServicioRoutes')
+const Transaccion = require('./routes/TransaccionRoutes')
+const TransaccionServicio = require('./routes/TransaccionServicioRoutes')
 //Middleware
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -85,6 +87,8 @@ app.use('/api/empleados', Empleado)
 app.use('/api/informacionRX', InformacionRX)
 app.use('/api/convenios', Convenio)
 app.use('/api/paqueteServicios', PaqueteServicio)
+app.use('/api/transaccion', Transaccion)
+app.use('/api/transaccionServicios',TransaccionServicio)
 //Inicializa el servidor 
 
 app.listen(port,() => {

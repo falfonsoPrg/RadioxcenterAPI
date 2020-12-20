@@ -414,3 +414,49 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
     })
     return schema.validate(data)
  }
+
+ module.exports.CreateTransaccionValidation = CreateTransaccionValidation = (data) =>{
+     const schema = Joi.object({
+         documento_usuario: Joi.number().required(),
+         valor_transaccion: Joi.number().required(),
+         fecha_transaccion: Joi.date().required(),
+         nombres_acudiente: Joi.string(),
+         apellidos_acudiente: Joi.string(),
+         documento_acudiente: Joi.number(),
+         parentesco_acudiente: Joi.string(),
+         cod_entidad_doctor: Joi.number()
+     })
+     return schema.validate(data)
+ }
+
+ module.exports.UpdateTransaccionValidation = UpdateTransaccionValidation = (data) => {
+     const schema = Joi.object({
+        cod_transaccion: Joi.number().required(),
+        documento_usuario: Joi.number(),
+        valor_transaccion: Joi.number(),
+        fecha_transaccion: Joi.date(),
+        nombres_acudiente: Joi.string(),
+        apellidos_acudiente: Joi.string(),
+        documento_acudiente: Joi.number(),
+        parentesco_acudiente: Joi.string(),
+        cod_entidad_doctor: Joi.number()
+     })
+ }
+
+ module.exports.CreateTransaccionServicioValidation = CreateTransaccionServicioValidation = (data) => {
+     const schema = Joi.object({
+         cod_transaccion: Joi.number().required(),
+         cod_servicio: Joi.number().required()
+     })
+     return schema.validate(data)
+ }
+
+ module.exports.UpdateTransaccionServicioValidation = UpdateTransaccionServicioValidation = (data) => {
+    const schema = Joi.object({
+        cod_transaccion_servicio: Joi.number().required(),
+        cod_transaccion: Joi.number(),
+        cod_servicio: Joi.number()
+    })
+    return schema.validate(data)
+}
+

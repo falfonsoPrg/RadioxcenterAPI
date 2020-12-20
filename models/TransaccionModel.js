@@ -23,7 +23,7 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: true
         },
-        apellidos_documento: {
+        apellidos_acudiente: {
             type: DataTypes.STRING,
             allowNull: true
         },
