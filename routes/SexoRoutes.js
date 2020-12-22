@@ -4,6 +4,11 @@ const Mensajes = require ('../middlewares/Mensajes')
 const {CreateSexoValidation, UpdateSexoValidation} = require('../middlewares/Validation')
 
 router.get('/:cod_sexo' , async(req,res)=>{
+    /**
+        #swagger.tags = ['Sexos']
+        #swagger.path = '/sexos/{cod_sexo}'
+        #swagger.description = 'Endpoint para obtener un tipo de sexo'
+     */
     const cod_sexo = req.params.cod_sexo
     const sexo = await SexoController.getSexo(cod_sexo)
     if (sexo) {
@@ -16,6 +21,11 @@ router.get('/:cod_sexo' , async(req,res)=>{
     })
 })
 router.get('/', async (req,res)=>{
+    /**
+        #swagger.tags = ['Sexos']
+        #swagger.path = '/sexos'
+        #swagger.description = 'Endpoint para obtener tipos de sexo'
+     */
     const sexos = await SexoController.getSexos()
     if (sexos.length > 0){
         return res.send({
@@ -24,13 +34,27 @@ router.get('/', async (req,res)=>{
     }
 })
 router.post('/', async(req,res)=>{
+    /**
+        #swagger.tags = ['Sexos']
+        #swagger.path = '/sexos'
+        #swagger.description = 'Endpoint para crear un tipo de sexo.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/Sexo'
+            }
+        }]
+     */
     const {error} = CreateSexoValidation(req.body)
     if (error) return res.status(422).send({
         error: error.details[0].message
     })
     
     const sexo = await SexoController.createSexo(req.body)
-    if (sexo.errors || sexo.name == "SequelizeDatabaseError"){
+    if (sexo.errors || sexo.name){
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })
@@ -39,6 +63,20 @@ router.post('/', async(req,res)=>{
 })
 
 router.put('/', async(req,res)=>{
+    /**
+        #swagger.tags = ['Sexos']
+        #swagger.path = '/sexos'
+        #swagger.description = 'Endpoint para editar un tipo de sexo.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/Sexo'
+            }
+        }]
+     */
     const {error} = UpdateSexoValidation(req.body)
     if(error) return res.status(422).send({
         error: error.details[0].message

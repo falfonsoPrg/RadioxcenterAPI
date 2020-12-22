@@ -68,4 +68,16 @@ PaqueteServicioController.updatePaqueteServicio = async(pPaqueteServicio) => {
     }
 }
 
+PaqueteServicioController.removeAllServiciosFromPaquete = async(pCod_paquete) => {
+    try {
+        return await Paquete_Servicio.destroy({
+            where: {
+                cod_paquete: pCod_paquete
+            }
+        })
+    } catch (error){
+        return error
+    }
+}
+
 module.exports = PaqueteServicioController

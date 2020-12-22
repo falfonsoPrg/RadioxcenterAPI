@@ -116,7 +116,7 @@ router.put('/', async(req,res)=>{
 router.get('/:cod_entidad/convenios', async(req,res)=>{
     /**
         #swagger.tags = ['Entidades']
-        #swagger.path = '/Entidades/{cod_entidad}/convenios'
+        #swagger.path = '/entidades/{cod_entidad}/convenios'
         #swagger.description = 'Endpoint para obtener todos los convenios de  una entidad'
      */
     const cod_entidad = req.params.cod_entidad

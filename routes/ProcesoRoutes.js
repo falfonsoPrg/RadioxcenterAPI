@@ -35,7 +35,7 @@ router.post('/', async(req,res)=>{
         error: error.details[0].message
     })
     const proceso = await ProcesoController.createProceso(req.body)
-    if(proceso.errors || proceso.name=="SequelizeDatabaseError" || proceso.name == "SequelizeForeignKeyConstraintError"){
+    if(proceso.errors || proceso.name){
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })
@@ -49,7 +49,7 @@ router.put('/', async(req,res)=>{
         error: error.details[0].message
     })
     const proceso = await ProcesoController.updateProceso(req.body)
-    if( proceso[0]== 0 || proceso.name == "SequelizeForeignKeyConstraintError"){
+    if( proceso[0]== 0 || proceso.name){
         return res.status(404).send({
             error: Mensajes.ErrorAlActualizar
         })

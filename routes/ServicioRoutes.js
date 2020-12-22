@@ -4,6 +4,11 @@ const Mensajes = require('../middlewares/Mensajes')
 const {CreateServicioValidation} = require('../middlewares/Validation')
 
 router.get('/:cod_servicio', async(req,res)=>{
+    /**
+        #swagger.tags = ['Servicios']
+        #swagger.path = '/servicios/{cod_servicio}'
+        #swagger.description = 'Endpoint para obtener un servicio'
+     */
     const cod_servicio = req.params.cod_servicio
     const servicio = await ServicioController.getServicio(cod_servicio)
     if(servicio){
@@ -16,6 +21,11 @@ router.get('/:cod_servicio', async(req,res)=>{
     })
 })
 router.get('/' , async(req,res)=>{
+    /**
+        #swagger.tags = ['Servicios']
+        #swagger.path = '/servicios'
+        #swagger.description = 'Endpoint para obtener servicios'
+     */
     const servicios = await ServicioController.getServicios()
     if(servicios.length > 0){
         return res.send({
@@ -28,12 +38,26 @@ router.get('/' , async(req,res)=>{
 })
 
 router.post('/', async(req,res)=> {
+    /**
+        #swagger.tags = ['Servicios']
+        #swagger.path = '/servicios'
+        #swagger.description = 'Endpoint para crear un servicio.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/Servicio'
+            }
+        }]
+     */
     const {error} = CreateServicioValidation(req.body)
     if(error) return res.status(422).send({
         error: error.details[0].message
     })
     const servicio = await ServicioController.createservicio(req.body)
-    if(servicio.errors || servicio.name == "SequelizeDatabaseError"){
+    if(servicio.errors || servicio.name){
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })
@@ -42,6 +66,20 @@ router.post('/', async(req,res)=> {
     return res.status(201).send()
 })
 router.put('/', async(req,res)=>{
+    /**
+        #swagger.tags = ['Servicios']
+        #swagger.path = '/servicios'
+        #swagger.description = 'Endpoint para editar un servicio.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/Servicio'
+            }
+        }]
+     */
     const servicio = await ServicioController.updateServicio(req.body)
     if (servicio[0] == 0){
         return res.status(404).send({
@@ -51,18 +89,18 @@ router.put('/', async(req,res)=>{
     return res.status(204).send()
 })
 
-//Rutas de la relación muchos a muchos con Paquetes
+//Rutas de la relación muchos a muchos con Paquetes  -- WIP
 
-router.get('/:cod_servicio/paquetes', async(req,res)=>{
+// router.get('/:cod_servicio/paquetes', async(req,res)=>{
 
-})
-router.get('/:cod_servicio/paquetes/:cod_paquete', async(req,res)=>{
+// })
+// router.get('/:cod_servicio/paquetes/:cod_paquete', async(req,res)=>{
 
-})
-router.post('/:cod_servicio/paquetes/', async(req,res)=>{
+// })
+// router.post('/:cod_servicio/paquetes/', async(req,res)=>{
 
-})
-router.delete('/:cod_servicio/paquetes/:cod_paquete', async(req,res)=>{
+// })
+// router.delete('/:cod_servicio/paquetes/:cod_paquete', async(req,res)=>{
 
-})
+// })
 module.exports = router

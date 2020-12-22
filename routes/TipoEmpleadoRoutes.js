@@ -4,6 +4,11 @@ const Mensajes = require ('../middlewares/Mensajes')
 const { CreateTipoEmpleadoValidation, UpdateTipoEmpleadoValidation } = require('../middlewares/Validation')
 
 router.get('/:cod_tipo_empleado', async (req, res)=>{
+    /**
+        #swagger.tags = ['Tipo Empleado']
+        #swagger.path = '/tipoEmpleados/{cod_tipo_empleado}'
+        #swagger.description = 'Endpoint para obtener un tipo de empleado'
+     */
     const cod_tipo_empleado = req.params.cod_tipo_empleado
     const tipo_empleado = await TipoEmpleadoController.getTipoEmpleado(cod_tipo_empleado)
     if(tipo_empleado){
@@ -17,6 +22,11 @@ router.get('/:cod_tipo_empleado', async (req, res)=>{
 })
 
 router.get('/' , async(req, res) =>{
+    /**
+        #swagger.tags = ['Tipo Empleado']
+        #swagger.path = '/tipoEmpleados'
+        #swagger.description = 'Endpoint para obtener tipos de empleado'
+     */
     const tipo_empleados = await TipoEmpleadoController.getTipoEmpleados()
     if(tipo_empleados.length > 0){
         return res.send({
@@ -29,6 +39,20 @@ router.get('/' , async(req, res) =>{
 })
 
 router.post('/', async(req,res)=>{
+    /**
+        #swagger.tags = ['Tipo Empleado']
+        #swagger.path = '/tipoEmpleados'
+        #swagger.description = 'Endpoint para crear un tipo de empleado.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/TipoEmpleado'
+            }
+        }]
+     */
     const {error} = CreateTipoEmpleadoValidation(req.body)
     if(error) return res.status(422).send({
         error: error.details[0].message
@@ -43,6 +67,20 @@ router.post('/', async(req,res)=>{
 })
 
 router.put('/', async (req,res)=>{
+    /**
+        #swagger.tags = ['Tipo Empleado']
+        #swagger.path = '/tipoEmpleados'
+        #swagger.description = 'Endpoint para editar un tipo de empelado.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/TipoEmpleado'
+            }
+        }]
+     */
     const {error} = UpdateTipoEmpleadoValidation(req.body)
     if(error) return res.status(422).send({
         error: error.details[0].message

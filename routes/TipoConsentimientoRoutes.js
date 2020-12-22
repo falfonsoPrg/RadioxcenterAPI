@@ -5,6 +5,11 @@ const Mensajes = require('../middlewares/Mensajes')
 const {UpdateTipoConsentimientoValidation, CreateTipoConsentimientoValidation} = require('../middlewares/Validation')
 
 router.get('/:cod_tipo_consentimiento', async (req,res)=>{
+    /**
+        #swagger.tags = ['Tipo Consentimiento']
+        #swagger.path = '/tipoConsentimientos/{cod_tipo_consentimiento}'
+        #swagger.description = 'Endpoint para obtener un tipo de consentimiento'
+     */
     const cod_tipo_consentimiento = req.params.cod_tipo_consentimiento
     const tipo_consentimiento = await TipoConsentimientoController.getTipoConsentimiento(cod_tipo_consentimiento)
     if(tipo_consentimiento){
@@ -18,6 +23,11 @@ router.get('/:cod_tipo_consentimiento', async (req,res)=>{
 })
 
 router.get('/' , async (req, res) =>{
+    /**
+        #swagger.tags = ['Tipo Consentimiento']
+        #swagger.path = '/tipoConsentimientos'
+        #swagger.description = 'Endpoint para obtener tipos de consentimiento'
+     */
     const tipo_consentimientos = await TipoConsentimientoController.getTipoConsentimientos()
     if(tipo_consentimientos.length > 0){
         return res.send({
@@ -30,6 +40,20 @@ router.get('/' , async (req, res) =>{
 })
 
 router.post('/', async (req,res)=>{
+    /**
+        #swagger.tags = ['Tipo Consentimiento']
+        #swagger.path = '/tipoConsentimientos'
+        #swagger.description = 'Endpoint para crear un tipo de consentimiento.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/TipoConsentimiento'
+            }
+        }]
+     */
     const {error} = CreateTipoConsentimientoValidation(req.body)
     if (error) return res.status(422).send({
         error: error.details[0].message
@@ -44,6 +68,20 @@ router.post('/', async (req,res)=>{
     return res.status(201).send()
 })
 router.put('/' ,async(req,res)=>{
+    /**
+        #swagger.tags = ['Tipo Consentimiento']
+        #swagger.path = '/tipoConsentimientos'
+        #swagger.description = 'Endpoint para editar un tipo de consentimiento.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/TipoConsentimiento'
+            }
+        }]
+     */
     const {error} = UpdateTipoConsentimientoValidation(req.body)
     if (error) return res.status(422).send({
         error: error.details[0].message

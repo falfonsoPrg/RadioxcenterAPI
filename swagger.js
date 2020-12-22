@@ -12,6 +12,13 @@ const endpointsFiles = [
     './routes/FormaDePagoEntidadRoutes.js',
     './routes/InformacionRXRoutes.js',
     './routes/PaqueteRoutes.js',
+    './routes/ServicioRoutes.js',
+    './routes/SexoRoutes.js',
+    './routes/TipoConsentimientoRoutes.js',
+    './routes/TipoDocumentoRoutes.js',
+    './routes/TipoEmpleadoRoutes.js',
+    './routes/TipoFacturacionRoutes.js',
+    './routes/TipoNotaCreditoRoutes.js',
 ]
 
 const port = process.env.HOST_FOR_SWAGGER || 'localhost:4000'
@@ -117,6 +124,40 @@ const doc = {
             "cod_paquete":0,
             "nombre_paquete": "",
             "precio_paquete": 0
+        },
+        EditarPaqueteServicio:{
+            "servicios_paquete": [0],
+        },
+        Servicio: {
+            "cod_servicio": 0,
+            "nombre_servicio": "",
+            "descripcion_servicio": "",
+            "precio_servicio": 0,
+            "iva_servicio": 0
+        },
+        Sexo:{
+            "cod_sexo": 0,
+            "nombre_sexo": ""
+        },
+        TipoConsentimiento:{
+            "cod_tipo_consentimiento":0,
+            "nombre_tipo_consentimiento":""
+        },
+        TipoDocumento:{
+            "cod_tipo_documento": 0,
+            "nombre_tipo_documento": "",
+        },
+        TipoEmpleado:{
+            "cod_tipo_empleado": 0,
+            "nombre_tipo_empleado": "",
+        },
+        TipoFacturacion:{
+            "cod_tipo_facturacion": 0,
+            "nombre_tipo_facturacion": "",
+        },
+        TipoNotaCredito:{
+            cod_tipo_nota_credito:0,
+            nombre_tipo_nota_credito:""
         }
     }
 }

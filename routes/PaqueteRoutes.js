@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const PaqueteController = require('../controllers/PaqueteController')
 const PaqueteServicioController = require('../controllers/PaqueteServicioController')
+const ServicioController = require('../controllers/ServicioController')
 const Mensajes = require('../middlewares/Mensajes')
 const {CreatePaqueteValidation, UpdatePaqueteValidation} = require('../middlewares/Validation')
 
@@ -110,17 +111,7 @@ router.get('/:cod_paquete/servicios', async(req,res)=>{
     }
 
 })
-router.get('/:cod_paquete/servicios/:cod_servicio', async(req,res)=>{
-    /**
-        #swagger.tags = ['Paquetes']
-        #swagger.path = '/paquetes/{cod_paquete}/servicios/{cod_servicio}'
-        #swagger.description = 'WIP - Endpoint para obtener un servicio de un paquete - WIP'
-     */
-    const bdy = {
-        cod_paquete: req.params.cod_paquete,
-        cod_servicio: req.params.cod_servicio
-    }
-})
+
 router.post('/:cod_paquete/servicios/', async(req,res)=>{
     /**
         #swagger.tags = ['Paquetes']
@@ -150,8 +141,42 @@ router.post('/:cod_paquete/servicios/', async(req,res)=>{
     }
     return res.status(201).send()
 })
-router.delete('/:cod_paquete/servicios/:cod_servicio', async(req,res)=>{
-    //Recibo 1 arreglo con los servicios que quedan finalmente req.body.servicios_paquete
+router.put('/:cod_paquete/servicios/', async(req,res)=>{
+    /**
+        #swagger.tags = ['Paquetes']
+        #swagger.path = '/paquetes/{cod_paquete}/servicios'
+        #swagger.description = 'Endpoint para editar los servicios de un paquete.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/EditarPaqueteServicio'
+            }
+        }]
+     */
+    const servicios_paquete = req.body.servicios_paquete
+    const list_paquete = await ServicioController.getServicios();
+    const error = servicios_paquete.every(element => list_paquete.find(x => x.cod_servicio == element));
+    if(!error){
+        return res.status(400).send({
+            error: Mensajes.ErrorAlActualizar
+        })
+    }
+    await PaqueteServicioController.removeAllServiciosFromPaquete(req.params.cod_paquete);
+    for (let i = 0; i < servicios_paquete.length; i++) {
+        const savedPaquete = await PaqueteServicioController.createPaqueteServicio({
+            cod_servicio: servicios_paquete[i],
+            cod_paquete: req.params.cod_paquete
+        });
+        if(savedPaquete.errors || savedPaquete.name){
+            return res.status(400).send({
+                error: Mensajes.ErrorAlActualizar
+            })
+        }
+    }
+    return res.status(204).send()
 })
 
 module.exports = router
