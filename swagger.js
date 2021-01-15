@@ -158,6 +158,11 @@ const doc = {
         TipoNotaCredito:{
             cod_tipo_nota_credito:0,
             nombre_tipo_nota_credito:""
+        },
+        Convenio:{
+            "valor_servicio": 0,
+            "fecha_inicial_convenio": "yyyy-MM-dd",
+            "fecha_final_convenio": "yyyy-MM-dd",
         }
     }
 }

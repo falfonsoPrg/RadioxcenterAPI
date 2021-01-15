@@ -566,6 +566,43 @@
         }
       }
     },
+    "/entidades/{cod_entidad}/convenios/{cod_servicio}": {
+      "put": {
+        "tags": [
+          "Entidades"
+        ],
+        "description": "Endpoint para editar un servicio de un convenio con una entidad.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Convenio"
+            }
+          },
+          {
+            "name": "cod_entidad",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "cod_servicio",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/formaDePagoEntidad/{cod_forma_de_pago_entidad}": {
       "get": {
         "tags": [
@@ -2042,6 +2079,26 @@
       },
       "xml": {
         "name": "TipoNotaCredito"
+      }
+    },
+    "Convenio": {
+      "type": "object",
+      "properties": {
+        "valor_servicio": {
+          "type": "number",
+          "example": 0
+        },
+        "fecha_inicial_convenio": {
+          "type": "string",
+          "example": "yyyy-MM-dd"
+        },
+        "fecha_final_convenio": {
+          "type": "string",
+          "example": "yyyy-MM-dd"
+        }
+      },
+      "xml": {
+        "name": "Convenio"
       }
     }
   }

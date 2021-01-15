@@ -1,5 +1,6 @@
 const {Convenio, Servicio, Entidad} = require('../database/sequelize')
 const Sequelize = require("sequelize")
+const { where } = require('sequelize')
 
 
 ConvenioController= {}
@@ -14,6 +15,19 @@ ConvenioController.getConvenio = async(cod_convenio) => {
 ConvenioController.getConvenios = async()=> {
     try {
         return await Convenio.findAll()
+    } catch (error) {
+        return error
+    }
+}
+
+ConvenioController.getConveniosPorEntidadYServicio = async(pCod_entidad, pCod_servicio)=> {
+    try {
+        return await Convenio.findOne({
+            where:{
+                cod_entidad: pCod_entidad,
+                cod_servicio: pCod_servicio
+            }
+        })
     } catch (error) {
         return error
     }

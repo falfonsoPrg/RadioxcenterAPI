@@ -11,7 +11,6 @@ router.get('/convenios', async(req,res)=>{
         #swagger.path = '/entidades/convenios'
         #swagger.description = 'Endpoint para obtener todos los convenios de todas las entidades'
      */
-    const countConvenios = await ConvenioController.getCountConvenios()
     const convenios = await EntidadController.getAllFromEntidad();
     if(convenios.length > 0) {
         return res.send({
@@ -173,6 +172,41 @@ router.put('/:cod_entidad/convenios/', async(req,res)=>{
     return res.status(204).send()
 })
 
+router.put('/:cod_entidad/convenios/:cod_servicio', async(req,res)=>{
+    /**
+        #swagger.tags = ['Entidades']
+        #swagger.path = '/entidades/{cod_entidad}/convenios/{cod_servicio}'
+        #swagger.description = 'Endpoint para editar un servicio de un convenio con una entidad.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/Convenio'
+            }
+        }]
+     */
+    
 
+    let entidad = await ConvenioController.getConveniosPorEntidadYServicio(req.params.cod_entidad, req.params.cod_servicio)
+    let entidadAux = {
+        cod_convenio: entidad.cod_convenio,
+        valor_servicio: req.body.valor_servicio,
+        fecha_inicial_convenio: req.body.fecha_inicial_convenio,
+        fecha_final_convenio: req.body.fecha_final_convenio,
+        cod_servicio: req.params.cod_servicio,
+        cod_entidad: req.params.cod_entidad
+    } 
+
+    entidad = await ConvenioController.updateConvenio(entidadAux)
+    
+    if(entidad[0]==0 || entidad.name){
+        return res.status(404).send({
+            error: Mensajes.ErrorAlActualizar
+        })
+    }
+    return res.status(204).send()
+})
 
 module.exports = router
