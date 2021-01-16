@@ -183,7 +183,7 @@ router.put('/:cod_entidad/convenios/:cod_servicio', async(req,res)=>{
             required: true,
             name: 'body',
             schema: {
-                $ref: '#/definitions/Convenio'
+                $ref: '#/definitions/ConvenioUpdate'
             }
         }]
      */

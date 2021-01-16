@@ -1,10 +1,14 @@
 const router = require('express').Router()
 const TipoPrefEntregaController = require('../controllers/TipoPrefEntregaController')
-const TipoPrefEntregaValidation = require('../controllers/TipoPrefEntregaController')
 const Mensajes = require('../middlewares/Mensajes')
 const {CreateTipoPrefEntregaValidation, UpdateTipoPrefEntregaValidation} = require('../middlewares/Validation')
 
 router.get('/:cod_tipo_pref_entrega', async(req, res)=>{
+    /**
+        #swagger.tags = ['Tipo Preferencia Entrega']
+        #swagger.path = '/tipoPrefEntrega/{cod_tipo_pref_entrega}'
+        #swagger.description = 'Endpoint para obtener un tipo de preferencia entrega'
+     */
     const cod_tipo_pref_entrega = req.params.cod_tipo_pref_entrega
     const tipo_pref_entrega = await TipoPrefEntregaController.getTipoPrefEntrega(cod_tipo_pref_entrega)
     if(tipo_pref_entrega){
@@ -18,6 +22,11 @@ router.get('/:cod_tipo_pref_entrega', async(req, res)=>{
 
 })
 router.get('/', async(req,res)=>{
+    /**
+        #swagger.tags = ['Tipo Preferencia Entrega']
+        #swagger.path = '/tipoPrefEntrega'
+        #swagger.description = 'Endpoint para obtener tipos de preferencia entrega'
+     */
     const tipo_pref_entregas = await TipoPrefEntregaController.getTipoPrefEntregas()
     if(tipo_pref_entregas.length > 0 ){
         return res.send({
@@ -29,6 +38,20 @@ router.get('/', async(req,res)=>{
     })
 })
 router.post('/', async(req,res)=>{
+    /**
+        #swagger.tags = ['Tipo Preferencia Entrega']
+        #swagger.path = '/tipoPrefEntrega'
+        #swagger.description = 'Endpoint para crear un tipo preferencia entrega.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/TipoPreferenciaEntrega'
+            }
+        }]
+     */
     const {error} = CreateTipoPrefEntregaValidation(req.body)
     if(error) return res.status(422).send({
         error: error.details[0].message
@@ -42,6 +65,20 @@ router.post('/', async(req,res)=>{
     return res.status(201).send()
 })
 router.put('/', async (req,res)=>{
+    /**
+        #swagger.tags = ['Tipo Preferencia Entrega']
+        #swagger.path = '/tipoPrefEntrega'
+        #swagger.description = 'Endpoint para editar un tipo preferencia entrega.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/TipoPreferenciaEntrega'
+            }
+        }]
+     */
     const {error} = UpdateTipoPrefEntregaValidation(req.body)
     if(error) return res.status(422).send({
         error: error.details[0].message

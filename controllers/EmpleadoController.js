@@ -4,14 +4,18 @@ const { Op } = require("sequelize");
 EmpleadoController = {}
 EmpleadoController.getEmpleado = async (cod_empleado) => {
     try {
-        return await Empleado.findByPk(cod_empleado)
+        return await Empleado.findByPk(cod_empleado,{
+            attributes: { exclude: ['contrasenia_empleado'] }
+        })
     } catch (error) {
         return error
     }
 }
 EmpleadoController.getEmpleados = async () => {
     try {
-        return await Empleado.findAll()
+        return await Empleado.findAll({
+            attributes: { exclude: ['contrasenia_empleado'] }
+        })
     } catch (error) {
         return error
     }
@@ -24,7 +28,7 @@ EmpleadoController.getEmpleadosP = async (nombres,apellidos,documento,correo,usu
     if(correo) options.push({correo_empleado: correo})
     if(usuario) options.push({usuario_empleado: usuario})
     try {
-        return await Empleado.findAll({where: {[Op.or]: options} })
+        return await Empleado.findAll({where: {[Op.or]: options},attributes:{exclude:['contrasenia_empleado']} })
     } catch (error) {
         return error
     }

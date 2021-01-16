@@ -5,7 +5,7 @@ const EmpleadoController = require('../controllers/EmpleadoController')
 const Mensajes = require('../middlewares/Mensajes')
 const {UpdateEmpleadoValidation} = require('../middlewares/Validation')
 
-router.get('/cod_empleado', async(req,res)=>{
+router.get('/:cod_empleado', async(req,res)=>{
     /**
         #swagger.tags = ['Empleados']
         #swagger.path = '/empleados/{cod_empleado}'

@@ -87,7 +87,7 @@ app.use('/api/empleados', Empleado)
 app.use('/api/informacionRX', InformacionRX)
 app.use('/api/convenios', Convenio)
 app.use('/api/paqueteServicios', PaqueteServicio)
-app.use('/api/transaccion', Transaccion)
+app.use('/api/transacciones', Transaccion)
 app.use('/api/transaccionServicios',TransaccionServicio)
 //Inicializa el servidor 
 

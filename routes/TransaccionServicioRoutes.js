@@ -4,6 +4,11 @@ const Mensajes = require('../middlewares/Mensajes')
 const {CreateTransaccionServicioValidation, UpdateTransaccionServicioValidation} = require('../middlewares/Validation')
 
 router.get('/:cod_transaccion_servicio', async(req,res)=>{
+    /**
+        #swagger.tags = ['TransaccionServicio - DEPRECATED']
+        #swagger.path = '/transaccionServicios'
+        #swagger.description = 'Endpoint para obtener una transacción servicio'
+     */
     const cod_transaccion_servicio = req.params.cod_transaccion_servicio
     const transaccionServicio = await TransaccionServicioController.getTransaccionServicio(cod_transaccion_servicio)
 
@@ -18,6 +23,11 @@ router.get('/:cod_transaccion_servicio', async(req,res)=>{
 })
 
 router.get('/', async(req,res)=>{
+    /**
+        #swagger.tags = ['TransaccionServicio - DEPRECATED']
+        #swagger.path = '/transaccionServicios'
+        #swagger.description = 'Endpoint para obtener transacciones servicio'
+     */
     const transaccionServicio = await TransaccionServicioController.getTransaccionServicios()
     if(transaccionServicio.length > 0){
         return res.send({
@@ -30,6 +40,20 @@ router.get('/', async(req,res)=>{
 })
 
 router.post('/', async(req,res)=>{
+    /**
+        #swagger.tags = ['TransaccionServicio - DEPRECATED']
+        #swagger.path = '/transaccionServicios'
+        #swagger.description = 'Endpoint para crear una transacción servicio.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/TransaccionServicio'
+            }
+        }]
+     */
     const {error} = CreateTransaccionServicioValidation(req.body)
     if(error) return res.status(422).send({
         error: error.details[0].message
@@ -46,6 +70,20 @@ router.post('/', async(req,res)=>{
 })
 
 router.put('/', async(req,res)=>{
+    /**
+        #swagger.tags = ['TransaccionServicio - DEPRECATED']
+        #swagger.path = '/transaccionServicios'
+        #swagger.description = 'Endpoint para editar una transacción servicio.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/TransaccionServicio'
+            }
+        }]
+     */
     const {error} = UpdateTransaccionServicioValidation(req.body)
     if(error) return res.status(422).send({
         error: error.details[0].message

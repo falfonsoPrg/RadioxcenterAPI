@@ -5,13 +5,17 @@ const outputFile = './swagger_output.json'
 const endpointsFiles = [
     './routes/AutorizacionRoutes.js',
     './routes/CiudadRoutes.js',
+    './routes/ConvenioRoutes.js',
     './routes/DepartamentoRoutes.js',
     './routes/DoctorRoutes.js',
     './routes/EmpleadoRoutes.js',
     './routes/EntidadRoutes.js',
+    './routes/EntidadDoctorRoutes.js',
     './routes/FormaDePagoEntidadRoutes.js',
     './routes/InformacionRXRoutes.js',
     './routes/PaqueteRoutes.js',
+    './routes/PaqueteServicioRoutes.js',
+    './routes/ProcesoRoutes.js',
     './routes/ServicioRoutes.js',
     './routes/SexoRoutes.js',
     './routes/TipoConsentimientoRoutes.js',
@@ -19,6 +23,11 @@ const endpointsFiles = [
     './routes/TipoEmpleadoRoutes.js',
     './routes/TipoFacturacionRoutes.js',
     './routes/TipoNotaCreditoRoutes.js',
+    './routes/TipoPagoRoutes.js',
+    './routes/TipoPrefEntregaRoutes.js',
+    './routes/TransaccionRoutes.js',
+    './routes/TransaccionServicioRoutes.js',
+    './routes/UsuarioRoutes.js',
 ]
 
 const port = process.env.HOST_FOR_SWAGGER || 'localhost:4000'
@@ -156,13 +165,68 @@ const doc = {
             "nombre_tipo_facturacion": "",
         },
         TipoNotaCredito:{
-            cod_tipo_nota_credito:0,
-            nombre_tipo_nota_credito:""
+            "cod_tipo_nota_credito":0,
+            "nombre_tipo_nota_credito":""
         },
-        Convenio:{
+        Convenio: {
+            "valor_servicio": 0,
+            "fecha_inicial_convenio": "yyyy-MM-dd",
+            "fecha_final_convenio":"yyyy-MM-dd",
+            "cod_entidad": 0,
+            "cod_servicio": 0
+        },
+        ConvenioUpdate:{
             "valor_servicio": 0,
             "fecha_inicial_convenio": "yyyy-MM-dd",
             "fecha_final_convenio": "yyyy-MM-dd",
+        },
+        EntidadDoctor:{
+            "cod_entidad": 0,
+            "cod_doctor": 0
+        },
+        PaqueteServicio:{
+            "cod_paquete":0,
+            "cod_servicio":0
+        },
+        Proceso:{
+            "estado_proceso": "",
+            "cod_usuario": 0
+        },
+        TipoPago:{
+            "nombre_tipo_pago": ""
+        },
+        TipoPreferenciaEntrega: {
+            "nombre_tipo_pref_entrega":""
+        },
+        Transaccion: {
+            "documento_usuario": 0,
+            "valor_transaccion": 0,
+            "fecha_transaccion": "yyyy-MM-dd",
+            "nombres_acudiente": "",
+            "apellidos_acudiente": "",
+            "documento_acudiente": 0,
+            "parentesco_acudiente": "",
+            "cod_entidad_doctor": 0
+        },
+        TransaccionServicio: {
+            "cod_transaccion": 0,
+            "cod_servicio": 0
+        },
+        Usuario: {
+            "nombres_usuario": "",
+            "apellidos_usuario": "",
+            "telefono_usuario": "",
+            "direccion_usuario": "",
+            "documento_usuario": 0,
+            "ocupacion_usuario": "",
+            "fecha_nacimiento_usuario": "yyyy-MM-dd",
+            "correo_usuario": "",
+            "genero_usuario": "",
+            "celular_usuario": "",
+            "cod_sexo": 0,
+            "cod_tipo_documento": 0,
+            "cod_ciudad": 0,
+            "cod_tipo_pref_entrega": 0
         }
     }
 }

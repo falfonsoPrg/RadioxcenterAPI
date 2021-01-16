@@ -170,6 +170,96 @@
         }
       }
     },
+    "/convenios/{cod_convenio}": {
+      "get": {
+        "tags": [
+          "Convenios"
+        ],
+        "description": "Endpoint para obtener un convenio",
+        "parameters": [
+          {
+            "name": "cod_convenio",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/convenios": {
+      "get": {
+        "tags": [
+          "Convenios"
+        ],
+        "description": "Endpoint para obtener convenios",
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Convenios"
+        ],
+        "description": "Endpoint para registrar un convenio.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Convenio"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Convenios"
+        ],
+        "description": "Endpoint para editar un convenio.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Convenio"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
     "/departamentos/{cod_departamento}": {
       "get": {
         "tags": [
@@ -579,7 +669,7 @@
             "required": true,
             "name": "body",
             "schema": {
-              "$ref": "#/definitions/Convenio"
+              "$ref": "#/definitions/ConvenioUpdate"
             }
           },
           {
@@ -599,6 +689,96 @@
           },
           "404": {
             "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/entidadDoctor/{cod_entidad_doctor}": {
+      "get": {
+        "tags": [
+          "EntidadDoctor - DEPRECATED"
+        ],
+        "description": "Endpoint para obtener una entidad doctor",
+        "parameters": [
+          {
+            "name": "cod_entidad_doctor",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/entidadDoctor": {
+      "get": {
+        "tags": [
+          "EntidadDoctor - DEPRECATED"
+        ],
+        "description": "Endpoint para obtener entidad doctores",
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "EntidadDoctor - DEPRECATED"
+        ],
+        "description": "Endpoint para crear una entidad doctor.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/EntidadDoctor"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "EntidadDoctor - DEPRECATED"
+        ],
+        "description": "Endpoint para editar una entidad doctor.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/EntidadDoctor"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }
@@ -950,6 +1130,186 @@
           },
           "400": {
             "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/paqueteServicios/{cod_paquete_servicio}": {
+      "get": {
+        "tags": [
+          "PaqueteServicios"
+        ],
+        "description": "Endpoint para obtener un paquete servicio",
+        "parameters": [
+          {
+            "name": "cod_paquete_servicio",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/paqueteServicios": {
+      "get": {
+        "tags": [
+          "PaqueteServicios"
+        ],
+        "description": "Endpoint para obtener paquete servicios",
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "PaqueteServicios"
+        ],
+        "description": "Endpoint para crear un paquete servicio.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/PaqueteServicio"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "PaqueteServicios"
+        ],
+        "description": "Endpoint para editar un paquete servicio.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/PaqueteServicio"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/procesos/{cod_proceso}": {
+      "get": {
+        "tags": [
+          "Procesos-DEPRECATED"
+        ],
+        "description": "Endpoint para obtener un proceso",
+        "parameters": [
+          {
+            "name": "cod_proceso",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/procesos": {
+      "get": {
+        "tags": [
+          "Procesos-DEPRECATED"
+        ],
+        "description": "Endpoint para obtener procesos",
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Procesos-DEPRECATED"
+        ],
+        "description": "Endpoint para crear un proceso.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Proceso"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Procesos-DEPRECATED"
+        ],
+        "description": "Endpoint para editar un proceso.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Proceso"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }
@@ -1576,6 +1936,433 @@
           }
         }
       }
+    },
+    "/tipoPagos/{cod_tipo_pago}": {
+      "get": {
+        "tags": [
+          "Tipo Pago"
+        ],
+        "description": "Endpoint para obtener un tipo de pago",
+        "parameters": [
+          {
+            "name": "cod_tipo_pago",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/tipoPagos": {
+      "get": {
+        "tags": [
+          "Tipo Pago"
+        ],
+        "description": "Endpoint para obtener tipos de pago",
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tipo Pago"
+        ],
+        "description": "Endpoint para crear un tipo de pago.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/TipoPago"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Tipo Pago"
+        ],
+        "description": "Endpoint para editar un tipo de pago.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/TipoPago"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/tipoPrefEntrega/{cod_tipo_pref_entrega}": {
+      "get": {
+        "tags": [
+          "Tipo Preferencia Entrega"
+        ],
+        "description": "Endpoint para obtener un tipo de preferencia entrega",
+        "parameters": [
+          {
+            "name": "cod_tipo_pref_entrega",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/tipoPrefEntrega": {
+      "get": {
+        "tags": [
+          "Tipo Preferencia Entrega"
+        ],
+        "description": "Endpoint para obtener tipos de preferencia entrega",
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tipo Preferencia Entrega"
+        ],
+        "description": "Endpoint para crear un tipo preferencia entrega.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/TipoPreferenciaEntrega"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Tipo Preferencia Entrega"
+        ],
+        "description": "Endpoint para editar un tipo preferencia entrega.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/TipoPreferenciaEntrega"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/transacciones/{cod_transaccion}": {
+      "get": {
+        "tags": [
+          "Transacciones"
+        ],
+        "description": "Endpoint para obtener una transacción",
+        "parameters": [
+          {
+            "name": "cod_transaccion",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/transacciones": {
+      "get": {
+        "tags": [
+          "Transacciones"
+        ],
+        "description": "Endpoint para obtener transacciones",
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Transacciones"
+        ],
+        "description": "Endpoint para crear una transacción.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Transaccion"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Transacciones"
+        ],
+        "description": "Endpoint para editar una transacción.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Transaccion"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/transaccionServicios": {
+      "get": {
+        "tags": [
+          "TransaccionServicio - DEPRECATED"
+        ],
+        "description": "Endpoint para obtener transacciones servicio",
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "TransaccionServicio - DEPRECATED"
+        ],
+        "description": "Endpoint para crear una transacción servicio.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/TransaccionServicio"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "TransaccionServicio - DEPRECATED"
+        ],
+        "description": "Endpoint para editar una transacción servicio.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/TransaccionServicio"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/usuarios/{cod_usuario}": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "description": "Endpoint para obtener un usuario",
+        "parameters": [
+          {
+            "name": "cod_usuario",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/usuarios": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "description": "Endpoint para obtener usuarios",
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Usuarios"
+        ],
+        "description": "Endpoint para registrar un usuario.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Usuarios"
+        ],
+        "description": "Endpoint para editar un usuario.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -2095,10 +2882,230 @@
         "fecha_final_convenio": {
           "type": "string",
           "example": "yyyy-MM-dd"
+        },
+        "cod_entidad": {
+          "type": "number",
+          "example": 0
+        },
+        "cod_servicio": {
+          "type": "number",
+          "example": 0
         }
       },
       "xml": {
         "name": "Convenio"
+      }
+    },
+    "ConvenioUpdate": {
+      "type": "object",
+      "properties": {
+        "valor_servicio": {
+          "type": "number",
+          "example": 0
+        },
+        "fecha_inicial_convenio": {
+          "type": "string",
+          "example": "yyyy-MM-dd"
+        },
+        "fecha_final_convenio": {
+          "type": "string",
+          "example": "yyyy-MM-dd"
+        }
+      },
+      "xml": {
+        "name": "ConvenioUpdate"
+      }
+    },
+    "EntidadDoctor": {
+      "type": "object",
+      "properties": {
+        "cod_entidad": {
+          "type": "number",
+          "example": 0
+        },
+        "cod_doctor": {
+          "type": "number",
+          "example": 0
+        }
+      },
+      "xml": {
+        "name": "EntidadDoctor"
+      }
+    },
+    "PaqueteServicio": {
+      "type": "object",
+      "properties": {
+        "cod_paquete": {
+          "type": "number",
+          "example": 0
+        },
+        "cod_servicio": {
+          "type": "number",
+          "example": 0
+        }
+      },
+      "xml": {
+        "name": "PaqueteServicio"
+      }
+    },
+    "Proceso": {
+      "type": "object",
+      "properties": {
+        "estado_proceso": {
+          "type": "string",
+          "example": ""
+        },
+        "cod_usuario": {
+          "type": "number",
+          "example": 0
+        }
+      },
+      "xml": {
+        "name": "Proceso"
+      }
+    },
+    "TipoPago": {
+      "type": "object",
+      "properties": {
+        "nombre_tipo_pago": {
+          "type": "string",
+          "example": ""
+        }
+      },
+      "xml": {
+        "name": "TipoPago"
+      }
+    },
+    "TipoPreferenciaEntrega": {
+      "type": "object",
+      "properties": {
+        "nombre_tipo_pref_entrega": {
+          "type": "string",
+          "example": ""
+        }
+      },
+      "xml": {
+        "name": "TipoPreferenciaEntrega"
+      }
+    },
+    "Transaccion": {
+      "type": "object",
+      "properties": {
+        "documento_usuario": {
+          "type": "number",
+          "example": 0
+        },
+        "valor_transaccion": {
+          "type": "number",
+          "example": 0
+        },
+        "fecha_transaccion": {
+          "type": "string",
+          "example": "yyyy-MM-dd"
+        },
+        "nombres_acudiente": {
+          "type": "string",
+          "example": ""
+        },
+        "apellidos_acudiente": {
+          "type": "string",
+          "example": ""
+        },
+        "documento_acudiente": {
+          "type": "number",
+          "example": 0
+        },
+        "parentesco_acudiente": {
+          "type": "string",
+          "example": ""
+        },
+        "cod_entidad_doctor": {
+          "type": "number",
+          "example": 0
+        }
+      },
+      "xml": {
+        "name": "Transaccion"
+      }
+    },
+    "TransaccionServicio": {
+      "type": "object",
+      "properties": {
+        "cod_transaccion": {
+          "type": "number",
+          "example": 0
+        },
+        "cod_servicio": {
+          "type": "number",
+          "example": 0
+        }
+      },
+      "xml": {
+        "name": "TransaccionServicio"
+      }
+    },
+    "Usuario": {
+      "type": "object",
+      "properties": {
+        "nombres_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "apellidos_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "telefono_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "direccion_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "documento_usuario": {
+          "type": "number",
+          "example": 0
+        },
+        "ocupacion_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "fecha_nacimiento_usuario": {
+          "type": "string",
+          "example": "yyyy-MM-dd"
+        },
+        "correo_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "genero_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "celular_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "cod_sexo": {
+          "type": "number",
+          "example": 0
+        },
+        "cod_tipo_documento": {
+          "type": "number",
+          "example": 0
+        },
+        "cod_ciudad": {
+          "type": "number",
+          "example": 0
+        },
+        "cod_tipo_pref_entrega": {
+          "type": "number",
+          "example": 0
+        }
+      },
+      "xml": {
+        "name": "Usuario"
       }
     }
   }

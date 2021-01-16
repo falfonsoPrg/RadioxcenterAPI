@@ -56,7 +56,7 @@ router.post('/', async(req,res)=>{
         error: error.details[0].message
     })
     const tipo_nota_credito = await TipoNotaCreditoController.createTipoNotaCredito(req.body)
-    if(tipo_nota_credito.errors || tipo_nota_credito.name == "SequelizeDatabaseError"){
+    if(tipo_nota_credito.errors || tipo_nota_credito.name){
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })        
