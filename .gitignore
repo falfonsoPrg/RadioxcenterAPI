@@ -104,4 +104,4 @@ dist
 .tern-port
 
 #Files in the server
-/files
+#/files
