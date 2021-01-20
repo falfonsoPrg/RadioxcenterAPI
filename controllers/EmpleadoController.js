@@ -28,7 +28,7 @@ EmpleadoController.getEmpleadosP = async (nombres,apellidos,documento,correo,usu
     if(correo) options.push({correo_empleado: correo})
     if(usuario) options.push({usuario_empleado: usuario})
     try {
-        return await Empleado.findAll({where: {[Op.or]: options},attributes:{exclude:['contrasenia_empleado']} })
+        return await Empleado.findAll({where: {[Op.or]: options}})
     } catch (error) {
         return error
     }
