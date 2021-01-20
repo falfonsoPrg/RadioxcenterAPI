@@ -87,10 +87,10 @@ router.post('/',upload.single('signature'), async(req,res)=> {
         }]
      */
     console.log("We are testing")
-    const {error} = CreateConsentimientoValidation(req.body)
-    if(error) return res.status(422).send({
-        error: error.details[0].message
-    })
+    // const {error} = CreateConsentimientoValidation(req.body)
+    // if(error) return res.status(422).send({
+    //     error: error.details[0].message
+    // })
     console.log("Before save file")
     console.log(req.body)
     if(!req.file) return res.status(422).send({
