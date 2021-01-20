@@ -14,7 +14,8 @@
   ],
   "securityDefinitions": {},
   "consumes": [
-    "application/json"
+    "application/json",
+    "multipart/form-data"
   ],
   "produces": [
     "application/json"
@@ -166,6 +167,104 @@
           },
           "422": {
             "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/consentimientos/download": {
+      "get": {
+        "tags": [
+          "Consentimientos"
+        ],
+        "description": "Endpoint para obtener consentimientos",
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/consentimientos/{cod_consentimiento}": {
+      "get": {
+        "tags": [
+          "Consentimientos"
+        ],
+        "description": "Endpoint para obtener un consentimiento",
+        "parameters": [
+          {
+            "name": "cod_consentimiento",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/consentimientos": {
+      "get": {
+        "tags": [
+          "Consentimientos"
+        ],
+        "description": "Endpoint para obtener consentimientos",
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Consentimientos"
+        ],
+        "description": "Endpoint para crear un consentimiento.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Consentimiento"
+            }
+          },
+          {
+            "description": "description of file",
+            "in": "formData",
+            "name": "signature",
+            "type": "file",
+            "required": true
+          }
+        ],
+        "responses": {}
+      },
+      "put": {
+        "tags": [
+          "Consentimientos"
+        ],
+        "description": "Endpoint para editar un consentimiento.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Consentimiento"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -3106,6 +3205,26 @@
       },
       "xml": {
         "name": "Usuario"
+      }
+    },
+    "Consentimiento": {
+      "type": "object",
+      "properties": {
+        "cod_transaccion": {
+          "type": "number",
+          "example": 0
+        },
+        "ubicacion_consentimiento": {
+          "type": "string",
+          "example": ""
+        },
+        "cod_tipo_consentimiento": {
+          "type": "number",
+          "example": 0
+        }
+      },
+      "xml": {
+        "name": "Consentimiento"
       }
     }
   }

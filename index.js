@@ -58,6 +58,7 @@ const Convenio = require('./routes/ConvenioRoutes')
 const PaqueteServicio = require('./routes/PaqueteServicioRoutes')
 const Transaccion = require('./routes/TransaccionRoutes')
 const TransaccionServicio = require('./routes/TransaccionServicioRoutes')
+const ConsentimientoRoutes = require('./routes/ConsentimientoRoutes')
 //Middleware
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -89,6 +90,7 @@ app.use('/api/convenios', Convenio)
 app.use('/api/paqueteServicios', PaqueteServicio)
 app.use('/api/transacciones', Transaccion)
 app.use('/api/transaccionServicios',TransaccionServicio)
+app.use('/api/consentimientos',ConsentimientoRoutes)
 //Inicializa el servidor 
 
 app.listen(port,() => {

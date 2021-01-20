@@ -5,6 +5,7 @@ const outputFile = './swagger_output.json'
 const endpointsFiles = [
     './routes/AutorizacionRoutes.js',
     './routes/CiudadRoutes.js',
+    './routes/ConsentimientoRoutes.js',
     './routes/ConvenioRoutes.js',
     './routes/DepartamentoRoutes.js',
     './routes/DoctorRoutes.js',
@@ -41,7 +42,7 @@ const doc = {
     host: port,
     basePath: "/api",
     schemes: ['http','https'],
-    consumes: ['application/json'],
+    consumes: ['application/json','multipart/form-data'],
     produces: ['application/json'],
     definitions: {
         CreateEmpleado:{
@@ -227,6 +228,11 @@ const doc = {
             "cod_tipo_documento": 0,
             "cod_ciudad": 0,
             "cod_tipo_pref_entrega": 0
+        },
+        Consentimiento: {
+            "cod_transaccion": 0,
+            "ubicacion_consentimiento": "",
+            "cod_tipo_consentimiento": 0
         }
     }
 }

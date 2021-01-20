@@ -12,7 +12,7 @@ const fs = require('fs');
 
 PDFMaker = {}
 
-PDFMaker.createPDF1 = () => {
+PDFMaker.createPDF1 = (imagePath) => {
   var docDefinition = {
     content: [
       {
@@ -53,7 +53,7 @@ PDFMaker.createPDF1 = () => {
             ul: [
               "Prestador de salud responsable",
               "Nombre: Juanito Gonzales",
-              [{text:"Firma:"},{image: './fonts/Images/signature.png',width: 130,height: 60,}],
+              [{text:"Firma:"},{image: imagePath,width: 130,height: 60,}],
               "CC: #########",
             ]
           }
