@@ -241,7 +241,17 @@
             "required": true
           }
         ],
-        "responses": {}
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
       },
       "put": {
         "tags": [
@@ -1439,7 +1449,20 @@
           "Servicios"
         ],
         "description": "Endpoint para obtener servicios",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "excludeServicios",
+            "in": "query"
+          },
+          {
+            "name": "excludeConvenios",
+            "in": "query"
+          },
+          {
+            "name": "excludePaquetes",
+            "in": "query"
+          }
+        ],
         "responses": {
           "404": {
             "description": "Not Found"

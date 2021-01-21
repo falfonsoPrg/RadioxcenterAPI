@@ -26,7 +26,11 @@ router.get('/' , async(req,res)=>{
         #swagger.path = '/servicios'
         #swagger.description = 'Endpoint para obtener servicios'
      */
-    const servicios = await ServicioController.getServicios()
+    const excludeServicios = req.query.excludeServicios ? req.query.excludeServicios : 'false'
+    const excludeConvenios = req.query.excludeConvenios ? req.query.excludeConvenios : 'false'
+    const excludePaquetes = req.query.excludePaquetes ? req.query.excludePaquetes : 'false'
+
+    const servicios = await ServicioController.getServicios(excludeServicios,excludeConvenios,excludePaquetes)
     if(servicios.length > 0){
         return res.send({
             respuesta: servicios

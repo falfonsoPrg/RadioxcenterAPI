@@ -1,21 +1,10 @@
 const router = require('express').Router()
-const multer = require('multer');
 const pdfMaker = require("../services/PDFMaker")
 const ConsentimientoController = require('../controllers/ConsentimientoController')
 const Mensajes = require('../middlewares/Mensajes')
 const {CreateConsentimientoValidation} = require('../middlewares/Validation')
-var path = require("path");
+const path = require("path");
 const fs = require('fs');
-
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-    cb(null, path.join(__dirname,'..','files','uploadImages'))
-    },
-    filename: function (req, file, cb) {
-      cb(null, path.parse(file.originalname).name + '-' + Date.now() + path.extname(file.originalname));
-    }
-  })
-var upload = multer({ storage: storage })
 
 router.get('/download', (req,res) => {
     /**
@@ -64,7 +53,7 @@ router.get('/' , async(req,res)=>{
     })
 })
 
-router.post('/',upload.single('signature'), async(req,res)=> {
+router.post('/', async(req,res)=> {
     /**
         #swagger.tags = ['Consentimientos']
         #swagger.path = '/consentimientos'
@@ -86,27 +75,31 @@ router.post('/',upload.single('signature'), async(req,res)=> {
             required: true,
         }]
      */
-    console.log("We are testing")
-    // const {error} = CreateConsentimientoValidation(req.body)
-    // if(error) return res.status(422).send({
-    //     error: error.details[0].message
-    // })
-    console.log("Before save file")
-    console.log(req.body)
-    if(!req.file) return res.status(422).send({
-        error: Mensajes.ErrorAlGuardarArchivo
+    const {error} = CreateConsentimientoValidation(req.body)
+    if(error) return res.status(422).send({
+        error: error.details[0].message
     })
-    console.log(req.file)
-    pdfMaker.createPDF1(req.file.path)
-    return res.send({resultado: req.file})
+    try {
+        var matches = req.body.signature.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/)
+        if (matches.length !== 3) {
+            return res.status(400).send({
+                error: Mensajes.ErrorAlGuardarArchivo
+            })
+        }
+        pdfMaker.createPDF1(req.body.signature)
+    } catch (error) {
+        console.log(error)
+        return res.status(400).send({
+            error: Mensajes.ErrorAlGuardarArchivo
+        })
+    }
     // const consentimiento = await ConsentimientoController.createConsentimiento(req.body)
     // if(consentimiento.errors || consentimiento.name){
     //     return res.status(400).send({
     //         error: Mensajes.ErrorAlGuardar
     //     })
-        
     // }
-    // return res.status(201).send()
+    return res.status(201).send()
 })
 router.put('/', async(req,res)=>{
     /**

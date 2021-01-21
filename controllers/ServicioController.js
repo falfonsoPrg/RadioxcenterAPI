@@ -1,5 +1,5 @@
 const {Servicio} = require('../database/sequelize')
-
+const { Op } = require("sequelize");
 ServicioController = {}
 
 ServicioController.getServicio = async (cod_servicio) =>{
@@ -12,6 +12,24 @@ ServicioController.getServicio = async (cod_servicio) =>{
 ServicioController.getServicios = async() =>{
     try{
         return await Servicio.findAll()
+    } catch (error){
+        return error
+    }
+}
+ServicioController.getServicios = async(excludeServicios, excludeConvenios, excludePaquetes) =>{
+    var whereParams = {
+        nombre_servicio:{
+            [Op.and]: [
+                {[Op.notLike]: excludeServicios=='true' ? 'SE-%':''},
+                {[Op.notLike]: excludeConvenios=='true' ? 'CO-%':''},
+                {[Op.notLike]: excludePaquetes=='true' ? 'PA-%':''},
+            ]
+        }
+    }
+    try{
+        return await Servicio.findAll({
+            where: whereParams
+        })
     } catch (error){
         return error
     }

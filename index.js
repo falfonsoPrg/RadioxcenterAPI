@@ -1,5 +1,4 @@
 const express = require('express')
-const bodyParser = require('body-parser')
 const dotenv = require('dotenv')
 const cors = require('cors');
 const app = express()
@@ -9,7 +8,7 @@ dotenv.config();
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger_output.json')
 
-app.use('/local', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 require("./database/sequelize")
 
@@ -30,7 +29,7 @@ app.use(cors(
 
 //Fisrt route
 app.get('/',(req,res)=>{
-    res.send('Esta es la API Para Radioxenter')
+    res.send("Esta es la API Para Radioxenter, para ver la especificación en Swagger haga click <a href='/swagger'>aqui</a>")
 })
 //Import routes
 const DepartamentoRoutes = require('./routes/DepartamentoRoutes')
@@ -60,8 +59,8 @@ const Transaccion = require('./routes/TransaccionRoutes')
 const TransaccionServicio = require('./routes/TransaccionServicioRoutes')
 const ConsentimientoRoutes = require('./routes/ConsentimientoRoutes')
 //Middleware
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 app.use(express.static('public'));
 
 //Route Middleware

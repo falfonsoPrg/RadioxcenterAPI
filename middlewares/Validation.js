@@ -462,10 +462,7 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
 
 module.exports.CreateConsentimientoValidation = CreateConsentimientoValidation = (data) => {
     const schema = Joi.object({
-        cod_transaccion: Joi.number().required(),
-        ubicacion_consentimiento: Joi.string().required(),
-        cod_tipo_consentimiento: Joi.number().required(),
-        signature: Joi.string(),
+        signature: Joi.string().required(),
     })
     return schema.validate(data)
 }

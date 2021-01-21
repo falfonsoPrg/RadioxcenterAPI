@@ -1,4 +1,4 @@
-const { Ciudad } = require('../database/sequelize')
+const { Ciudad, Departamento } = require('../database/sequelize')
 
 CiudadController = {}
 CiudadController.getCiudad = async (cod_ciudad) => {
@@ -10,7 +10,9 @@ CiudadController.getCiudad = async (cod_ciudad) => {
 }
 CiudadController.getCiudades = async () => {
     try {
-        return await Ciudad.findAll()
+        return await Ciudad.findAll({
+            include:Departamento
+        })
     } catch (error) {
         return error
     }
