@@ -50,6 +50,10 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        tutor: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
         celular_usuario: {
             type: DataTypes.STRING,
             allowNull: true

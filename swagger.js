@@ -223,6 +223,7 @@ const doc = {
             "fecha_nacimiento_usuario": "yyyy-MM-dd",
             "correo_usuario": "",
             "genero_usuario": "",
+            "tutor":false,
             "celular_usuario": "",
             "cod_sexo": 0,
             "cod_tipo_documento": 0,
