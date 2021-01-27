@@ -13,19 +13,19 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 require("./database/sequelize")
 
 //Cors configuration
-// const config = {
-//     application: {
-//         cors: {
-//             server: [{
-//                 origin: "*",
-//                 credentials: true
-//             }]
-//         }
-//     }
-// }
-// app.use(cors(
-//     config.application.cors.server
-// ));
+const config = {
+    application: {
+        cors: {
+            server: [{
+                origin: "*",
+                credentials: true
+            }]
+        }
+    }
+}
+app.use(cors(
+    config.application.cors.server
+));
 
 //Fisrt route
 app.get('/',(req,res)=>{
