@@ -1423,6 +1423,66 @@
         }
       }
     },
+    "/procesos/crearUsuario": {
+      "post": {
+        "tags": [
+          "Procesos"
+        ],
+        "description": "Endpoint para crear un proceso a un usuario.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/procesos/agregarTutor": {
+      "post": {
+        "tags": [
+          "Procesos"
+        ],
+        "description": "Endpoint para agregar un tutor a un proceso de un usuario usuario.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Tutor"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/procesos/agregarTransaccion": {
+      "post": {
+        "tags": [
+          "Procesos"
+        ],
+        "description": "Endpoint para agregar una transaccion a un proceso de un usuario usuario.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/TransaccionProceso"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
     "/servicios/{cod_servicio}": {
       "get": {
         "tags": [
@@ -3150,6 +3210,58 @@
         "name": "Transaccion"
       }
     },
+    "TransaccionProceso": {
+      "type": "object",
+      "properties": {
+        "documento_usuario": {
+          "type": "number",
+          "example": 0
+        },
+        "valor_transaccion": {
+          "type": "number",
+          "example": 0
+        },
+        "fecha_transaccion": {
+          "type": "string",
+          "example": "yyyy-MM-dd"
+        },
+        "cod_entidad_doctor": {
+          "type": "number",
+          "example": 0
+        },
+        "servicios": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "cod_servicio": {
+                "type": "number",
+                "example": 0
+              },
+              "nombre_servicio": {
+                "type": "string",
+                "example": ""
+              },
+              "descripcion_servicio": {
+                "type": "string",
+                "example": ""
+              },
+              "precio_servicio": {
+                "type": "number",
+                "example": 0
+              },
+              "iva_servicio": {
+                "type": "number",
+                "example": 0
+              }
+            }
+          }
+        }
+      },
+      "xml": {
+        "name": "TransaccionProceso"
+      }
+    },
     "TransaccionServicio": {
       "type": "object",
       "properties": {
@@ -3205,6 +3317,10 @@
           "type": "string",
           "example": ""
         },
+        "tutor": {
+          "type": "boolean",
+          "example": false
+        },
         "celular_usuario": {
           "type": "string",
           "example": ""
@@ -3248,6 +3364,34 @@
       },
       "xml": {
         "name": "Consentimiento"
+      }
+    },
+    "Tutor": {
+      "type": "object",
+      "properties": {
+        "nombres_tutor": {
+          "type": "string",
+          "example": ""
+        },
+        "apellidos_tutor": {
+          "type": "string",
+          "example": ""
+        },
+        "document_tutor": {
+          "type": "number",
+          "example": 0
+        },
+        "parentesco_tutor": {
+          "type": "string",
+          "example": ""
+        },
+        "cod_tipo_documento": {
+          "type": "number",
+          "example": 0
+        }
+      },
+      "xml": {
+        "name": "Tutor"
       }
     }
   }
