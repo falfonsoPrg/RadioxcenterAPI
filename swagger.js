@@ -209,19 +209,6 @@ const doc = {
             "parentesco_acudiente": "",
             "cod_entidad_doctor": 0
         },
-        TransaccionProceso: {
-            "documento_usuario": 0,
-            "valor_transaccion": 0,
-            "fecha_transaccion": "yyyy-MM-dd",
-            "cod_entidad_doctor": 0,
-            "servicios":[{
-                "cod_servicio": 0,
-				"nombre_servicio": "",
-				"descripcion_servicio": "",
-				"precio_servicio": 0,
-				"iva_servicio": 0
-            }]
-        },
         TransaccionServicio: {
             "cod_transaccion": 0,
             "cod_servicio": 0
@@ -247,13 +234,6 @@ const doc = {
             "cod_transaccion": 0,
             "ubicacion_consentimiento": "",
             "cod_tipo_consentimiento": 0
-        },
-        Tutor:{
-            "nombres_tutor": "",
-            "apellidos_tutor": "",
-            "document_tutor": 0,
-            "parentesco_tutor": "",
-            "cod_tipo_documento": 0
         }
     }
 }
