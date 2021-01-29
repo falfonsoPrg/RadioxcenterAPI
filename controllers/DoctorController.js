@@ -11,9 +11,9 @@ DoctorController.getDoctor = async(cod_doctor)=>{
 }
 DoctorController.getDoctores = async()=>{
     try {
-        return await Doctor.findAll()
+        return await Doctor.findAll({include:{all:true}})
     } catch (error){
-        return nerror
+        return error
     }
 }
 DoctorController.createDoctor = async(pDoctor) =>{

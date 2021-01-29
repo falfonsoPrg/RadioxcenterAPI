@@ -12,7 +12,7 @@ EntidadDoctorController.getEntidadDoctor = async(cod_entidad_doctor) =>{
 }
 EntidadDoctorController.getEntidadDoctores = async() =>{
     try {
-        return await Entidad_doctor.findAll()
+        return await Entidad_doctor.findAll({include:{all:true}})
     } catch (error) {
         return error
     }
