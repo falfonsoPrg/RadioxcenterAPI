@@ -254,7 +254,12 @@ const doc = {
             "document_tutor": 0,
             "parentesco_tutor": "",
             "cod_tipo_documento": 0
+        },
+        ConsentimientoProceso:{
+            "documento_usuario":"",
+            "signature":"data:image/png;base64,"
         }
+
     }
 }
 

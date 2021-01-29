@@ -72,6 +72,7 @@ PDFMaker.createPDF1 = (imagePath) => {
     console.log(err)
   });
   pdfDoc.end();
+  return "/files/pdf/consentimiento_juanito.pdf"
 }
 
 PDFMaker.createPDF2 = () => {

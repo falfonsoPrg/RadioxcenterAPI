@@ -36,6 +36,7 @@ class Procesos {
                 cod_tipo_documento: -1
             },
             transaccion:{},
+            consentimiento: {},
             procesosGenerales:{
                 pendientes: ["Registro","Tutor","Transacción","Consentimiento","En procesos","Resultados entregados"],
                 completados: [],
@@ -66,6 +67,9 @@ class Procesos {
         if(indexUsuario != -1){
             this.procesos[indexUsuario].transaccion = transaccion
             this.procesos[indexUsuario].transaccion.tutor = this.procesos[indexUsuario].tutor
+            this.procesos[indexUsuario].transaccion.nombres_acudiente = this.procesos[indexUsuario].tutor.nombres_tutor
+            this.procesos[indexUsuario].transaccion.apellidos_acudiente = this.procesos[indexUsuario].tutor.apellidos_tutor
+            this.procesos[indexUsuario].transaccion.documento_acudiente = this.procesos[indexUsuario].tutor.document_tutor
 
             this.procesos[indexUsuario].transaccion.servicios.forEach(servicio => {
                 this.procesos[indexUsuario].procesos.push(
@@ -84,8 +88,23 @@ class Procesos {
         return false
     }
 
+    setConsentimiento(pConsentimiento,documento_usuario){
+        var indexUsuario = this.getIndexUsuario(documento_usuario)
+        if(indexUsuario != -1){
+            this.procesos[indexUsuario].consentimiento = pConsentimiento;
+            this.validar(documento_usuario)
+            return true
+        }
+        return false
+    }
+
     getIndexUsuario(pCodUsuario){
         return this.procesos.findIndex(usuario => usuario.documento_usuario == pCodUsuario);
+    }
+    getUsuario(pCodUsuario){
+        const index = this.procesos.findIndex(usuario => usuario.documento_usuario == pCodUsuario);
+        if(index != 1) return this.procesos[index]
+        return -1
     }
     validar(pCodUsuario){
         this.io.emit("data",this.procesos)

@@ -1,9 +1,13 @@
 const router = require('express').Router()
 const ProcesoController = require('../controllers/ProcesoController')
+const UsuarioController = require('../controllers/UsuarioController')
+const TransaccionController = require('../controllers/TransaccionController')
+const TransaccionServicioController = require('../controllers/TransaccionServicioController')
 const Mensajes = require('../middlewares/Mensajes')
 const {CreateProcesoValidation, UpdateProcesoValidation} = require('../middlewares/Validation')
 const Singleton = require('../services/ProcesosSingleton')
 const singleton = new Singleton().getInstance()
+const pdfMaker = require("../services/PDFMaker")
 router.get('/:cod_proceso', async(req,res)=>{
     /**
         #swagger.tags = ['Procesos-DEPRECATED']
@@ -54,8 +58,11 @@ router.post('/crearUsuario', async(req,res)=>{
             }
         }]
      */
-    singleton.setNewUsuario(req.body)
-    res.send("Ok")
+    const rta = singleton.setNewUsuario(req.body)
+    if(rta) return res.status(202).send()
+    return res.status(500).send({
+        error: Mensajes.ErrorAlGuardar
+    })
 })
 router.post('/agregarTutor', async(req,res)=>{
     /**
@@ -74,8 +81,11 @@ router.post('/agregarTutor', async(req,res)=>{
      */
     var doc = req.body.documento_usuario
     delete  req.body.documento_usuario
-    singleton.setTutor(req.body, doc)
-    res.send("Ok")
+    const rta = singleton.setTutor(req.body, doc)
+    if(rta) return res.status(202).send()
+    return res.status(500).send({
+        error: Mensajes.ErrorAlGuardar
+    })
 })
 router.post('/agregarTransaccion', async(req,res)=>{
     /**
@@ -92,8 +102,81 @@ router.post('/agregarTransaccion', async(req,res)=>{
             }
         }]
      */
-    singleton.setTransaccion(req.body,req.body.documento_usuario)
-    res.send("Ok")
+    const rta = singleton.setTransaccion(req.body,req.body.documento_usuario)
+    if(rta) return res.status(202).send()
+    return res.status(500).send({
+        error: Mensajes.ErrorAlGuardar
+    })
+})
+router.post('/crearConsentimiento', async(req,res)=>{
+    /**
+        #swagger.tags = ['Procesos']
+        #swagger.path = '/procesos/crearConsentimiento'
+        #swagger.description = 'Endpoint para agregar un consentimiento a un proceso de un usuario usuario.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/ConsentimientoProceso'
+            }
+        }]
+     */
+    
+    const usuarioSingleton = singleton.getUsuario(req.body.documento_usuario)
+    if(usuarioSingleton == -1){
+        return res.status(400).send({
+            error: Mensajes.ErrorAlGuardar
+        })
+    }
+    //Agregar el usuario a la bd
+    const usuario = await UsuarioController.createUsuario( usuarioSingleton.data )
+    if(usuario.errors || usuario.name){
+        return res.status(400).send({
+            error: Mensajes.ErrorAlGuardar
+        })
+    }
+
+    //Agregar una transacción
+    const transaccion = await TransaccionController.createTransaccion(usuarioSingleton.transaccion)
+    if(transaccion.errors || transaccion.name){
+        return res.status(400).send({
+            error: Mensajes.ErrorAlGuardar
+        })
+    }
+
+    //Agregar los servicios a la transaccion
+    const tmpServicios = usuarioSingleton.transaccion.servicios
+    tmpServicios.forEach( async (serv) => {
+        await TransaccionServicioController.createTransaccionServicio({
+            cod_servicio: serv.cod_servicio,
+            cod_transaccion: transaccion.cod_transaccion
+        })
+    });
+
+    //Agregar el consentimiento
+    // const {error} = CreateConsentimientoValidation(req.body)
+    // if(error) return res.status(422).send({
+    //     error: error.details[0].message
+    // })
+    try {
+        var matches = req.body.signature.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/)
+        if (matches.length !== 3) {
+            return res.status(400).send({
+                error: Mensajes.ErrorAlGuardarArchivo
+            })
+        }
+        const ruta = pdfMaker.createPDF1(req.body.signature)
+        //Si no es convenio entonces creo la factura, otherwise
+        singleton.setConsentimiento(ruta, req.body.documento_usuario)
+    } catch (error) {
+        console.log(error)
+        return res.status(400).send({
+            error: Mensajes.ErrorAlGuardarArchivo
+        })
+    }
+    
 })
 router.post('/', async(req,res)=>{
     /**
