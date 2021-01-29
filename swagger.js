@@ -214,6 +214,8 @@ const doc = {
             "valor_transaccion": 0,
             "fecha_transaccion": "yyyy-MM-dd",
             "cod_entidad_doctor": 0,
+            "tipo_compra":"[Convenio,Servicio,Paquete]",
+            "motivo":"",
             "servicios":[{
                 "cod_servicio": 0,
 				"nombre_servicio": "",
@@ -251,7 +253,7 @@ const doc = {
         Tutor:{
             "nombres_tutor": "",
             "apellidos_tutor": "",
-            "document_tutor": 0,
+            "documento_tutor": 0,
             "parentesco_tutor": "",
             "cod_tipo_documento": 0
         },
