@@ -5,7 +5,9 @@
 class Procesos {
 
     constructor() {
-        this.procesos = [];
+        this.fileName = "./services/procesos.json";
+        this.fs = require("fs")
+        this.procesos = this.cargarProcesos();
         const httpServer = require("http").createServer();
         this.io = require("socket.io")(httpServer, {
             cors:{
@@ -20,11 +22,27 @@ class Procesos {
         httpServer.listen(port, ()=> console.log("Sockets on port " + port))
     }
 
+    cargarProcesos(){
+        try {
+            const data = this.fs.readFileSync(this.fileName)
+            return JSON.parse(data)
+        } catch (error) {
+            return [];
+        }
+
+    }
+
     get count() {
         return this.procesos.length;
     }
 
     setNewUsuario(data){
+        var pendi = []
+        if(data.tutor == true){
+            pendi = ["Tutor","Transacción","Consentimiento","En procesos","Resultados entregados"]
+        }else{
+            pendi = ["Transacción","Consentimiento","En procesos","Resultados entregados"]
+        }
         var newUsuario = {
             documento_usuario: data.documento_usuario,
             data:  data,
@@ -38,9 +56,9 @@ class Procesos {
             transaccion:{},
             consentimiento: {},
             procesosGenerales:{
-                pendientes: ["Registro","Tutor","Transacción","Consentimiento","En procesos","Resultados entregados"],
+                pendientes: pendi,
                 completados: [],
-                actual: ""
+                actual: "Registro"
             },
             procesos: []
         }
@@ -107,11 +125,17 @@ class Procesos {
         return -1
     }
     validar(pCodUsuario){
+        var indexUsuario = this.getIndexUsuario(pCodUsuario)
+        if(indexUsuario != -1){
+            //Cambiar el proceso general
+            this.procesos[indexUsuario].procesosGenerales.completados.push(this.procesos[indexUsuario].procesosGenerales.actual)
+            this.procesos[indexUsuario].procesosGenerales.actual = this.procesos[indexUsuario].procesosGenerales.pendientes.shift();
+        }
         this.io.emit("data",this.procesos)
-        // var indexUsuario = getIndexUsuario(pCodUsuario)
-        // if (indexUsuario != -1) {
-        //     const a = -1
-        // }
+        this.fs.writeFile(this.fileName, JSON.stringify(this.procesos), (err) => {
+            if(err) console.log(err)
+        })
+        
     }
     log(message) {
         const timestamp = new Date().toISOString();

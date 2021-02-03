@@ -3274,6 +3274,14 @@
           "type": "number",
           "example": 0
         },
+        "tipo_compra": {
+          "type": "string",
+          "example": "[Convenio,Servicio,Paquete]"
+        },
+        "motivo": {
+          "type": "string",
+          "example": ""
+        },
         "servicios": {
           "type": "array",
           "items": {
@@ -3422,7 +3430,7 @@
           "type": "string",
           "example": ""
         },
-        "document_tutor": {
+        "documento_tutor": {
           "type": "number",
           "example": 0
         },

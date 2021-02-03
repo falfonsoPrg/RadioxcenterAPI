@@ -32,7 +32,7 @@ module.exports = (sequelize) => {
         },
         ocupacion_usuario: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         fecha_nacimiento_usuario: {
             type: DataTypes.DATEONLY,
@@ -41,14 +41,14 @@ module.exports = (sequelize) => {
         correo_usuario: {
             type: DataTypes.STRING,
             unique: true,
-            allowNull: false,
+            allowNull: true,
             validate: {
-                isEmail: true
+                isEmail: false
             }
         },
         genero_usuario: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         tutor: {
             type: DataTypes.BOOLEAN,
@@ -59,16 +59,20 @@ module.exports = (sequelize) => {
             allowNull: true
         },
         cod_sexo: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: true
         },
         cod_tipo_documento: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: true
         },
         cod_ciudad: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: true
         },
         cod_tipo_pref_entrega: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: true
         }
 
     },{
