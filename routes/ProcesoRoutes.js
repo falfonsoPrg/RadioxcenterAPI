@@ -1,4 +1,4 @@
-const router = require('express').Router()
+﻿const router = require('express').Router()
 const ProcesoController = require('../controllers/ProcesoController')
 const UsuarioController = require('../controllers/UsuarioController')
 const TransaccionController = require('../controllers/TransaccionController')
@@ -123,29 +123,32 @@ router.post('/crearConsentimiento', async(req,res)=>{
             }
         }]
      */
-    
+console.log("Buscando usuario en memoria")
     const usuarioSingleton = singleton.getUsuario(req.body.documento_usuario)
-    if(usuarioSingleton == -1){
+    if(usuarioSingleton == undefined){
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })
     }
+console.log("Usuario encontrando en memoria")
     //Agregar el usuario a la bd
     const usuario = await UsuarioController.createUsuario( usuarioSingleton.data )
     if(usuario.errors || usuario.name){
+console.log(usuario)
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })
     }
-
+console.log("Usuario agregado en BD")
     //Agregar una transacción
     const transaccion = await TransaccionController.createTransaccion(usuarioSingleton.transaccion)
     if(transaccion.errors || transaccion.name){
+console.log(transaccion)
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })
     }
-
+console.log("Transaccion agregado en BD")
     //Agregar los servicios a la transaccion
     const tmpServicios = usuarioSingleton.transaccion.servicios
     tmpServicios.forEach( async (serv) => {
@@ -154,7 +157,7 @@ router.post('/crearConsentimiento', async(req,res)=>{
             cod_transaccion: transaccion.cod_transaccion
         })
     });
-
+console.log("Servicios agregado en BD")
     //Agregar el consentimiento
     // const {error} = CreateConsentimientoValidation(req.body)
     // if(error) return res.status(422).send({
@@ -170,6 +173,7 @@ router.post('/crearConsentimiento', async(req,res)=>{
         const ruta = pdfMaker.createPDF1(req.body.signature)
         //Si no es convenio entonces creo la factura, otherwise
         singleton.setConsentimiento(ruta, req.body.documento_usuario)
+console.log("Consentimiento finalizado")
     } catch (error) {
         console.log(error)
         return res.status(400).send({
