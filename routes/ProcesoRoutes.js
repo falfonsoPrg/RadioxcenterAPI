@@ -130,14 +130,16 @@ router.post('/crearConsentimiento', async(req,res)=>{
             error: Mensajes.ErrorAlGuardar
         })
     }
+    console.log("Usuario obtenido de la memoria")
     //Agregar el usuario a la bd
     const usuario = await UsuarioController.createUsuario( usuarioSingleton.data )
+    console.log(usuario)
     if(usuario.errors || usuario.name){
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })
     }
-
+    console.log("Usuario agregado en la BD")
     //Agregar una transacción
     const transaccion = await TransaccionController.createTransaccion(usuarioSingleton.transaccion)
     if(transaccion.errors || transaccion.name){
@@ -145,7 +147,7 @@ router.post('/crearConsentimiento', async(req,res)=>{
             error: Mensajes.ErrorAlGuardar
         })
     }
-
+    console.log("Transaccion agregado en la BD")
     //Agregar los servicios a la transaccion
     const tmpServicios = usuarioSingleton.transaccion.servicios
     tmpServicios.forEach( async (serv) => {
@@ -154,7 +156,7 @@ router.post('/crearConsentimiento', async(req,res)=>{
             cod_transaccion: transaccion.cod_transaccion
         })
     });
-
+    console.log("Servicios agregados en la BD")
     //Agregar el consentimiento
     // const {error} = CreateConsentimientoValidation(req.body)
     // if(error) return res.status(422).send({
@@ -167,9 +169,12 @@ router.post('/crearConsentimiento', async(req,res)=>{
                 error: Mensajes.ErrorAlGuardarArchivo
             })
         }
-        const ruta = pdfMaker.createPDF1(req.body.signature)
+        const ruta = pdfMaker.createPDF1(req.body.signature,usuarioSingleton.data)
+        console.log("PDF Creado")
         //Si no es convenio entonces creo la factura, otherwise
         singleton.setConsentimiento(ruta, req.body.documento_usuario)
+        console.log("Consentimiento actualizado en Singleton")
+        res.send();
     } catch (error) {
         console.log(error)
         return res.status(400).send({
