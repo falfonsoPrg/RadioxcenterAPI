@@ -41,10 +41,7 @@ module.exports = (sequelize) => {
         correo_usuario: {
             type: DataTypes.STRING,
             unique: true,
-            allowNull: true,
-            validate: {
-                isEmail: false
-            }
+            allowNull: true
         },
         genero_usuario: {
             type: DataTypes.STRING,

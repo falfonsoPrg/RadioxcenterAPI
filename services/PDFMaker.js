@@ -12,7 +12,7 @@ const fs = require('fs');
 
 PDFMaker = {}
 
-PDFMaker.createPDF1 = (imagePath) => {
+PDFMaker.createPDF1 = (imagePath,data) => {
   var docDefinition = {
     content: [
       {
@@ -21,20 +21,25 @@ PDFMaker.createPDF1 = (imagePath) => {
         height: 60,
       },
       {
-        text: 'Consentimiento informado para la toma de Radiografia y/o estudios diagnósticos en el marco de la Pandemia de covid-19',
+        text: 'Consentimiento informado para toma de Radiografías y/o estudios diagnósticos en el marco de la Pandemia de covid-19',
         alignment: 'center',
         margin: [0, 20],
         style: 'bold'
       },
       {
-        text: ['Yo, ', {text: "Fabian Ricardo Alfonso Tirado",decoration: 'underline'}," por voluntad propia y debidamente informado (a) consiento tomar la radiografía dígital y/o estudios diagnósticos de emergencia/urgencia a ser realizado durante la pandemia de COVID-19"],
+        text: ['Yo, ', {text: data.nombres_usuario +" "+ data.apellidos_usuario ,decoration: 'underline'}," por voluntad propia y debidamente informado (a) consiento tomar la radiografía dígital y/o estudios diagnósticos de emergencia/urgencia a ser realizado durante la pandemia de COVID-19."],
         alignment: 'justify'
       },
       {
+        text: "Entiendo que el virus COVID-19 tiene un periodo de incubación durante el cual sus portadores pueden estar asintomáticos, siendo altamente contagioso. Entiendo que al momento, debido a las limitaciones para la realización de las pruebas virales, es imposible determinar quién es portador del virus y quién no.",
+        alignment: "justify"
+      },
+      {
         ul: [
-          "Yo acepto Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet elementum turpis, vitae mattis nunc sollicitudin ut. Nullam feugiat odio et nulla ultrices, eu mattis augue aliquam. Integer interdum at leo in dapibus. Quisque posuere gravida justo eu aliquet. Sed sodales ligula sit amet est porta, eu luctus ligula aliquet. Nunc nisl odio, pellentesque nec accumsan dictum, malesuada sed ligula. Aliquam erat volutpat. Mauris volutpat nisi sed libero sollicitudin fermentum sed in arcu. Duis non tincidunt ipsum. In tincidunt, sem et pulvinar dignissim, justo tellus bibendum dui, quis placerat nibh mauris facilisis massa. Sed vulputate augue sem, eget placerat felis venenatis vitae. Morbi ornare semper feugiat. Suspendisse non accumsan leo. Etiam velit dui, vulputate at augue ut, molestie aliquam justo.",
-          "Yo acepto Donec tincidunt augue id justo consectetur eleifend. Phasellus ut vehicula erat, id feugiat libero. Suspendisse felis sem, auctor sit amet metus ut, tristique eleifend mi. Donec interdum nibh orci, in pretium turpis viverra sed. Suspendisse potenti. Sed odio lacus, pharetra quis velit id, sollicitudin condimentum nisi. Aenean vel nulla imperdiet, consequat nisl eget, molestie nunc. Aenean congue metus sapien, posuere vestibulum massa pretium nec.",
-          "Yo acepto Integer blandit pretium tristique. Sed sit amet tempor sem. Proin nulla nibh, sollicitudin eu eros accumsan, imperdiet hendrerit quam. Vivamus vehicula placerat dolor, vitae facilisis massa imperdiet vel. Vivamus sit amet consectetur felis, at porta eros. In in velit vehicula, aliquet elit rhoncus, viverra lectus. Nulla leo tortor, ullamcorper nec tincidunt at, molestie sed leo. Integer felis lacus, elementum tincidunt quam vitae, viverra fermentum nulla.",
+          {text: ["Entiendo que, a pesar del seguimiento de normas de bioseguridad en el Centro de Radiología Oral y Maxilofacial", {text: "RADIOXENTER,",decoration: 'underline',style: 'bold'}, " debido a la presencia de otros pacientes, a las características del virus y de la toma de la Radiografías y/o estudios diagnósticos, existe un riesgo elevado de contraer el virus por el solo hecho de permanecer en el Centro de Radiología. ____ (Iniciales)"]},
+          {text: ["He sido informado que las directrices de todas las instituciones de salud internacionales, ante la situación de pandemia actual, recomiendan suspender la realización de tratamiento odontológico electivo. La toma de la Radiografías y/o estudios diagnósticos se limita al procedimiento de ayudas diagnósticas para el tratamiento de dolor, infección y condiciones que interfiera de forma significativa las funciones bucales o que puedan generar agudización de una de estas condiciones, lo anterior es decisión y responsabilidad posterior a la previa evaluación por el profesional odontólogo remitente. ___ (Iniciales)"]},
+          {text: ["Confirmo que solicito la toma de la Radiografías y/o estudios diagnósticos por una condición clínica que está enmarcado en los criterios anteriormente expuestos. ____ (Iniciales)"]},
+          {text: ["Confirmo que no presento, ni he presentado en los últimos 14 días, ninguno de los síntomas de COVID-19 de la siguiente lista: Fiebre (Temperatura mayor o igual a 38°C), dificultad respiratoria, tos seca, secreción nasal, dolor de garganta, sensación de cansancio o malestar general, diarrea u otras molestias digestivas, perdida del gusto o del olfato. ____ (Iniciales)"]},
         ],
         margin: [0,20,20,0],
       },

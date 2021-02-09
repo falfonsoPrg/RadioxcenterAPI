@@ -14,12 +14,24 @@ class Procesos {
                 origin: "*"
             }
         });
-        this.io.on('connection', (socket) => {
-            console.log("Client connected")
-            this.io.emit("data",this.procesos)
-        })
         const port = process.env.SOCKET_PORT || 4001
         httpServer.listen(port, ()=> console.log("Sockets on port " + port))
+        this.io.on('connection', (socket) => {
+            console.log("Client connected")
+
+            this.io.emit("data",this.procesos)
+
+            socket.on('finalizar_proceso', (data) => {
+                this.completarProceso(data.documento_usuario, data.cod_servicio)
+            })
+            socket.on('entrega_resultado', (data) => {
+                this.entregarProceso(data.documento_usuario, data.cod_servicio)
+            })
+            socket.on('eliminar_usuarios', (data) => {
+                this.deleteUsuario(data.documento_usuario)
+            })
+        })
+        
     }
 
     cargarProcesos(){
@@ -64,7 +76,8 @@ class Procesos {
         }
         if(!this.procesos.find( x => x.documento_usuario == data.documento_usuario)){
             this.procesos.push(newUsuario)
-            this.validar(data.documento_usuario)
+            this.avanzarProcesoGeneral(data.documento_usuario)
+            this.validar()
             return true
         }
         return false
@@ -74,7 +87,8 @@ class Procesos {
         var indexUsuario = this.getIndexUsuario(documento_usuario)
         if(indexUsuario != -1){
             this.procesos[indexUsuario].tutor = tutor
-            this.validar(documento_usuario)
+            this.avanzarProcesoGeneral(documento_usuario)
+            this.validar()
             return true
         }
         return false
@@ -100,7 +114,8 @@ class Procesos {
                     }
                 )
             });
-            this.validar(documento_usuario)
+            this.avanzarProcesoGeneral(documento_usuario)
+            this.validar()
             return true
         }
         return false
@@ -110,32 +125,76 @@ class Procesos {
         var indexUsuario = this.getIndexUsuario(documento_usuario)
         if(indexUsuario != -1){
             this.procesos[indexUsuario].consentimiento = pConsentimiento;
-            this.validar(documento_usuario)
+            this.avanzarProcesoGeneral(documento_usuario)
+            this.validar()
             return true
         }
         return false
     }
-
+    completarProceso(documento_usuario, cod_servicio){
+        const index = this.getIndexUsuario(documento_usuario)
+        if(index != -1){
+            this.procesos[index].procesos.forEach(p => {
+                if(p.cod_servicio == cod_servicio){
+                    p.completado = true
+                }
+            })
+            const completados = this.procesos[index].procesos.every(p => p.completado == true)
+            if(completados) this.avanzarProcesoGeneral(documento_usuario)
+            this.validar()
+            return true
+        }
+        return false
+    }
+    entregarProceso(documento_usuario, cod_servicio){
+        const index = this.getIndexUsuario(documento_usuario)
+        if(index != -1){
+            this.procesos[index].procesos.forEach(p => {
+                if(p.cod_servicio == cod_servicio){
+                    p.entregado = true
+                }
+            })
+            const entregados = this.procesos[index].procesos.every(p => p.entregado == true)
+            if(entregados) this.avanzarProcesoGeneral(documento_usuario)
+            this.validar()
+            return true
+        }
+        return false
+    }
+    deleteUsuario(pCodUsuario){
+        const index = this.getIndexUsuario(pCodUsuario)
+        if(index != -1){
+            this.procesos.splice(index,1)
+            this.validar()
+            return true
+        }
+        return false
+    }
     getIndexUsuario(pCodUsuario){
         return this.procesos.findIndex(usuario => usuario.documento_usuario == pCodUsuario);
     }
     getUsuario(pCodUsuario){
-        const index = this.procesos.findIndex(usuario => usuario.documento_usuario == pCodUsuario);
-        if(index != 1) return this.procesos[index]
+        const index = this.getIndexUsuario(pCodUsuario)
+        if(index != -1) return this.procesos[index]
         return -1
     }
-    validar(pCodUsuario){
+    avanzarProcesoGeneral(pCodUsuario){
         var indexUsuario = this.getIndexUsuario(pCodUsuario)
         if(indexUsuario != -1){
             //Cambiar el proceso general
             this.procesos[indexUsuario].procesosGenerales.completados.push(this.procesos[indexUsuario].procesosGenerales.actual)
             this.procesos[indexUsuario].procesosGenerales.actual = this.procesos[indexUsuario].procesosGenerales.pendientes.shift();
+
+            if(!this.procesos[indexUsuario].procesosGenerales.actual){
+                this.deleteUsuario(pCodUsuario)
+            }
         }
+    }
+    validar(){
         this.io.emit("data",this.procesos)
         this.fs.writeFile(this.fileName, JSON.stringify(this.procesos), (err) => {
             if(err) console.log(err)
         })
-        
     }
     log(message) {
         const timestamp = new Date().toISOString();
