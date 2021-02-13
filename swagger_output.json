@@ -1436,7 +1436,7 @@
             "required": true,
             "name": "body",
             "schema": {
-              "$ref": "#/definitions/Usuario"
+              "$ref": "#/definitions/UsuarioProceso"
             }
           }
         ],
@@ -3370,10 +3370,6 @@
           "type": "string",
           "example": ""
         },
-        "tutor": {
-          "type": "boolean",
-          "example": false
-        },
         "celular_usuario": {
           "type": "string",
           "example": ""
@@ -3461,6 +3457,78 @@
       },
       "xml": {
         "name": "ConsentimientoProceso"
+      }
+    },
+    "UsuarioProceso": {
+      "type": "object",
+      "properties": {
+        "nombres_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "apellidos_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "telefono_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "direccion_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "documento_usuario": {
+          "type": "number",
+          "example": 0
+        },
+        "ocupacion_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "fecha_nacimiento_usuario": {
+          "type": "string",
+          "example": "yyyy-MM-dd"
+        },
+        "correo_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "genero_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "tutor": {
+          "type": "boolean",
+          "example": false
+        },
+        "esNuevo": {
+          "type": "boolean",
+          "example": false
+        },
+        "celular_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "cod_sexo": {
+          "type": "number",
+          "example": 0
+        },
+        "cod_tipo_documento": {
+          "type": "number",
+          "example": 0
+        },
+        "cod_ciudad": {
+          "type": "number",
+          "example": 0
+        },
+        "cod_tipo_pref_entrega": {
+          "type": "number",
+          "example": 0
+        }
+      },
+      "xml": {
+        "name": "UsuarioProceso"
       }
     }
   }

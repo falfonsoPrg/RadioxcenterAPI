@@ -12,7 +12,7 @@ const fs = require('fs');
 
 PDFMaker = {}
 
-PDFMaker.createPDF1 = (imagePath,data) => {
+PDFMaker.crearConsentimientoCovid = (imagePath,data) => {
   var docDefinition = {
     content: [
       {
@@ -36,10 +36,14 @@ PDFMaker.createPDF1 = (imagePath,data) => {
       },
       {
         ul: [
-          {text: ["Entiendo que, a pesar del seguimiento de normas de bioseguridad en el Centro de Radiología Oral y Maxilofacial", {text: "RADIOXENTER,",decoration: 'underline',style: 'bold'}, " debido a la presencia de otros pacientes, a las características del virus y de la toma de la Radiografías y/o estudios diagnósticos, existe un riesgo elevado de contraer el virus por el solo hecho de permanecer en el Centro de Radiología. ____ (Iniciales)"]},
-          {text: ["He sido informado que las directrices de todas las instituciones de salud internacionales, ante la situación de pandemia actual, recomiendan suspender la realización de tratamiento odontológico electivo. La toma de la Radiografías y/o estudios diagnósticos se limita al procedimiento de ayudas diagnósticas para el tratamiento de dolor, infección y condiciones que interfiera de forma significativa las funciones bucales o que puedan generar agudización de una de estas condiciones, lo anterior es decisión y responsabilidad posterior a la previa evaluación por el profesional odontólogo remitente. ___ (Iniciales)"]},
-          {text: ["Confirmo que solicito la toma de la Radiografías y/o estudios diagnósticos por una condición clínica que está enmarcado en los criterios anteriormente expuestos. ____ (Iniciales)"]},
-          {text: ["Confirmo que no presento, ni he presentado en los últimos 14 días, ninguno de los síntomas de COVID-19 de la siguiente lista: Fiebre (Temperatura mayor o igual a 38°C), dificultad respiratoria, tos seca, secreción nasal, dolor de garganta, sensación de cansancio o malestar general, diarrea u otras molestias digestivas, perdida del gusto o del olfato. ____ (Iniciales)"]},
+          {text: ["Entiendo que, a pesar del seguimiento de normas de bioseguridad en el Centro de Radiología Oral y Maxilofacial ", {text: "RADIOXENTER,",decoration: 'underline',style: 'bold'}, " debido a la presencia de otros pacientes, a las características del virus y de la toma de la Radiografías y/o estudios diagnósticos, existe un riesgo elevado de contraer el virus por el solo hecho de permanecer en el Centro de Radiología. ____ (Iniciales)"],alignment: "justify"},
+          {text: ["He sido informado que las directrices de todas las instituciones de salud internacionales, ante la situación de pandemia actual, recomiendan suspender la realización de tratamiento odontológico electivo. La toma de la Radiografías y/o estudios diagnósticos se limita al procedimiento de ayudas diagnósticas para el tratamiento de dolor, infección y condiciones que interfiera de forma significativa las funciones bucales o que puedan generar agudización de una de estas condiciones, lo anterior es decisión y responsabilidad posterior a la previa evaluación por el profesional odontólogo remitente. ___ (Iniciales)"],alignment: "justify"},
+          {text: ["Confirmo que solicito la toma de la Radiografías y/o estudios diagnósticos por una condición clínica que está enmarcado en los criterios anteriormente expuestos. ____ (Iniciales)"],alignment: "justify"},
+          {text: ["Confirmo que no presento, ni he presentado en los últimos 14 días, ninguno de los síntomas de COVID-19 de la siguiente lista: Fiebre (Temperatura mayor o igual a 38°C), dificultad respiratoria, tos seca, secreción nasal, dolor de garganta, sensación de cansancio o malestar general, diarrea u otras molestias digestivas, perdida del gusto o del olfato. ____ (Iniciales)"],alignment: "justify"},
+          {text: ["Declaro que no he estado en contacto con alguna persona con confirmación de COVID-19 o con cuadro respiratorio agudo en los últimos 14 días. ____(Iniciales)"],alignment: "justify"},
+          {text: ["Ha presentado la enfermedad del COVID-19? __SI__ __NO__. En caso de haber presentado la enfermedad ¿sigue usted en cuarentena? __SI__ __NO___(Iniciales)"],alignment: "justify"},
+          {text: ["Entiendo que organismos internacionales de salud recomiendan el distanciamiento social de mínimo 1.8 metros, lo cual es imposible durante la toma de las Radiografías y/o estudios diagnósticos. ____ (Iniciales)"],alignment: "justify"},
+          {text: ["Toma de temperatura __________________"],alignment: "justify"},
         ],
         margin: [0,20,20,0],
       },
@@ -49,35 +53,118 @@ PDFMaker.createPDF1 = (imagePath,data) => {
         columns: [
           {
             ul: [
-              [{text:"Nombre: ",style:"bold"},{text:"Pepito perez"}],
-              [{text:"Firma:"}, {image: './fonts/Images/signature.png',width: 130,height: 60,}],
-              "CC: #########",
+              [{text:"Nombre: ",style:"bold"},{text: data.nombres_usuario +" "+ data.apellidos_usuario}],
+              [{text:data.tipoDocumento,style:"bold"},{text: data.documento_usuario}],
+              [{text:"Firma:",style:"bold"}, {image: imagePath,width: 130,height: 60,}],
             ]
           },
           {
             ul: [
               "Prestador de salud responsable",
-              "Nombre: Juanito Gonzales",
-              [{text:"Firma:"},{image: imagePath,width: 130,height: 60,}],
-              "CC: #########",
+              [{text:"Firma:"},{image: './fonts/Images/signature.png',width: 130,height: 60,}],
             ]
           }
         ]
       }
     ],
+    defaultStyle: {
+      fontSize: 10,
+    },
     styles:{
       bold:{
         bold: true
       }
     }
   };
+  var savePath = "./files/pdf/"
+  var today = new Date()
+  var timestamp = today.getDate()+""+today.getMonth()+""+today.getFullYear()+""+today.getHours()+""+today.getMinutes()
+  var filename = data.documento_usuario + "_" + timestamp + ".pdf"
   var pdfDoc = printer.createPdfKitDocument(docDefinition);
-  pdfDoc.pipe(fs.createWriteStream('./files/pdf/consentimiento_juanito.pdf'))
+  pdfDoc.pipe(fs.createWriteStream(savePath+filename))
   .on('error', (err) => {
     console.log(err)
   });
   pdfDoc.end();
-  return "/files/pdf/consentimiento_juanito.pdf"
+  return savePath+filename
+}
+
+PDFMaker.crearConsentimientoCovidTutor = (imagePath,data,tutor) => {
+  var docDefinition = {
+    content: [
+      {
+        image: './fonts/Images/header_logo.png',
+        width: 130,
+        height: 60,
+      },
+      {
+        text: 'Consentimiento informado para toma de Radiografías y/o estudios diagnósticos en el marco de la Pandemia de covid-19',
+        alignment: 'center',
+        margin: [0, 20],
+        style: 'bold'
+      },
+      {
+        text: ['Yo, ', {text: tutor.nombres_tutor +" "+ tutor.apellidos_tutor ,decoration: 'underline'}," identificado tal como aparece abajo, tutor legal de ", {text: data.nombres_usuario + " " + data.apellidos_usuario, decoration: 'underline'}, ", por voluntad propia y debidamente informado(a) consiento que a mi representado se le tomen las radiografía Radiografías y/o estudios diagnósticos de emergencia/urgencia a ser realizado durante la Pandemia de COVID-19."],
+        alignment: 'justify',
+        margin: [0, 10]
+      },
+      {
+        text: "Entiendo que el virus COVID-19 tiene un periodo de incubación durante el cual sus portadores pueden estar asintomáticos, siendo altamente contagioso. Entiendo que al momento, debido a las limitaciones para la realización de las pruebas virales, es imposible determinar quién es portador del virus y quién no.",
+        alignment: "justify"
+      },
+      {
+        ul: [
+          {text: ["Entiendo que, a pesar del seguimiento de normas de bioseguridad en el Centro de Radiología Oral y Maxilofacial ", {text: "RADIOXENTER,",decoration: 'underline',style: 'bold'}, " debido a la presencia de otros pacientes, a las características del virus y de la toma de la Radiografías y/o estudios diagnósticos, existe un riesgo elevado de contraer el virus por el solo hecho de permanecer en el Centro de Radiología. ____ (Iniciales)"],alignment: "justify"},
+          {text: ["He sido informado que las directrices de todas las instituciones de salud internacionales, ante la situación de pandemia actual, recomiendan suspender la realización de tratamiento odontológico electivo. La toma de la Radiografías y/o estudios diagnósticos se limita al procedimiento de ayudas diagnósticas para el tratamiento de dolor, infección y condiciones que interfiera de forma significativa las funciones bucales o que puedan generar agudización de una de estas condiciones, lo anterior es decisión y responsabilidad posterior a la previa evaluación por el profesional odontólogo remitente. ___ (Iniciales)"],alignment: "justify"},
+          {text: ["Confirmo que solicito la toma de la Radiografías y/o estudios diagnósticos por una condición clínica que está enmarcado en los criterios anteriormente expuestos. ____ (Iniciales)"],alignment: "justify"},
+          {text: ["Confirmo que no presento, ni he presentado en los últimos 14 días, ninguno de los síntomas de COVID-19 de la siguiente lista: Fiebre (Temperatura mayor o igual a 38°C), dificultad respiratoria, tos seca, secreción nasal, dolor de garganta, sensación de cansancio o malestar general, diarrea u otras molestias digestivas, perdida del gusto o del olfato. ____ (Iniciales)"],alignment: "justify"},
+          {text: ["Declaro que no he estado en contacto con alguna persona con confirmación de COVID-19 o con cuadro respiratorio agudo en los últimos 14 días. ____(Iniciales)"],alignment: "justify"},
+          {text: ["Ha presentado la enfermedad del COVID-19? __SI__ __NO__. En caso de haber presentado la enfermedad ¿sigue usted en cuarentena? __SI__ __NO___(Iniciales)"],alignment: "justify"},
+          {text: ["Entiendo que organismos internacionales de salud recomiendan el distanciamiento social de mínimo 1.8 metros, lo cual es imposible durante la toma de las Radiografías y/o estudios diagnósticos. ____ (Iniciales)"],alignment: "justify"},
+          {text: ["Toma de temperatura __________________"],alignment: "justify"},
+        ],
+        margin: [0,20,20,0],
+      },
+      {
+        margin: [0,50,50,0],
+        alignment: 'justify',
+        columns: [
+          {
+            ul: [
+              [{text:"Nombre: ",style:"bold"},{text: tutor.nombres_tutor +" "+ tutor.apellidos_tutor}],
+              [{text:tutor.tipoDocumento,style:"bold"},{text: tutor.documento_tutor}],
+              [{text:"Firma:",style:"bold"}, {image: imagePath,width: 130,height: 60,}],
+            ]
+          },
+          {
+            ul: [
+              "Prestador de salud responsable",
+              [{text:"Firma:"},{image: './fonts/Images/signature.png',width: 130,height: 60,}],
+            ]
+          }
+        ]
+      }
+    ],
+    defaultStyle: {
+      fontSize: 10,
+    },
+    styles:{
+      bold:{
+        bold: true
+      }
+    }
+  };
+  var savePath = "./files/pdf/"
+  var today = new Date()
+  var timestamp = today.getDate()+""+today.getMonth()+""+today.getFullYear()+""+today.getHours()+""+today.getMinutes()
+  var filename = data.documento_usuario + "_" + timestamp + ".pdf"
+  var pdfDoc = printer.createPdfKitDocument(docDefinition);
+  pdfDoc.pipe(fs.createWriteStream(savePath+filename))
+  .on('error', (err) => {
+    console.log(err)
+  });
+  pdfDoc.end();
+  return savePath+filename
 }
 
 PDFMaker.createPDF2 = () => {

@@ -101,7 +101,8 @@ class Procesos {
             this.procesos[indexUsuario].transaccion.tutor = this.procesos[indexUsuario].tutor
             this.procesos[indexUsuario].transaccion.nombres_acudiente = this.procesos[indexUsuario].tutor.nombres_tutor
             this.procesos[indexUsuario].transaccion.apellidos_acudiente = this.procesos[indexUsuario].tutor.apellidos_tutor
-            this.procesos[indexUsuario].transaccion.documento_acudiente = this.procesos[indexUsuario].tutor.document_tutor
+            this.procesos[indexUsuario].transaccion.documento_acudiente = this.procesos[indexUsuario].tutor.documento_tutor
+            this.procesos[indexUsuario].transaccion.parentesco_acudiente = this.procesos[indexUsuario].tutor.parentesco_tutor
 
             this.procesos[indexUsuario].transaccion.servicios.forEach(servicio => {
                 this.procesos[indexUsuario].procesos.push(
@@ -192,9 +193,9 @@ class Procesos {
     }
     validar(){
         this.io.emit("data",this.procesos)
-        this.fs.writeFile(this.fileName, JSON.stringify(this.procesos), (err) => {
-            if(err) console.log(err)
-        })
+        // this.fs.writeFile(this.fileName, JSON.stringify(this.procesos), (err) => {
+        //     if(err) console.log(err)
+        // })
     }
     log(message) {
         const timestamp = new Date().toISOString();

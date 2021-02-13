@@ -238,7 +238,6 @@ const doc = {
             "fecha_nacimiento_usuario": "yyyy-MM-dd",
             "correo_usuario": "",
             "genero_usuario": "",
-            "tutor":false,
             "celular_usuario": "",
             "cod_sexo": 0,
             "cod_tipo_documento": 0,
@@ -260,7 +259,25 @@ const doc = {
         ConsentimientoProceso:{
             "documento_usuario":"",
             "signature":"data:image/png;base64,"
-        }
+        },
+        UsuarioProceso:{
+        "nombres_usuario": "",
+        "apellidos_usuario": "",
+        "telefono_usuario": "",
+        "direccion_usuario": "",
+        "documento_usuario": 0,
+        "ocupacion_usuario": "",
+        "fecha_nacimiento_usuario": "yyyy-MM-dd",
+        "correo_usuario": "",
+        "genero_usuario": "",
+        "tutor":false,
+        "esNuevo":false,
+        "celular_usuario": "",
+        "cod_sexo": 0,
+        "cod_tipo_documento": 0,
+        "cod_ciudad": 0,
+        "cod_tipo_pref_entrega": 0
+    }
 
     }
 }
