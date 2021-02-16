@@ -55,6 +55,7 @@ class Procesos {
         }else{
             pendi = ["Transacción","Consentimiento","En procesos","Resultados entregados"]
         }
+        if(data.correo_usuario == "") data.correo_usuario = null
         var newUsuario = {
             documento_usuario: data.documento_usuario,
             data:  data,
@@ -193,9 +194,9 @@ class Procesos {
     }
     validar(){
         this.io.emit("data",this.procesos)
-        // this.fs.writeFile(this.fileName, JSON.stringify(this.procesos), (err) => {
-        //     if(err) console.log(err)
-        // })
+        this.fs.writeFile(this.fileName, JSON.stringify(this.procesos), (err) => {
+            if(err) console.log(err)
+        })
     }
     log(message) {
         const timestamp = new Date().toISOString();
