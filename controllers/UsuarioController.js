@@ -1,10 +1,22 @@
-const { Usuario } = require ('../database/sequelize')
+const { Usuario, Tipo_documento } = require ('../database/sequelize')
 
 UsuarioController = {}
 
 UsuarioController.getUsuario = async(cod_usuario) => {
     try { 
         return await Usuario.findByPk(cod_usuario)
+    } catch (error){
+        return error
+    }
+}
+UsuarioController.getUsuarioPorDocumento = async(pDocumento_usuario) => {
+    try { 
+        return await Usuario.findAll({
+            where: {
+                documento_usuario: pDocumento_usuario
+            },
+            include: Tipo_documento
+        })
     } catch (error){
         return error
     }

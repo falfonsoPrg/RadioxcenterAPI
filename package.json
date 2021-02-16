@@ -7,7 +7,7 @@
     "start": "node swagger.js",
     "test": "nodemon index.js",
     "dev": "nodemon index.js",
-    "swagger": "nodemon swagger.js --ignore swagger_output.json"
+    "swagger": "nodemon swagger.js --ignore swagger_output.json --ignore /services/procesos.json"
   },
   "repository": {
     "type": "git",

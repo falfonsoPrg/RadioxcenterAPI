@@ -55,6 +55,7 @@ class Procesos {
         }else{
             pendi = ["Transacción","Consentimiento","En procesos","Resultados entregados"]
         }
+        if(data.correo_usuario == "") data.correo_usuario = null
         var newUsuario = {
             documento_usuario: data.documento_usuario,
             data:  data,
@@ -101,7 +102,8 @@ class Procesos {
             this.procesos[indexUsuario].transaccion.tutor = this.procesos[indexUsuario].tutor
             this.procesos[indexUsuario].transaccion.nombres_acudiente = this.procesos[indexUsuario].tutor.nombres_tutor
             this.procesos[indexUsuario].transaccion.apellidos_acudiente = this.procesos[indexUsuario].tutor.apellidos_tutor
-            this.procesos[indexUsuario].transaccion.documento_acudiente = this.procesos[indexUsuario].tutor.document_tutor
+            this.procesos[indexUsuario].transaccion.documento_acudiente = this.procesos[indexUsuario].tutor.documento_tutor
+            this.procesos[indexUsuario].transaccion.parentesco_acudiente = this.procesos[indexUsuario].tutor.parentesco_tutor
 
             this.procesos[indexUsuario].transaccion.servicios.forEach(servicio => {
                 this.procesos[indexUsuario].procesos.push(
