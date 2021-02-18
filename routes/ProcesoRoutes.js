@@ -5,7 +5,7 @@ const UsuarioController = require('../controllers/UsuarioController')
 const TransaccionController = require('../controllers/TransaccionController')
 const TransaccionServicioController = require('../controllers/TransaccionServicioController')
 const Mensajes = require('../middlewares/Mensajes')
-const {CreateProcesoValidation, UpdateProcesoValidation} = require('../middlewares/Validation')
+const {CreateProcesoValidation, UpdateProcesoValidation, AgregarTutorValidation} = require('../middlewares/Validation')
 const Singleton = require('../services/ProcesosSingleton')
 const singleton = new Singleton().getInstance()
 const pdfMaker = require("../services/PDFMaker")
@@ -59,6 +59,12 @@ router.post('/crearUsuario', async(req,res)=>{
             }
         }]
      */
+    const existUser = await UsuarioController.getUsuarioPorDocumentoYCorreo(req.body.documento_usuario, req.body.correo_usuario)
+    if(existUser.length > 0){
+        return res.status(400).send({
+            error: Mensajes.ErrorAlGuardar
+        })
+    }
     const rta = singleton.setNewUsuario(req.body)
     if(rta) return res.status(202).send()
     return res.status(500).send({
@@ -82,6 +88,12 @@ router.post('/agregarTutor', async(req,res)=>{
      */
     var doc = req.body.documento_usuario
     delete  req.body.documento_usuario
+
+    const {error} = AgregarTutorValidation(req.body)
+    if(error) return res.status(422).send({
+        error: error.details[0].message
+    })
+
     const rta = singleton.setTutor(req.body, doc)
     if(rta) return res.status(202).send()
     return res.status(500).send({
@@ -103,6 +115,13 @@ router.post('/agregarTransaccion', async(req,res)=>{
             }
         }]
      */
+
+    const {error} = AgregarTransaccionValidation(req.body)
+    if(error) return res.status(422).send({
+        error: error.details[0].message
+    })
+
+
     const rta = singleton.setTransaccion(req.body,req.body.documento_usuario)
     if(rta) return res.status(202).send()
     return res.status(500).send({
@@ -191,7 +210,7 @@ console.log(transaccion)
         //Si no es convenio entonces creo la factura, otherwise
         singleton.setConsentimiento(ruta, req.body.documento_usuario)
         console.log("Consentimiento actualizado en Singleton")
-        res.send();
+        res.status(201).send();
     } catch (error) {
         console.log(error)
         return res.status(400).send({

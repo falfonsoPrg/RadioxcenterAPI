@@ -1,5 +1,5 @@
 const { Usuario, Tipo_documento } = require ('../database/sequelize')
-
+const { Op } = require("sequelize");
 UsuarioController = {}
 
 UsuarioController.getUsuario = async(cod_usuario) => {
@@ -14,6 +14,21 @@ UsuarioController.getUsuarioPorDocumento = async(pDocumento_usuario) => {
         return await Usuario.findAll({
             where: {
                 documento_usuario: pDocumento_usuario
+            },
+            include: Tipo_documento
+        })
+    } catch (error){
+        return error
+    }
+}
+UsuarioController.getUsuarioPorDocumentoYCorreo = async(pDocumento_usuario,pCorreo_usuario) => {
+    try { 
+        return await Usuario.findAll({
+            where:{
+                [Op.or]:{
+                    documento_usuario: pDocumento_usuario,
+                    correo_usuario: pCorreo_usuario
+                }
             },
             include: Tipo_documento
         })

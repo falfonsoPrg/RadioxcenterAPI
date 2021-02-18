@@ -51,9 +51,9 @@ class Procesos {
     setNewUsuario(data){
         var pendi = []
         if(data.tutor == true){
-            pendi = ["Tutor","Transacción","Consentimiento","En procesos","Resultados entregados"]
+            pendi = ["Tutor","Transaccion","Consentimiento","En procesos","Resultados entregados"]
         }else{
-            pendi = ["Transacción","Consentimiento","En procesos","Resultados entregados"]
+            pendi = ["Transaccion","Consentimiento","En procesos","Resultados entregados"]
         }
         if(data.correo_usuario == "") data.correo_usuario = null
         var newUsuario = {
@@ -87,6 +87,9 @@ class Procesos {
     setTutor(tutor,documento_usuario){
         var indexUsuario = this.getIndexUsuario(documento_usuario)
         if(indexUsuario != -1){
+
+            if(this.procesos[indexUsuario].procesosGenerales.actual != "Tutor") return false
+
             this.procesos[indexUsuario].tutor = tutor
             this.avanzarProcesoGeneral(documento_usuario)
             this.validar()
@@ -98,6 +101,9 @@ class Procesos {
     setTransaccion(transaccion, documento_usuario){
         var indexUsuario = this.getIndexUsuario(documento_usuario)
         if(indexUsuario != -1){
+
+            if(this.procesos[indexUsuario].procesosGenerales.actual != "Transaccion") return false
+
             this.procesos[indexUsuario].transaccion = transaccion
             this.procesos[indexUsuario].transaccion.tutor = this.procesos[indexUsuario].tutor
             this.procesos[indexUsuario].transaccion.nombres_acudiente = this.procesos[indexUsuario].tutor.nombres_tutor
@@ -126,6 +132,9 @@ class Procesos {
     setConsentimiento(pConsentimiento,documento_usuario){
         var indexUsuario = this.getIndexUsuario(documento_usuario)
         if(indexUsuario != -1){
+
+            if(this.procesos[indexUsuario].procesosGenerales.actual != "Consentimiento") return false
+
             this.procesos[indexUsuario].consentimiento = pConsentimiento;
             this.avanzarProcesoGeneral(documento_usuario)
             this.validar()
@@ -136,6 +145,9 @@ class Procesos {
     completarProceso(documento_usuario, cod_servicio){
         const index = this.getIndexUsuario(documento_usuario)
         if(index != -1){
+
+            if(this.procesos[index].procesosGenerales.actual != "En procesos" || this.procesos[index].procesosGenerales.actual != "Resultados entregados" ) return false
+
             this.procesos[index].procesos.forEach(p => {
                 if(p.cod_servicio == cod_servicio){
                     p.completado = true
@@ -151,6 +163,9 @@ class Procesos {
     entregarProceso(documento_usuario, cod_servicio){
         const index = this.getIndexUsuario(documento_usuario)
         if(index != -1){
+
+            if(this.procesos[index].procesosGenerales.actual != "En procesos" || this.procesos[index].procesosGenerales.actual != "Resultados entregados" ) return false
+
             this.procesos[index].procesos.forEach(p => {
                 if(p.cod_servicio == cod_servicio){
                     p.entregado = true

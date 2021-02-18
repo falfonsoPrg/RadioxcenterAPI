@@ -467,3 +467,25 @@ module.exports.CreateConsentimientoValidation = CreateConsentimientoValidation =
     })
     return schema.validate(data)
 }
+
+module.exports.AgregarTutorValidation = AgregarTutorValidation = (data) => {
+    const schema = Joi.object({
+        nombres_tutor: Joi.string().required(),
+        apellidos_tutor: Joi.string().required(),
+        documento_tutor: Joi.string().required(),
+        parentesco_tutor: Joi.string().required(),
+        cod_tipo_documento: Joi.number().required()
+    })
+    return schema.validate(data)
+}
+
+module.exports.AgregarTransaccionValidation = AgregarTransaccionValidation = (data) => {
+    const schema = Joi.object({
+        documento_usuario: Joi.string().required(),
+        valor_transaccion: Joi.number().required(),
+        fecha_transaccion: Joi.string().required(),
+        tipo_compra: Joi.string().required(),
+        servicios: Joi.array().min(1).required()
+    })
+    return schema.validate(data)
+}
