@@ -113,9 +113,9 @@ router.put('/', async(req,res)=>{
         })
     }
     if(valor_antiguo != ""){
-        const servicio = await ServicioController.getServicioPorNombre("PA-"+valor_antiguo)
+        const servicio = await ServicioController.getServicioPorNombre("SE-"+valor_antiguo)
         const updatedServicio = await ServicioController.updateServicio({
-            nombre_servicio: "PA-"+req.body.nombre_paquete,
+            nombre_servicio: "SE-"+req.body.nombre_paquete,
             cod_servicio: servicio[0].cod_servicio,
             precio_servicio: req.body.precio_paquete,
             descripcion_servicio: req.body.nombre_paquete
