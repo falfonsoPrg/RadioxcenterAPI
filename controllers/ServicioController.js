@@ -16,6 +16,17 @@ ServicioController.getServicios = async() =>{
         return error
     }
 }
+ServicioController.getServicioPorNombre = async(pNombre) =>{
+    try{
+        return await Servicio.findAll({
+            where:{
+                nombre_servicio: pNombre
+            }
+        })
+    } catch (error){
+        return error
+    }
+}
 ServicioController.getServicios = async(excludeServicios, excludeConvenios, excludePaquetes) =>{
     var whereParams = {
         nombre_servicio:{

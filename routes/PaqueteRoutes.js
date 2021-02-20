@@ -96,15 +96,35 @@ router.put('/', async(req,res)=>{
             }
         }]
      */
+    
+    var valor_antiguo = req.body.valor_antiguo
+    delete req.body.valor_antiguo
+
     const {error} = UpdatePaqueteValidation(req.body)
     if(error) return res.status(422).send({
         error: error.details[0].message
     })
+    
+
     const paquete = await PaqueteController.updatePaquete(req.body)
     if(paquete[0]==0){
         return res.status(404).send({
             error: Mensajes.ErrorAlActualizar
         })
+    }
+    if(valor_antiguo != ""){
+        const servicio = await ServicioController.getServicioPorNombre("PA-"+valor_antiguo)
+        const updatedServicio = await ServicioController.updateServicio({
+            nombre_servicio: "PA-"+req.body.nombre_paquete,
+            cod_servicio: servicio[0].cod_servicio,
+            precio_servicio: req.body.precio_paquete,
+            descripcion_servicio: req.body.nombre_paquete
+        })
+        if(updatedServicio[0]==0){
+            return res.status(404).send({
+                error: Mensajes.ErrorAlActualizar
+            })
+        }
     }
     return res.status(204).send()
 })
