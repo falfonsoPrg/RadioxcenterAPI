@@ -114,7 +114,7 @@ router.put('/', async(req,res)=>{
     }
     if(valor_antiguo != ""){
         const servicio = await ServicioController.getServicioPorNombre("SE-"+valor_antiguo)
-        if(!servicio[0]){
+        if(servicio.length==0){
             return res.status(404).send({
                 error: Mensajes.ErrorAlActualizar
             })
