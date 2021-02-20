@@ -114,6 +114,11 @@ router.put('/', async(req,res)=>{
     }
     if(valor_antiguo != ""){
         const servicio = await ServicioController.getServicioPorNombre("SE-"+valor_antiguo)
+        if(!servicio[0]){
+            return res.status(404).send({
+                error: Mensajes.ErrorAlActualizar
+            })
+        }
         const updatedServicio = await ServicioController.updateServicio({
             nombre_servicio: "SE-"+req.body.nombre_paquete,
             cod_servicio: servicio[0].cod_servicio,
