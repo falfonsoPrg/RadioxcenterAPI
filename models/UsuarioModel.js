@@ -26,7 +26,7 @@ module.exports = (sequelize) => {
             allowNull: true
         },
         documento_usuario: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             unique: true,
             allowNull: false
         },

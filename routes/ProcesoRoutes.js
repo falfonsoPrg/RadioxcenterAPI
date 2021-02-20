@@ -4,11 +4,17 @@ const TipoDocumentoController = require('../controllers/TipoDocumentoController'
 const UsuarioController = require('../controllers/UsuarioController')
 const TransaccionController = require('../controllers/TransaccionController')
 const TransaccionServicioController = require('../controllers/TransaccionServicioController')
+const FacturaController = require('../controllers/FacturaController')
+const TransaccionFactura = require('../controllers/TransaccionFacturaController')
 const Mensajes = require('../middlewares/Mensajes')
-const {CreateProcesoValidation, UpdateProcesoValidation, AgregarTutorValidation} = require('../middlewares/Validation')
+const {CreateProcesoValidation,
+    UpdateProcesoValidation,
+    AgregarTutorValidation,
+    CreateUsuarioValidation} = require('../middlewares/Validation')
 const Singleton = require('../services/ProcesosSingleton')
 const singleton = new Singleton().getInstance()
 const pdfMaker = require("../services/PDFMaker")
+const PDFMaker = require('../services/PDFMaker')
 router.get('/:cod_proceso', async(req,res)=>{
     /**
         #swagger.tags = ['Procesos-DEPRECATED']
@@ -59,12 +65,21 @@ router.post('/crearUsuario', async(req,res)=>{
             }
         }]
      */
-    const existUser = await UsuarioController.getUsuarioPorDocumentoYCorreo(req.body.documento_usuario, req.body.correo_usuario)
-    if(existUser.length > 0){
-        return res.status(400).send({
-            error: Mensajes.ErrorAlGuardar
-        })
+
+    const {error} = CreateUsuarioValidation(req.body)
+    if(error) return res.status(422).send({
+        error: error.details[0].message
+    })
+
+    if(req.body.esNuevo){
+        const existUser = await UsuarioController.getUsuarioPorDocumentoYCorreo(req.body.documento_usuario, req.body.correo_usuario)
+        if(existUser.length > 0){
+            return res.status(400).send({
+                error: Mensajes.ErrorAlGuardar
+            })
+        }
     }
+    
     const rta = singleton.setNewUsuario(req.body)
     if(rta) return res.status(202).send()
     return res.status(500).send({
@@ -143,15 +158,14 @@ router.post('/crearConsentimiento', async(req,res)=>{
             }
         }]
      */
-console.log("Buscando usuario en memoria")
     const usuarioSingleton = singleton.getUsuario(req.body.documento_usuario)
     if(usuarioSingleton == undefined){
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })
     }
-
     console.log("Usuario obtenido de la memoria")
+
     if(usuarioSingleton.data.esNuevo){
         //Agregar el usuario a la bd
         const usuario = await UsuarioController.createUsuario( usuarioSingleton.data )
@@ -165,13 +179,18 @@ console.log("Buscando usuario en memoria")
     }
 
     const usuario = await UsuarioController.getUsuarioPorDocumento( usuarioSingleton.data.documento_usuario )
+    if(usuario.length == 0){
+        return res.status(400).send({
+            error: Mensajes.ErrorAlGuardar
+        })
+    }
     console.log("Usuario obtenido de la BD")
     
 
     //Agregar una transacción
     const transaccion = await TransaccionController.createTransaccion(usuarioSingleton.transaccion)
     if(transaccion.errors || transaccion.name){
-console.log(transaccion)
+    console.log(transaccion)
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })
@@ -185,7 +204,6 @@ console.log(transaccion)
             cod_transaccion: transaccion.cod_transaccion
         })
     });
-
     console.log("Servicios agregados en la BD")
 
     //Agregar el consentimiento
@@ -206,10 +224,38 @@ console.log(transaccion)
         }else{
             ruta = pdfMaker.crearConsentimientoCovid(req.body.signature,dataToConsentimiento)
         }
-        console.log("PDF Creado")
-        //Si no es convenio entonces creo la factura, otherwise
         singleton.setConsentimiento(ruta, req.body.documento_usuario)
-        console.log("Consentimiento actualizado en Singleton")
+        console.log("PDF consentimiento covid Creado")
+        if(usuarioSingleton.transaccion.tipo_compra != "Convenio"){
+            const rutaFactura = "/ruta/factura.pdf"//PDFMaker.createPDF2() //TODO
+            const factura = await FacturaController.createFactura({
+                ruta_factura: rutaFactura,
+                documento_usuario: usuarioSingleton.data.documento_usuario,
+                valor_total_factura: usuarioSingleton.transaccion.valor_transaccion,
+                fecha_factura: new Date(),
+                direccion_mac: "28:cf:da:01:ea:05",
+                cod_tipo_pago: 1
+            });
+            if(factura.errors || factura.name){
+                console.log(factura)
+                return res.status(400).send({
+                    error: Mensajes.ErrorAlGuardar
+                })
+            }
+            console.log("Factura creada en la base de datos");
+            const transaccionFactura = await TransaccionFactura.createTransaccionFactura({
+                cod_transaccion: transaccion.cod_transaccion,
+                cod_factura: factura.cod_factura
+            })
+            if(transaccionFactura.errors || transaccionFactura.name){
+                console.log(transaccionFactura)
+                return res.status(400).send({
+                    error: Mensajes.ErrorAlGuardar
+                })
+            }
+            console.log("Transacción agregada a la factura en la base de datos");
+        }
+
         res.status(201).send();
     } catch (error) {
         console.log(error)
@@ -217,7 +263,6 @@ console.log(transaccion)
             error: Mensajes.ErrorAlGuardarArchivo
         })
     }
-    
 })
 router.post('/', async(req,res)=>{
     /**

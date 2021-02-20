@@ -35,7 +35,7 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         cedula_representante: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
             unique: true
         },
@@ -56,7 +56,7 @@ module.exports = (sequelize) => {
             
         },
         cedula_contacto: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: true
         },
         telefono_contacto: {

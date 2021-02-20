@@ -105,3 +105,4 @@ dist
 
 #Files in the server
 /files
+/services/procesos.json

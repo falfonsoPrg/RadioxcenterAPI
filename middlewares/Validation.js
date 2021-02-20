@@ -1,4 +1,4 @@
-const Joi = require('@hapi/joi')
+const Joi = require('joi')
 
 module.exports.LoginEmpleadoValidation = LoginEmpleadoValidation = (data) => {
     const schema = Joi.object({
@@ -11,7 +11,7 @@ module.exports.CreateEmpleadoValidation = CreateEmpleadoValidation = (data) => {
     const schema = Joi.object({
         nombres_empleado: Joi.string().required(),
         apellidos_empleado: Joi.string().required(),
-        documento_empleado: Joi.number().required(),
+        documento_empleado: Joi.string().required(),
         direccion_empleado: Joi.string().required(),
         fnacimiento_empleado: Joi.date().required(),
         telefono_empleado: Joi.string().required(),
@@ -28,7 +28,7 @@ module.exports.UpdateEmpleadoValidation = UpdateEmpleadoValidation = (data) => {
         cod_empleado: Joi.number().required(),
         nombres_empleado: Joi.string(),
         apellidos_empleado: Joi.string(),
-        documento_empleado: Joi.number(),
+        documento_empleado: Joi.string(),
         direccion_empleado: Joi.string(),
         fnacimiento_empleado: Joi.date(),
         telefono_empleado: Joi.string(),
@@ -122,12 +122,13 @@ module.exports.CreateUsuarioValidation = CreateUsuarioValidation = (data) =>{
         apellidos_usuario: Joi.string().required(),
         telefono_usuario: Joi.string(),
         direccion_usuario: Joi.string(),
-        documento_usuario: Joi.number().required(),
+        documento_usuario: Joi.string().required(),
         ocupacion_usuario: Joi.string(),
         fecha_nacimiento_usuario: Joi.date().required(),
         correo_usuario: Joi.string(),
         genero_usuario: Joi.string(),
         tutor: Joi.bool().required(),
+        esNuevo: Joi.bool().required(),
         celular_usuario: Joi.string(),
         cod_sexo: Joi.number().required(),
         cod_tipo_documento: Joi.number().required(),
@@ -201,8 +202,8 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
     const schema = Joi.object({
         nombre_servicio: Joi.string().required(),
         descripcion_servicio: Joi.string().required(),
-        precio_servicio: Joi.number().required(),
-        iva_servicio: Joi.number()
+        precio_servicio: Joi.number().min(1000).required(),
+        iva_servicio: Joi.number().min(0).max(100)
     })
     return schema.validate(data)
 } 
@@ -226,7 +227,7 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
  module.exports.CreatePaqueteValidation = CreatePaqueteValidation = (data) =>{
      const schema = Joi.object({
          nombre_paquete: Joi.string().required(),
-         precio_paquete: Joi.number().required()
+         precio_paquete: Joi.number().min(1000).required()
      })
      return schema.validate(data)
  }
@@ -264,11 +265,11 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
          direccion_entidad: Joi.string().required(),
          telefono_entidad: Joi.string().required(),
          nombre_representante: Joi.string().required(),
-         cedula_representante: Joi.number().required(),
+         cedula_representante: Joi.string().required(),
          telefono_representante: Joi.string().required(),
          correo_representante: Joi.string().required(),
          nombre_contacto: Joi.string().allow(''),
-         cedula_contacto: Joi.number().allow(null),
+         cedula_contacto: Joi.string().allow(''),
          telefono_contacto: Joi.string().allow(''),
          correo_contacto: Joi.string().allow(''),
          cod_forma_de_pago_entidad: Joi.number().required(),
@@ -322,7 +323,7 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
          apellidos_doctor: Joi.string().required(),
          direccion_doctor: Joi.string().required(),
          telefono_doctor: Joi.string().required(),
-         documento_doctor: Joi.number().required(),
+         documento_doctor: Joi.string().required(),
          correo_doctor: Joi.string().required(),
          cod_tipo_documento: Joi.number().required(),
          cod_tipo_pref_entrega: Joi.number().required()
@@ -336,7 +337,7 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
         apellidos_doctor: Joi.string(),
         direccion_doctor: Joi.string(),
         telefono_doctor: Joi.string(),
-        documento_doctor: Joi.number(),
+        documento_doctor: Joi.string(),
         correo_doctor: Joi.string(),
         cod_tipo_documento: Joi.number(),
         cod_tipo_pref_entrega: Joi.number()
@@ -433,7 +434,7 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
  module.exports.UpdateTransaccionValidation = UpdateTransaccionValidation = (data) => {
      const schema = Joi.object({
         cod_transaccion: Joi.number().required(),
-        documento_usuario: Joi.number(),
+        documento_usuario: Joi.string(),
         valor_transaccion: Joi.number(),
         fecha_transaccion: Joi.date(),
         nombres_acudiente: Joi.string(),

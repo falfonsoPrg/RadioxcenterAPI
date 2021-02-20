@@ -59,8 +59,21 @@ router.post('/', async(req,res)=>{
     if(error) return res.status(422).send({
         error: error.details[0].message
     })
+
+    //TODO: Crear el servicio que  comienze con PA
+    const servicioPaquete = await ServicioController.createservicio({
+        nombre_servicio: req.body.nombre_paquete,
+        descripcion_servicio: req.body.nombre_paquete,
+        precio_servicio: req.body.precio_paquete,
+        iva_servicio: 0
+    },"PA")
     const paquete = await PaqueteController.createPaquete(req.body)
-    if( paquete.errors || paquete.name=="SequelizeDatabaseError"){
+    if( paquete.errors || paquete.name){
+        return res.status(400).send({
+            error: Mensajes.ErrorAlGuardar
+        })
+    }
+    if( servicioPaquete.errors || servicioPaquete.name){
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })

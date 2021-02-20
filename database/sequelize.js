@@ -26,6 +26,8 @@ const TransaccionModel = require("../models/TransaccionModel");
 const TransaccionServicioModel = require("../models/TransaccionServicioModel");
 const ConsentimientoModel = require("../models/ConsentimientoModel");
 const PaqueteServicioModel = require('../models/PaqueteServicioModel')
+const FacturaModel = require('../models/FacturaModel')
+const TransaccionFacturaModel = require('../models/TransaccionFacturaModel')
 
 
 //Conection with database
@@ -80,6 +82,8 @@ const Entidad_doctor = EntidadDoctorModel(sequelize);
 const Transaccion = TransaccionModel(sequelize);
 const Transaccion_Servicio = TransaccionServicioModel(sequelize);
 const Consentimiento = ConsentimientoModel(sequelize);
+const Factura = FacturaModel(sequelize);
+const TransaccionFactura = TransaccionFacturaModel(sequelize);
 
 
 //Create the Relationships
@@ -162,6 +166,17 @@ Consentimiento.belongsTo(Transaccion, {foreignKey: 'cod_transaccion', sourceKey:
 
 Tipo_Consentimiento.hasMany(Consentimiento, {foreignKey: 'cod_tipo_consentimiento', sourceKey:'cod_tipo_consentimiento'});
 Consentimiento.belongsTo(Tipo_Consentimiento, {foreignKey: 'cod_tipo_consentimiento', sourceKey:'cod_tipo_consentimiento'});
+
+// Relationships Factura
+Tipo_pago.hasMany(Factura, {foreignKey: 'cod_tipo_pago', sourceKey:'cod_tipo_pago'})
+Factura.belongsTo(Tipo_pago, {foreignKey: 'cod_tipo_pago', sourceKey:'cod_tipo_pago'})
+
+Transaccion.hasMany(TransaccionFactura, {foreignKey: 'cod_transaccion', sourceKey:'cod_transaccion'})
+TransaccionFactura.belongsTo(Transaccion, {foreignKey: 'cod_transaccion', sourceKey:'cod_transaccion'})
+
+Factura.hasMany(TransaccionFactura, {foreignKey: 'cod_factura', sourceKey:'cod_factura'})
+TransaccionFactura.belongsTo(Factura, {foreignKey: 'cod_factura', sourceKey:'cod_factura'})
+
 //Sync the database and chekc if the connection is Ok
 var resetDb = { force:false };
 
@@ -212,7 +227,8 @@ module.exports = {
     Transaccion_Servicio,
     Consentimiento,
     Paquete_Servicio,
-
+    Factura,
+    TransaccionFactura,
 
 
 

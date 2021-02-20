@@ -41,6 +41,16 @@ ServicioController.createservicio = async(pServicio) =>{
         return error
     }
 }
+ServicioController.createservicio = async(pServicio, pPrefijo) =>{
+    if(!pServicio.nombre_servicio.startsWith(pPrefijo)){
+        pServicio.nombre_servicio = pPrefijo+"-"+pServicio.nombre_servicio
+    }
+    try {
+        return await Servicio.create(pServicio)
+    } catch (error) {
+        return error
+    }
+}
 ServicioController.updateServicio = async(pServicio) => {
     try {
         return await Servicio.update(pServicio,{

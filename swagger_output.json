@@ -1447,6 +1447,9 @@
           "400": {
             "description": "Bad Request"
           },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -1536,6 +1539,9 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -2602,6 +2608,90 @@
           }
         }
       }
+    },
+    "/facturas/{cod_factura}": {
+      "get": {
+        "tags": [
+          "Facturas"
+        ],
+        "description": "Endpoint para obtener una factura",
+        "parameters": [
+          {
+            "name": "cod_factura",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/facturas": {
+      "get": {
+        "tags": [
+          "Facturas"
+        ],
+        "description": "Endpoint para obtener facturas",
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Facturas"
+        ],
+        "description": "Endpoint para registrar una factura.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Factura"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Facturas"
+        ],
+        "description": "Endpoint para editar una factura.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Factura"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -2617,8 +2707,8 @@
           "example": ""
         },
         "documento_empleado": {
-          "type": "number",
-          "example": 0
+          "type": "string",
+          "example": "0"
         },
         "direccion_empleado": {
           "type": "string",
@@ -2733,8 +2823,8 @@
           "example": ""
         },
         "documento_doctor": {
-          "type": "number",
-          "example": 0
+          "type": "string",
+          "example": "0"
         },
         "correo_doctor": {
           "type": "string",
@@ -2769,8 +2859,8 @@
           "example": ""
         },
         "documento_empleado": {
-          "type": "number",
-          "example": 0
+          "type": "string",
+          "example": "0"
         },
         "direccion_empleado": {
           "type": "string",
@@ -3231,8 +3321,8 @@
       "type": "object",
       "properties": {
         "documento_usuario": {
-          "type": "number",
-          "example": 0
+          "type": "string",
+          "example": "0"
         },
         "valor_transaccion": {
           "type": "number",
@@ -3251,8 +3341,8 @@
           "example": ""
         },
         "documento_acudiente": {
-          "type": "number",
-          "example": 0
+          "type": "string",
+          "example": "0"
         },
         "parentesco_acudiente": {
           "type": "string",
@@ -3271,8 +3361,8 @@
       "type": "object",
       "properties": {
         "documento_usuario": {
-          "type": "number",
-          "example": 0
+          "type": "string",
+          "example": "0"
         },
         "valor_transaccion": {
           "type": "number",
@@ -3363,8 +3453,8 @@
           "example": ""
         },
         "documento_usuario": {
-          "type": "number",
-          "example": 0
+          "type": "string",
+          "example": "0"
         },
         "ocupacion_usuario": {
           "type": "string",
@@ -3439,8 +3529,8 @@
           "example": ""
         },
         "documento_tutor": {
-          "type": "number",
-          "example": 0
+          "type": "string",
+          "example": "0"
         },
         "parentesco_tutor": {
           "type": "string",
@@ -3491,8 +3581,8 @@
           "example": ""
         },
         "documento_usuario": {
-          "type": "number",
-          "example": 0
+          "type": "string",
+          "example": "0"
         },
         "ocupacion_usuario": {
           "type": "string",
@@ -3541,6 +3631,38 @@
       },
       "xml": {
         "name": "UsuarioProceso"
+      }
+    },
+    "Factura": {
+      "type": "object",
+      "properties": {
+        "ruta_factura": {
+          "type": "string",
+          "example": ""
+        },
+        "documento_usuario": {
+          "type": "string",
+          "example": ""
+        },
+        "valor_total_factura": {
+          "type": "number",
+          "example": 0
+        },
+        "fecha_factura": {
+          "type": "string",
+          "example": "yyyy-MM-dd"
+        },
+        "direccion_mac": {
+          "type": "string",
+          "example": ""
+        },
+        "cod_tipo_pago": {
+          "type": "number",
+          "example": 0
+        }
+      },
+      "xml": {
+        "name": "Factura"
       }
     }
   }

@@ -29,6 +29,7 @@ const endpointsFiles = [
     './routes/TransaccionRoutes.js',
     './routes/TransaccionServicioRoutes.js',
     './routes/UsuarioRoutes.js',
+    './routes/FacturaRoutes.js',
 ]
 
 const port = process.env.HOST_FOR_SWAGGER || 'localhost:4000'
@@ -48,7 +49,7 @@ const doc = {
         CreateEmpleado:{
             "nombres_empleado": "",
             "apellidos_empleado": "",
-            "documento_empleado": 0,
+            "documento_empleado": "0",
             "direccion_empleado": "",
             "fnacimiento_empleado": "dd/MM/YYYYY",
             "telefono_empleado": "",
@@ -77,7 +78,7 @@ const doc = {
             "apellidos_doctor": "",
             "direccion_doctor": "",
             "telefono_doctor": "",
-            "documento_doctor": 0,
+            "documento_doctor": "0",
             "correo_doctor": "email@email.com",
             "cod_tipo_documento": 0,
             "cod_tipo_pref_entrega": 0
@@ -86,7 +87,7 @@ const doc = {
             "cod_empleado": 0,
             "nombres_empleado": "",
             "apellidos_empleado": "",
-            "documento_empleado": 0,
+            "documento_empleado": "0",
             "direccion_empleado": "",
             "fnacimiento_empleado": "dd/MM/YYYYY",
             "telefono_empleado": "",
@@ -200,17 +201,17 @@ const doc = {
             "nombre_tipo_pref_entrega":""
         },
         Transaccion: {
-            "documento_usuario": 0,
+            "documento_usuario": "0",
             "valor_transaccion": 0,
             "fecha_transaccion": "yyyy-MM-dd",
             "nombres_acudiente": "",
             "apellidos_acudiente": "",
-            "documento_acudiente": 0,
+            "documento_acudiente": "0",
             "parentesco_acudiente": "",
             "cod_entidad_doctor": 0
         },
         TransaccionProceso: {
-            "documento_usuario": 0,
+            "documento_usuario":"0",
             "valor_transaccion": 0,
             "fecha_transaccion": "yyyy-MM-dd",
             "cod_entidad_doctor": 0,
@@ -233,7 +234,7 @@ const doc = {
             "apellidos_usuario": "",
             "telefono_usuario": "",
             "direccion_usuario": "",
-            "documento_usuario": 0,
+            "documento_usuario": "0",
             "ocupacion_usuario": "",
             "fecha_nacimiento_usuario": "yyyy-MM-dd",
             "correo_usuario": "",
@@ -252,7 +253,7 @@ const doc = {
         Tutor:{
             "nombres_tutor": "",
             "apellidos_tutor": "",
-            "documento_tutor": 0,
+            "documento_tutor": "0",
             "parentesco_tutor": "",
             "cod_tipo_documento": 0
         },
@@ -261,23 +262,31 @@ const doc = {
             "signature":"data:image/png;base64,"
         },
         UsuarioProceso:{
-        "nombres_usuario": "",
-        "apellidos_usuario": "",
-        "telefono_usuario": "",
-        "direccion_usuario": "",
-        "documento_usuario": 0,
-        "ocupacion_usuario": "",
-        "fecha_nacimiento_usuario": "yyyy-MM-dd",
-        "correo_usuario": "",
-        "genero_usuario": "",
-        "tutor":false,
-        "esNuevo":false,
-        "celular_usuario": "",
-        "cod_sexo": 0,
-        "cod_tipo_documento": 0,
-        "cod_ciudad": 0,
-        "cod_tipo_pref_entrega": 0
-    }
+            "nombres_usuario": "",
+            "apellidos_usuario": "",
+            "telefono_usuario": "",
+            "direccion_usuario": "",
+            "documento_usuario": "0",
+            "ocupacion_usuario": "",
+            "fecha_nacimiento_usuario": "yyyy-MM-dd",
+            "correo_usuario": "",
+            "genero_usuario": "",
+            "tutor":false,
+            "esNuevo":false,
+            "celular_usuario": "",
+            "cod_sexo": 0,
+            "cod_tipo_documento": 0,
+            "cod_ciudad": 0,
+            "cod_tipo_pref_entrega": 0
+        },
+        Factura: {
+            "ruta_factura":"",
+            "documento_usuario":"",
+            "valor_total_factura":0.0,
+            "fecha_factura":"yyyy-MM-dd",
+            "direccion_mac":"",
+            "cod_tipo_pago":0
+        }
 
     }
 }

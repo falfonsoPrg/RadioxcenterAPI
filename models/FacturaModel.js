@@ -1,49 +1,39 @@
 const { DataTypes } = require('sequelize');
+const sequelize = require('../database/sequelize');
 
 module.exports = (sequelize) => {
-    return sequelize.define("Doctor",{
-        cod_doctor: {
+    return sequelize.define("Factura", {
+        cod_factura: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false
         },
-        nombres_doctor: {
+        ruta_factura: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        apellidos_doctor: {
+        documento_usuario: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        direccion_doctor: {
+        valor_total_factura: {
+            type: DataTypes.DOUBLE,
+            allowNull: false
+        },
+        fecha_factura: {
+            type: DataTypes.DATE,
+            allowNull: false
+        },
+        direccion_mac: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        telefono_doctor: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        documento_doctor: {
-            type: DataTypes.STRING,
-            unique: true,
-            allowNull: false
-        },
-        correo_doctor: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                isEmail: true
-            }
-        },
-        cod_tipo_documento: {
-            type: DataTypes.INTEGER
-        },
-        cod_tipo_pref_entrega: {
+        cod_tipo_pago: {
             type: DataTypes.INTEGER
         }
     },{
-        tableName: 'Doctor',
+        tableName: 'Factura',
         freezeTableName: true
     })
 }

@@ -17,7 +17,7 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         documento_empleado: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
             unique: true
         },
