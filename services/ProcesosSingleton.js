@@ -117,6 +117,8 @@ class Procesos {
                         cod_servicio: servicio.cod_servicio,
                         nombre_servicio: servicio.nombre_servicio,
                         descripcion_servicio: servicio.descripcion_servicio,
+                        precio_servicio: servicio.precio_servicio,
+                        iva_servicio: servicio.iva_servicio,
                         completado: false,
                         entregado: false
                     }

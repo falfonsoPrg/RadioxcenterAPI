@@ -9,6 +9,10 @@ module.exports = (sequelize) => {
             autoIncrement: true,
             allowNull: false
         },
+        numero_factura:{
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         ruta_factura: {
             type: DataTypes.STRING,
             allowNull: false

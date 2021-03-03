@@ -1,6 +1,8 @@
 // Imports
 
 const Sequelize = require("sequelize")
+const CargarDepartamentos = require("../services/CargarDepartamentosYCiudades")
+
 const DepartamentoModel = require("../models/DepartamentoModel")
 const CiudadModel = require("../models/CiudadModel");
 const InformacionRXModel = require("../models/InformacionRXModel");
@@ -28,6 +30,7 @@ const ConsentimientoModel = require("../models/ConsentimientoModel");
 const PaqueteServicioModel = require('../models/PaqueteServicioModel')
 const FacturaModel = require('../models/FacturaModel')
 const TransaccionFacturaModel = require('../models/TransaccionFacturaModel')
+const NotaCreditoModel = require('../models/NotaCreditoModel')
 
 
 //Conection with database
@@ -84,6 +87,7 @@ const Transaccion_Servicio = TransaccionServicioModel(sequelize);
 const Consentimiento = ConsentimientoModel(sequelize);
 const Factura = FacturaModel(sequelize);
 const TransaccionFactura = TransaccionFacturaModel(sequelize);
+const NotaCredito = NotaCreditoModel(sequelize);
 
 
 //Create the Relationships
@@ -177,6 +181,13 @@ TransaccionFactura.belongsTo(Transaccion, {foreignKey: 'cod_transaccion', source
 Factura.hasMany(TransaccionFactura, {foreignKey: 'cod_factura', sourceKey:'cod_factura'})
 TransaccionFactura.belongsTo(Factura, {foreignKey: 'cod_factura', sourceKey:'cod_factura'})
 
+// Relationships NotaCredito
+NotaCredito.belongsTo(Factura, {foreignKey: 'cod_factura', sourceKey:'cod_factura'})
+Factura.hasMany(NotaCredito, {foreignKey: 'cod_factura', sourceKey:'cod_factura'})
+
+NotaCredito.belongsTo(Tipo_nota_credito, {foreignKey: 'cod_tipo_nota_credito', sourceKey:'cod_tipo_nota_credito'})
+Tipo_nota_credito.hasMany(NotaCredito, {foreignKey: 'cod_tipo_nota_credito', sourceKey:'cod_tipo_nota_credito'})
+
 //Sync the database and chekc if the connection is Ok
 var resetDb = { force:false };
 
@@ -186,14 +197,41 @@ sequelize.sync( resetDb ).then( async () => {
         where: {cod_tipo_empleado:1},
         defaults: {cod_tipo_empleado:1,nombre_tipo_empleado:"Empleado"}
     })
-    const te = await Tipo_empleado.findAll()
-    //console.log(te)
     await Tipo_documento.findOrCreate({
         where: {cod_tipo_documento:1},
         defaults: {cod_tipo_documento:1,nombre_tipo_documento:"Cédula de ciudadania"}
     })
-    const td = await Tipo_documento.findAll()
-    //console.log(td)
+    await Tipo_Consentimiento.findOrCreate({
+        where: {cod_tipo_consentimiento:1},
+        defaults: {cod_tipo_consentimiento:1,nombre_tipo_consentimiento:"Consentimiento Covid"}
+    })
+    await Tipo_Consentimiento.findOrCreate({
+        where: {cod_tipo_consentimiento:2},
+        defaults: {cod_tipo_consentimiento:2,nombre_tipo_consentimiento:"Consentimiento Intraoral"}
+    })
+    await Tipo_Consentimiento.findOrCreate({
+        where: {cod_tipo_consentimiento:3},
+        defaults: {cod_tipo_consentimiento:3,nombre_tipo_consentimiento:"Consentimiento Extraoral"}
+    })
+    await Tipo_pago.findOrCreate({
+        where: {cod_tipo_pago:1},
+        defaults: {cod_tipo_pago:1,nombre_tipo_pago:"Efectivo"}
+    })
+    await Tipo_pago.findOrCreate({
+        where: {cod_tipo_pago:2},
+        defaults: {cod_tipo_pago:2,nombre_tipo_pago:"Electrónica"}
+    })
+    await Tipo_facturacion.findOrCreate({
+        where: {cod_tipo_facturacion:1},
+        defaults: {cod_tipo_facturacion:1,nombre_tipo_facturacion:"Efectivo"}
+    })
+    await Tipo_facturacion.findOrCreate({
+        where: {cod_tipo_facturacion:2},
+        defaults: {cod_tipo_facturacion:2,nombre_tipo_facturacion:"Electrónica"}
+    })
+    var dep = await Departamento.findAll()
+    var ciud = await Ciudad.findAll()
+    if(dep.length == 0 || ciud.length == 0 ) CargarDepartamentos(Departamento,Ciudad)
 }).catch(err => {
     console.log(err)
 })
@@ -229,7 +267,7 @@ module.exports = {
     Paquete_Servicio,
     Factura,
     TransaccionFactura,
-
+    NotaCredito
 
 
 }

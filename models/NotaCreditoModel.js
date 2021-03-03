@@ -1,0 +1,30 @@
+const { DataTypes } = require('sequelize');
+
+module.exports = (sequelize) => {
+    return sequelize.define("Nota_Credito",{
+        cod_nota_credito: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+            allowNull: false
+        },
+        fecha_nota_credito: {
+            type: DataTypes.DATE
+        },
+        descripcion_nota_credito: {
+            type: DataTypes.STRING
+        },
+        valor_total:{
+            type: DataTypes.DOUBLE
+        },
+        cod_factura:{
+            type: DataTypes.INTEGER
+        },
+        cod_tipo_nota_credito:{
+            type: DataTypes.INTEGER
+        }
+    },{
+        tableName: 'Nota_Credito',
+        FreezeTableName: true
+    })
+}

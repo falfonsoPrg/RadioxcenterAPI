@@ -1,4 +1,5 @@
 ﻿const router = require('express').Router()
+
 const ProcesoController = require('../controllers/ProcesoController')
 const TipoDocumentoController = require('../controllers/TipoDocumentoController')
 const UsuarioController = require('../controllers/UsuarioController')
@@ -6,15 +7,19 @@ const TransaccionController = require('../controllers/TransaccionController')
 const TransaccionServicioController = require('../controllers/TransaccionServicioController')
 const FacturaController = require('../controllers/FacturaController')
 const TransaccionFactura = require('../controllers/TransaccionFacturaController')
+const ConsentimientoController = require('../controllers/ConsentimientoController')
+
+
 const Mensajes = require('../middlewares/Mensajes')
 const {CreateProcesoValidation,
     UpdateProcesoValidation,
     AgregarTutorValidation,
     CreateUsuarioValidation} = require('../middlewares/Validation')
+
 const Singleton = require('../services/ProcesosSingleton')
 const singleton = new Singleton().getInstance()
 const pdfMaker = require("../services/PDFMaker")
-const PDFMaker = require('../services/PDFMaker')
+
 router.get('/:cod_proceso', async(req,res)=>{
     /**
         #swagger.tags = ['Procesos-DEPRECATED']
@@ -224,12 +229,27 @@ router.post('/crearConsentimiento', async(req,res)=>{
         }else{
             ruta = pdfMaker.crearConsentimientoCovid(req.body.signature,dataToConsentimiento)
         }
+        var consent = await ConsentimientoController.createConsentimiento({
+            cod_tipo_consentimiento: 1,
+            ubicacion_consentimiento: ruta,
+            cod_transaccion: transaccion.cod_transaccion
+        })
+        if(consent.errors || consent.name){
+            console.log(consent)
+            return res.status(400).send({
+                error: Mensajes.ErrorAlGuardar
+            })
+        }
         singleton.setConsentimiento(ruta, req.body.documento_usuario)
         console.log("PDF consentimiento covid Creado")
+
+
         if(usuarioSingleton.transaccion.tipo_compra != "Convenio"){
-            const rutaFactura = "/ruta/factura.pdf"//PDFMaker.createPDF2() //TODO
+            var dataToSend = usuarioSingleton.data.tutor ? usuarioSingleton.tutor : usuario[0]
+            const rutaFactura = PDFMaker.createFactura(dataToSend,usuarioSingleton.data.tutor,usuarioSingleton.procesos,123456) //TODO
             const factura = await FacturaController.createFactura({
                 ruta_factura: rutaFactura,
+                numero_factura: 123456,
                 documento_usuario: usuarioSingleton.data.documento_usuario,
                 valor_total_factura: usuarioSingleton.transaccion.valor_transaccion,
                 fecha_factura: new Date(),

@@ -30,6 +30,7 @@ const endpointsFiles = [
     './routes/TransaccionServicioRoutes.js',
     './routes/UsuarioRoutes.js',
     './routes/FacturaRoutes.js',
+    './routes/NotaCreditoRoutes.js',
 ]
 
 const port = process.env.HOST_FOR_SWAGGER || 'localhost:4000'
@@ -281,11 +282,19 @@ const doc = {
         },
         Factura: {
             "ruta_factura":"",
+            "numero_factura":0,
             "documento_usuario":"",
             "valor_total_factura":0.0,
             "fecha_factura":"yyyy-MM-dd",
             "direccion_mac":"",
             "cod_tipo_pago":0
+        },
+        NotaCredito:{
+            "fecha_nota_credito": "yyyy-MM-dd",
+            "descripcion_nota_credito":"",
+            "valor_total":0,
+            "cod_factura":0,
+            "cod_tipo_nota_credito":0
         }
 
     }

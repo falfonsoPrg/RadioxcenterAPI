@@ -59,7 +59,7 @@ const Transaccion = require('./routes/TransaccionRoutes')
 const TransaccionServicio = require('./routes/TransaccionServicioRoutes')
 const ConsentimientoRoutes = require('./routes/ConsentimientoRoutes')
 const FacturaRoutes = require('./routes/FacturaRoutes');
-const { Factura } = require('./database/sequelize');
+const NotaCreditoRoutes = require('./routes/NotaCreditoRoutes');
 
 //Middleware
 app.use(express.urlencoded({ extended: false }))
@@ -94,6 +94,7 @@ app.use('/api/transacciones', Transaccion)
 app.use('/api/transaccionServicios',TransaccionServicio)
 app.use('/api/consentimientos',ConsentimientoRoutes)
 app.use('/api/facturas',FacturaRoutes)
+app.use('/api/notacredito',NotaCreditoRoutes)
 
 //Inicializa el servidor 
 

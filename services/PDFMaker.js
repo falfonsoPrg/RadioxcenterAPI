@@ -76,7 +76,7 @@ PDFMaker.crearConsentimientoCovid = (imagePath,data) => {
       }
     }
   };
-  var savePath = "./files/pdf/"
+  var savePath = "./files/pdf/consentimientos/"
   var today = new Date()
   var timestamp = today.getDate()+""+today.getMonth()+""+today.getFullYear()+""+today.getHours()+""+today.getMinutes()
   var filename = data.documento_usuario + "_" + timestamp + ".pdf"
@@ -154,7 +154,7 @@ PDFMaker.crearConsentimientoCovidTutor = (imagePath,data,tutor) => {
       }
     }
   };
-  var savePath = "./files/pdf/"
+  var savePath = "./files/pdf/consentimientos/"
   var today = new Date()
   var timestamp = today.getDate()+""+today.getMonth()+""+today.getFullYear()+""+today.getHours()+""+today.getMinutes()
   var filename = data.documento_usuario + "_" + timestamp + ".pdf"
@@ -167,28 +167,55 @@ PDFMaker.crearConsentimientoCovidTutor = (imagePath,data,tutor) => {
   return savePath+filename
 }
 
-PDFMaker.createPDF2 = () => {
-
+PDFMaker.createFactura = (data,esTutor,servicios,nFactura) => {
+  var dataToShow = {}
+  if(esTutor){
+    dataToShow = {
+      nombre: data.nombres_tutor +" "+ data.apellidos_tutor,
+      documento: data.documento_tutor,
+      telefono: "",
+      direccion:"",
+    }
+  }else{
+    dataToShow = {
+      nombre: data.nombres_usuario +" "+ data.apellidos_usuario,
+      documento: data.documento_usuario,
+      telefono: data.telefono_usuario,
+      direccion: data.direccion_usuario,
+    }
+  }
+  var formatedServicios = []
+  servicios.forEach(s => {
+    formatedServicios.push({
+      cant: 1,
+      //concepto: s.nombre_servicio +" " + s.descripcion_servicio,
+      concepto: s.nombre_servicio,
+      vlrU: s.precio_servicio,
+      vlrT: s.precio_servicio
+    })
+  })
   function buildTableBody(data, columns) {
     var body = [];
     body.push(columns);
+    var subtotal = 0
     data.forEach(function(row) {
         var dataRow = [];
         columns.forEach(function(column) {
-            dataRow.push({text: row[column.label].toString(), margin:[0,15,3,0]});
+            dataRow.push({text: row[column.label].toString(), margin:[0,15,3,0], width:"200"});
+            if(column.label == "vlrT") subtotal+=row[column.label]
         })
         body.push(dataRow);
     });
-    body.push([{text:"SUB-TOTAL",colSpan: 3},{},{},{text:"1000"}])
+    body.push([{text:"SUB-TOTAL",colSpan: 3},{},{},{text:subtotal}])
     body.push([{text:"IVA %",colSpan: 3},{},{},{text:"0"}])
-    body.push([{text:"TOTAL",colSpan: 3},{},{},{text:"1000"}])
+    body.push([{text:"TOTAL",colSpan: 3},{},{},{text:subtotal}])
 
     //console.log(body)
     return body;
   }
   function table(data, columns) {
       return {
-        margin: [50,0,0,0],
+        width:'auto',
         alignment: 'center',
         //layout: 'lightHorizontalLines',
           table: {
@@ -204,7 +231,7 @@ PDFMaker.createPDF2 = () => {
         image: './fonts/Images/header_logo.png',
         width: 130,
         height: 60,
-        margin: [0,20,0,20]
+        margin: [0,0,0,20]
       },
       {text:"Nit 123456789 Reg. Común Act. Económica 8514",alignment: 'center'},
       {text:"Número de Formulario DIAN 7818718718187 Fecha 2020/20/20",alignment: 'center'},
@@ -212,9 +239,9 @@ PDFMaker.createPDF2 = () => {
       {columns: [
         {
           ul: [
-            {text: "Señor:(es): Juanito Lopez", listType: 'none'},
-            {text: "Dirección: Calle 123 # 456 - 78", listType: 'none'},
-            {text: ["Tel.:12345678", "NIT.1988745"], listType: 'none'}
+            {text: "Señor:(es): "+dataToShow.nombre, listType: 'none'},
+            {text: "Dirección: "+dataToShow.direccion, listType: 'none'},
+            {text: ["Tel.: "+dataToShow.telefono, "    NIT. " +dataToShow.documento] , listType: 'none'}
           ]
         },
         {
@@ -222,8 +249,8 @@ PDFMaker.createPDF2 = () => {
           table:{
             body: [
               ["Factura de venta"],
-              ["NO. 1335050"],
-              ["Fecha | 20 | 20 | 2020"]
+              ["NO. " + nFactura],
+              ["Fecha "+new Date().toISOString().split("T")[0]]
             ]
           }
         }
@@ -231,21 +258,22 @@ PDFMaker.createPDF2 = () => {
       margin: [0,20,0,20],
       alignment: "center"
     },
-    table([
-      { cant: '1', concepto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', vlrU: 34, vlrT: 34 },
-      { cant: '2', concepto: 'Integer blandit pretium tristique.', vlrU: 27, vlrT: 34 },
-      { cant: '3', concepto: 'Donec tincidunt augue id justo consectetur eleifend. Phasellus ut vehicula erat, id feugiat libero.', vlrU: 30, vlrT: 34 }], 
-      [
-        {text: "Cantidad",label:"cant", style: 'tableHeader'},
-        {text:"Concepto",label:'concepto', style: 'tableHeader'},
-        {text:"Valor Unitario",label:'vlrU', style: 'tableHeader'},
-        {text:"Valor Total",label:'vlrT', style: 'tableHeader'}
-      ]),
-      {text:"Facatativá (Cund.)",alignment: 'center',margin:[0,25,0,0]},
-      {text:"Calle 8 No 6 - 59. Tel: 8429548 / Fax #######",alignment: 'center'},
-      {text:"radioxenter@gmail.com",alignment: 'center'},
-      {text:"www.radioxenter.com",alignment: 'center'},
-    ],
+    {
+      columns:[
+        { width: '*', text: '' },
+        table(formatedServicios, [{text: "Cantidad",label:"cant", style: 'tableHeader'},
+              {text:"Concepto",label:'concepto', style: 'tableHeader'},
+              {text:"Valor Unitario",label:'vlrU', style: 'tableHeader'},
+              {text:"Valor Total",label:'vlrT', style: 'tableHeader'}
+            ]),
+        { width: '*', text: '' },
+      ]
+    },
+    {text:"Facatativá (Cund.)",alignment: 'center',margin:[0,10,0,0]},
+    {text:"Calle 8 No 6 - 59. Tel: 8429548 / Fax #######",alignment: 'center'},
+    {text:"radioxenter@gmail.com",alignment: 'center'},
+    {text:"www.radioxenter.com",alignment: 'center'},
+  ],
     styles:{
       bold:{
         bold: true
@@ -257,12 +285,17 @@ PDFMaker.createPDF2 = () => {
       }
     }
   };
+  var savePath = "./files/pdf/facturas/"
+  var today = new Date()
+  var timestamp = today.getDate()+""+today.getMonth()+""+today.getFullYear()+""+today.getHours()+""+today.getMinutes()
+  var filename = dataToShow.documento + "_" + timestamp + ".pdf"
   var pdfDoc = printer.createPdfKitDocument(docDefinition);
-  pdfDoc.pipe(fs.createWriteStream('./files/pdf/factura_pepito.pdf'))
+  pdfDoc.pipe(fs.createWriteStream(savePath+filename))
   .on('error', (err) => {
     console.log(err)
   });
   pdfDoc.end();
+  return savePath+filename
 }
 
 module.exports = PDFMaker;
