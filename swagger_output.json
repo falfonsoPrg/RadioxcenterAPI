@@ -171,13 +171,19 @@
         }
       }
     },
-    "/consentimientos/download": {
+    "/consentimientos/download/{nombre_archivo}": {
       "get": {
         "tags": [
           "Consentimientos"
         ],
-        "description": "Endpoint para obtener consentimientos",
-        "parameters": [],
+        "description": "Endpoint para descargar un consentimiento",
+        "parameters": [
+          {
+            "name": "nombre_archivo",
+            "in": "path",
+            "required": true
+          }
+        ],
         "responses": {
           "404": {
             "description": "Not Found"
@@ -747,6 +753,38 @@
             "name": "body",
             "schema": {
               "$ref": "#/definitions/EditarConvenioEntidad"
+            }
+          },
+          {
+            "name": "cod_entidad",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/entidades/{cod_entidad}/doctores": {
+      "put": {
+        "tags": [
+          "Entidades"
+        ],
+        "description": "Endpoint para editar los doctores de una entidad.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/EditarDoctorEntidad"
             }
           },
           {
@@ -2609,6 +2647,26 @@
         }
       }
     },
+    "/facturas/download/{nombre_archivo}": {
+      "get": {
+        "tags": [
+          "Facturas"
+        ],
+        "description": "Endpoint para descargar una factura",
+        "parameters": [
+          {
+            "name": "nombre_archivo",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/facturas/{cod_factura}": {
       "get": {
         "tags": [
@@ -3724,6 +3782,14 @@
           "type": "string",
           "example": ""
         },
+        "numero_factura": {
+          "type": "number",
+          "example": 0
+        },
+        "resumen_factura": {
+          "type": "string",
+          "example": ""
+        },
         "documento_usuario": {
           "type": "string",
           "example": ""
@@ -3775,6 +3841,20 @@
       },
       "xml": {
         "name": "NotaCredito"
+      }
+    },
+    "EditarDoctorEntidad": {
+      "type": "object",
+      "properties": {
+        "doctores_entidad": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "xml": {
+        "name": "EditarDoctorEntidad"
       }
     }
   }

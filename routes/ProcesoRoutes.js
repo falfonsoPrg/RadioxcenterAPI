@@ -83,6 +83,16 @@ router.post('/crearUsuario', async(req,res)=>{
                 error: Mensajes.ErrorAlGuardar
             })
         }
+
+        //Agregar el usuario a la bd
+        const usuario = await UsuarioController.createUsuario( usuarioSingleton.data )
+        if(usuario.errors || usuario.name){
+            console.log(usuario)
+            return res.status(400).send({
+                error: Mensajes.ErrorAlGuardar
+            })
+        }
+        console.log("Usuario agregado en la BD")
     }
     
     const rta = singleton.setNewUsuario(req.body)
@@ -171,18 +181,6 @@ router.post('/crearConsentimiento', async(req,res)=>{
     }
     console.log("Usuario obtenido de la memoria")
 
-    if(usuarioSingleton.data.esNuevo){
-        //Agregar el usuario a la bd
-        const usuario = await UsuarioController.createUsuario( usuarioSingleton.data )
-        if(usuario.errors || usuario.name){
-            console.log(usuario)
-            return res.status(400).send({
-                error: Mensajes.ErrorAlGuardar
-            })
-        }
-        console.log("Usuario agregado en la BD")
-    }
-
     const usuario = await UsuarioController.getUsuarioPorDocumento( usuarioSingleton.data.documento_usuario )
     if(usuario.length == 0){
         return res.status(400).send({
@@ -191,7 +189,6 @@ router.post('/crearConsentimiento', async(req,res)=>{
     }
     console.log("Usuario obtenido de la BD")
     
-
     //Agregar una transacción
     const transaccion = await TransaccionController.createTransaccion(usuarioSingleton.transaccion)
     if(transaccion.errors || transaccion.name){
@@ -247,9 +244,14 @@ router.post('/crearConsentimiento', async(req,res)=>{
         if(usuarioSingleton.transaccion.tipo_compra != "Convenio"){
             var dataToSend = usuarioSingleton.data.tutor ? usuarioSingleton.tutor : usuario[0]
             const rutaFactura = PDFMaker.createFactura(dataToSend,usuarioSingleton.data.tutor,usuarioSingleton.procesos,123456) //TODO
+            var resumenFactura = ""
+            usuarioSingleton.procesos.forEach(p => {
+                resumenFactura += p.nombre_servicio + " "
+            })
             const factura = await FacturaController.createFactura({
                 ruta_factura: rutaFactura,
                 numero_factura: 123456,
+                resumen_factura: resumenFactura,
                 documento_usuario: usuarioSingleton.data.documento_usuario,
                 valor_total_factura: usuarioSingleton.transaccion.valor_transaccion,
                 fecha_factura: new Date(),

@@ -13,6 +13,10 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        resumen_factura:{
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         ruta_factura: {
             type: DataTypes.STRING,
             allowNull: false

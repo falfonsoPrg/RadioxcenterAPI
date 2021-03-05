@@ -6,13 +6,14 @@ const {CreateConsentimientoValidation} = require('../middlewares/Validation')
 const path = require("path");
 const fs = require('fs');
 
-router.get('/download', (req,res) => {
+router.get('/download/:nombre_archivo', (req,res) => {
     /**
         #swagger.tags = ['Consentimientos']
-        #swagger.path = '/consentimientos/download'
-        #swagger.description = 'Endpoint para obtener consentimientos'
+        #swagger.path = '/consentimientos/download/{nombre_archivo}'
+        #swagger.description = 'Endpoint para descargar un consentimiento'
      */
-    const file = path.join(__dirname,'..','files/pdf/consentimiento_juanito.pdf')
+    var ruta = 'files/pdf/consentimientos/' + req.params.nombre_archivo
+    const file = path.join(__dirname,'..',ruta)
     if(!fs.existsSync(file)) return res.status(404).send({
         error: Mensajes.RegistroNoEncontradoPorParametro
     })

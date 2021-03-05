@@ -2,6 +2,8 @@ const router = require('express').Router()
 const EntidadController = require('../controllers/EntidadController')
 const ConvenioController = require('../controllers/ConvenioController')
 const ServicioController = require('../controllers/ServicioController')
+const DoctorController = require('../controllers/DoctorController')
+const EntidadDoctorController = require('../controllers/EntidadDoctorController')
 const Mensajes = require('../middlewares/Mensajes')
 const {UpdateEntidadValidation, CreateEntidadvalidation} = require('../middlewares/Validation')
 
@@ -164,6 +166,46 @@ router.put('/:cod_entidad/convenios/', async(req,res)=>{
             fecha_final_convenio: req.body.fecha_final_convenio
         });
         if(savedConvenio.errors || savedConvenio.name){
+            return res.status(400).send({
+                error: Mensajes.ErrorAlActualizar
+            })
+        }
+    }
+    return res.status(204).send()
+})
+
+router.put('/:cod_entidad/doctores/', async(req,res)=>{
+    /**
+        #swagger.tags = ['Entidades']
+        #swagger.path = '/entidades/{cod_entidad}/doctores'
+        #swagger.description = 'Endpoint para editar los doctores de una entidad.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/EditarDoctorEntidad'
+            }
+        }]
+     */
+    const doctores_entidad = req.body.doctores_entidad
+    const doctores = await DoctorController.getDoctores()
+    const error = doctores_entidad.every(element => doctores.find(x => x.cod_doctor == element));
+    if(!error){
+        return res.status(400).send({
+            error: Mensajes.ErrorAlActualizar
+        })
+    }
+    //Remove all convenios
+    await EntidadDoctorController.deleteAllDoctoresFromEntidad(req.params.cod_entidad)
+    //Iterate through doctores_entidad adding them
+    for (let i = 0; i < doctores_entidad.length; i++) {
+        const savedDoctor = await EntidadDoctorController.createEntidadDoctor({
+            cod_entidad: req.params.cod_entidad,
+            cod_doctor: doctores_entidad[i]
+        });
+        if(savedDoctor.errors || savedDoctor.name){
             return res.status(400).send({
                 error: Mensajes.ErrorAlActualizar
             })

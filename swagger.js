@@ -283,6 +283,7 @@ const doc = {
         Factura: {
             "ruta_factura":"",
             "numero_factura":0,
+            "resumen_factura":"",
             "documento_usuario":"",
             "valor_total_factura":0.0,
             "fecha_factura":"yyyy-MM-dd",
@@ -295,6 +296,9 @@ const doc = {
             "valor_total":0,
             "cod_factura":0,
             "cod_tipo_nota_credito":0
+        },
+        EditarDoctorEntidad: {
+            "doctores_entidad": [0]
         }
 
     }

@@ -36,4 +36,16 @@ EntidadDoctorController.updateEntidadDoctor = async (pEntidadDoctor) => {
     }
 }
 
+EntidadDoctorController.deleteAllDoctoresFromEntidad = async (pCod_entidad) => {
+    try {
+        return await Entidad_doctor.destroy({
+            where: {
+                cod_entidad : pCod_entidad
+            }
+        })
+    } catch (error) {
+        return error
+    }
+}
+
 module.exports = EntidadDoctorController
