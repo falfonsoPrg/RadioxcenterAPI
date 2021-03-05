@@ -85,7 +85,7 @@ router.post('/crearUsuario', async(req,res)=>{
         }
 
         //Agregar el usuario a la bd
-        const usuario = await UsuarioController.createUsuario( usuarioSingleton.data )
+        const usuario = await UsuarioController.createUsuario( req.body )
         if(usuario.errors || usuario.name){
             console.log(usuario)
             return res.status(400).send({
@@ -93,6 +93,8 @@ router.post('/crearUsuario', async(req,res)=>{
             })
         }
         console.log("Usuario agregado en la BD")
+    }else{
+        await UsuarioController.updateUsuario( req.body )
     }
     
     const rta = singleton.setNewUsuario(req.body)
