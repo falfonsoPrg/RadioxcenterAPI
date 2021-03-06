@@ -484,6 +484,8 @@ module.exports.AgregarTutorValidation = AgregarTutorValidation = (data) => {
 module.exports.AgregarTransaccionValidation = AgregarTransaccionValidation = (data) => {
     const schema = Joi.object({
         cod_entidad_doctor: Joi.number().allow(null),
+        motivo: Joi.string().required(),
+        ipv4: Joi.string().required(),
         documento_usuario: Joi.string().required(),
         valor_transaccion: Joi.number().required(),
         fecha_transaccion: Joi.string().required(),
