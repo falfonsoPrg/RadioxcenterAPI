@@ -4,19 +4,6 @@ const Mensajes = require('../middlewares/Mensajes')
 const {  } = require('../middlewares/Validation')
 const path = require("path");
 const fs = require('fs');
-router.get('/download/:nombre_archivo', (req,res) => {
-    /**
-        #swagger.tags = ['Facturas']
-        #swagger.path = '/facturas/download/{nombre_archivo}'
-        #swagger.description = 'Endpoint para descargar una factura'
-     */
-    var ruta = 'files/pdf/facturas/' + req.params.nombre_archivo
-    const file = path.join(__dirname,'..',ruta)
-    if(!fs.existsSync(file)) return res.status(404).send({
-        error: Mensajes.RegistroNoEncontradoPorParametro
-    })
-    return res.download(file)
-})
 
 router.get('/:cod_factura', async (req,res)=>{
     /**

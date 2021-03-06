@@ -1,4 +1,4 @@
-var fonts = {
+﻿var fonts = {
   Roboto: {
     normal: './fonts/Roboto-Regular.ttf',
     bold: './fonts/Roboto-Medium.ttf',
@@ -76,7 +76,7 @@ PDFMaker.crearConsentimientoCovid = (imagePath,data) => {
       }
     }
   };
-  var savePath = "./files/pdf/consentimientos/"
+  var savePath = "./public/pdf/consentimientos/"
   var today = new Date()
   var timestamp = today.getDate()+""+today.getMonth()+""+today.getFullYear()+""+today.getHours()+""+today.getMinutes()
   var filename = data.documento_usuario + "_" + timestamp + ".pdf"
@@ -154,7 +154,7 @@ PDFMaker.crearConsentimientoCovidTutor = (imagePath,data,tutor) => {
       }
     }
   };
-  var savePath = "./files/pdf/consentimientos/"
+  var savePath = "./public/pdf/consentimientos/"
   var today = new Date()
   var timestamp = today.getDate()+""+today.getMonth()+""+today.getFullYear()+""+today.getHours()+""+today.getMinutes()
   var filename = data.documento_usuario + "_" + timestamp + ".pdf"
@@ -285,7 +285,7 @@ PDFMaker.createFactura = (data,esTutor,servicios,nFactura) => {
       }
     }
   };
-  var savePath = "./files/pdf/facturas/"
+  var savePath = "./public/pdf/facturas/"
   var today = new Date()
   var timestamp = today.getDate()+""+today.getMonth()+""+today.getFullYear()+""+today.getHours()+""+today.getMinutes()
   var filename = dataToShow.documento + "_" + timestamp + ".pdf"

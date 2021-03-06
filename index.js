@@ -1,6 +1,7 @@
-const express = require('express')
+﻿const express = require('express')
 const dotenv = require('dotenv')
 const cors = require('cors');
+var path = require('path');
 const app = express()
 const port = process.env.PORT || 4000
 dotenv.config();
@@ -64,7 +65,7 @@ const NotaCreditoRoutes = require('./routes/NotaCreditoRoutes');
 //Middleware
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
-app.use(express.static('public'));
+app.use('/files', express.static(__dirname + '/public'));
 
 //Route Middleware
 app.use('/api/',AutorizacionRoutes)
