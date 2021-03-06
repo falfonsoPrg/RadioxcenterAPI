@@ -494,3 +494,9 @@ module.exports.AgregarTransaccionValidation = AgregarTransaccionValidation = (da
     })
     return schema.validate(data)
 }
+module.exports.DoctorEntidadPutValidation = DoctorEntidadPutValidation = (data) => {
+    const schema = Joi.object({
+        doctores_entidad: Joi.array().required()
+    })
+    return schema.validate(data)
+}

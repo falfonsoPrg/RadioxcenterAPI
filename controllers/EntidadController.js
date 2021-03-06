@@ -9,10 +9,20 @@ EntidadController.getEntidad = async (cod_entidad) => {
         return error
     }
 }
-EntidadController.getAllFromEntidad = async (cod_entidad) => {
+EntidadController.getAllFromEntidad = async () => {
     try {
         return await Entidad.findAll({
             where: where(col(`Convenios.cod_convenio`), Op.not, null),
+            include: {all: true},
+            order:[['cod_entidad','ASC']],
+        })
+    } catch (error) {
+        return error
+    }
+}
+EntidadController.getAllDoctoresFromEntidad = async () => {
+    try {
+        return await Entidad.findAll({
             include: {all: true},
             order:[['cod_entidad','ASC']],
         })

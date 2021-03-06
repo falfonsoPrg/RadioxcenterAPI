@@ -5,7 +5,7 @@ const ServicioController = require('../controllers/ServicioController')
 const DoctorController = require('../controllers/DoctorController')
 const EntidadDoctorController = require('../controllers/EntidadDoctorController')
 const Mensajes = require('../middlewares/Mensajes')
-const {UpdateEntidadValidation, CreateEntidadvalidation} = require('../middlewares/Validation')
+const {UpdateEntidadValidation, CreateEntidadvalidation, DoctorEntidadPutValidation} = require('../middlewares/Validation')
 
 router.get('/convenios', async(req,res)=>{
     /**
@@ -17,6 +17,21 @@ router.get('/convenios', async(req,res)=>{
     if(convenios.length > 0) {
         return res.send({
             respuesta: convenios
+        })
+    }
+    return res.status(400).send()
+})
+
+router.get('/doctores', async(req,res)=>{
+    /**
+        #swagger.tags = ['Entidades']
+        #swagger.path = '/entidades/doctores'
+        #swagger.description = 'Endpoint para obtener todos los doctores de todas las entidades'
+     */
+    const doctores = await EntidadController.getAllDoctoresFromEntidad();
+    if(doctores.length > 0) {
+        return res.send({
+            respuesta: doctores
         })
     }
     return res.status(400).send()
