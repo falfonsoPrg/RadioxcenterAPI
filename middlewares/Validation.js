@@ -118,6 +118,7 @@ module.exports.UpdateTipoFacturacionValidation = UpdateTipoFacturacionValidation
 
 module.exports.CreateUsuarioValidation = CreateUsuarioValidation = (data) =>{
     const schema = Joi.object({
+        cod_usuario: Joi.number().allow(null),
         nombres_usuario: Joi.string().required(),
         apellidos_usuario: Joi.string().required(),
         telefono_usuario: Joi.string().allow(''),
