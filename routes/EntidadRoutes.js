@@ -204,10 +204,15 @@ router.put('/:cod_entidad/doctores/', async(req,res)=>{
             }
         }]
      */
+
+    const {error} = DoctorEntidadPutValidation(req.body)
+    if(error) return res.status(422).send({
+        error: error.details[0].message
+    })
     const doctores_entidad = req.body.doctores_entidad
     const doctores = await DoctorController.getDoctores()
-    const error = doctores_entidad.every(element => doctores.find(x => x.cod_doctor == element));
-    if(!error){
+    const errorDoctores = doctores_entidad.every(element => doctores.find(x => x.cod_doctor == element));
+    if(!errorDoctores){
         return res.status(400).send({
             error: Mensajes.ErrorAlActualizar
         })
