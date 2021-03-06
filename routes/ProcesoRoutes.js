@@ -14,6 +14,7 @@ const Mensajes = require('../middlewares/Mensajes')
 const {CreateProcesoValidation,
     UpdateProcesoValidation,
     AgregarTutorValidation,
+    AgregarTransaccionValidation,
     CreateUsuarioValidation} = require('../middlewares/Validation')
 
 const Singleton = require('../services/ProcesosSingleton')
