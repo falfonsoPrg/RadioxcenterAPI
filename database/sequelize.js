@@ -31,6 +31,7 @@ const PaqueteServicioModel = require('../models/PaqueteServicioModel')
 const FacturaModel = require('../models/FacturaModel')
 const TransaccionFacturaModel = require('../models/TransaccionFacturaModel')
 const NotaCreditoModel = require('../models/NotaCreditoModel')
+const NumeracionModel = require('../models/NumeracionModel')
 
 
 //Conection with database
@@ -88,7 +89,7 @@ const Consentimiento = ConsentimientoModel(sequelize);
 const Factura = FacturaModel(sequelize);
 const TransaccionFactura = TransaccionFacturaModel(sequelize);
 const NotaCredito = NotaCreditoModel(sequelize);
-
+const Numeracion = NumeracionModel(sequelize);
 
 //Create the Relationships
 Departamento.hasMany(Ciudad,{foreignKey: 'cod_departamento', sourceKey:'cod_departamento'});
@@ -229,6 +230,42 @@ sequelize.sync( resetDb ).then( async () => {
         where: {cod_tipo_facturacion:2},
         defaults: {cod_tipo_facturacion:2,nombre_tipo_facturacion:"Electrónica"}
     })
+    await Numeracion.findOrCreate({
+        where: {cod_numeracion:1},
+        defaults: {
+            cod_numeracion:1,
+            numeracion_siglas:"FAEL",
+            numeracion_nombre: "Facturación Electrónica",
+            numeracion_inicial: 1,
+            numeracion_final: 10000,
+            numeracion_aumento: 1,
+            numeracion_actual: 1
+        }
+    })
+    await Numeracion.findOrCreate({
+        where: {cod_numeracion:2},
+        defaults: {
+            cod_numeracion:2,
+            numeracion_siglas:"FPOS",
+            numeracion_nombre: "Facturación Manual en Punto de Venta",
+            numeracion_inicial: 1,
+            numeracion_final: 10000,
+            numeracion_aumento: 1,
+            numeracion_actual: 1
+        }
+    })
+    await Numeracion.findOrCreate({
+        where: {cod_numeracion:3},
+        defaults: {
+            cod_numeracion:3,
+            numeracion_siglas:"FTRAN",
+            numeracion_nombre: "Transacción Electrónica",
+            numeracion_inicial: 1,
+            numeracion_final: 10000,
+            numeracion_aumento: 1,
+            numeracion_actual: 1
+        }
+    })
     var dep = await Departamento.findAll()
     var ciud = await Ciudad.findAll()
     if(dep.length == 0 || ciud.length == 0 ) CargarDepartamentos(Departamento,Ciudad)
@@ -267,7 +304,7 @@ module.exports = {
     Paquete_Servicio,
     Factura,
     TransaccionFactura,
-    NotaCredito
-
+    NotaCredito,
+    Numeracion
 
 }

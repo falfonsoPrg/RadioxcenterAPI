@@ -2831,6 +2831,90 @@
           }
         }
       }
+    },
+    "/numeracion/{cod_numeracion}": {
+      "get": {
+        "tags": [
+          "Numeración"
+        ],
+        "description": "Endpoint para obtener una numeracion",
+        "parameters": [
+          {
+            "name": "cod_numeracion",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/numeracion": {
+      "get": {
+        "tags": [
+          "Numeración"
+        ],
+        "description": "Endpoint para obtener numeraciones",
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Numeración"
+        ],
+        "description": "Endpoint para crear una numeración.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Numeracion"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Numeración"
+        ],
+        "description": "Endpoint para editar una numeración.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Numeracion"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -3852,6 +3936,38 @@
       },
       "xml": {
         "name": "EditarDoctorEntidad"
+      }
+    },
+    "Numeracion": {
+      "type": "object",
+      "properties": {
+        "numeracion_siglas": {
+          "type": "string",
+          "example": ""
+        },
+        "numeracion_nombre": {
+          "type": "string",
+          "example": ""
+        },
+        "numeracion_inicial": {
+          "type": "number",
+          "example": 0
+        },
+        "numeracion_final": {
+          "type": "number",
+          "example": 0
+        },
+        "numeracion_aumento": {
+          "type": "number",
+          "example": 0
+        },
+        "numeracion_actual": {
+          "type": "number",
+          "example": 0
+        }
+      },
+      "xml": {
+        "name": "Numeracion"
       }
     }
   }

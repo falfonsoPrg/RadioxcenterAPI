@@ -31,6 +31,7 @@ const endpointsFiles = [
     './routes/UsuarioRoutes.js',
     './routes/FacturaRoutes.js',
     './routes/NotaCreditoRoutes.js',
+    './routes/NumeracionRoutes.js',
 ]
 
 const port = process.env.HOST_FOR_SWAGGER || 'localhost:4000'
@@ -299,6 +300,14 @@ const doc = {
         },
         EditarDoctorEntidad: {
             "doctores_entidad": [0]
+        },
+        Numeracion:{
+            "numeracion_siglas":"",
+            "numeracion_nombre":"",
+            "numeracion_inicial":0,
+            "numeracion_final":0,
+            "numeracion_aumento":0,
+            "numeracion_actual":0
         }
 
     }
