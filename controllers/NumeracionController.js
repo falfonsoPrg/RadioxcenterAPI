@@ -39,9 +39,8 @@ NumeracionController.updateNumeracion = async(pNumeracion) => {
 NumeracionController.aumentarNumeracion = async(cod_numeracion) => {
     try{
         var numeracion = await Numeracion.findByPk(cod_numeracion)
-        numeracion.numeracion_actual = numeracion.numeracion_actual + numeracion.numeracion_aumento
         if(numeracion.numeracion_actual > numeracion.numeracion_final) return [0]
-        return await Numeracion.update(numeracion,{
+        return await Numeracion.update({numeracion_actual: numeracion.numeracion_actual + numeracion.numeracion_aumento},{
             where:{
                 cod_numeracion : numeracion.cod_numeracion
             }
