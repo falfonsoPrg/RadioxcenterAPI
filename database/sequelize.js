@@ -1,7 +1,7 @@
 // Imports
 
 const Sequelize = require("sequelize")
-const CargarDepartamentos = require("../services/CargarDepartamentosYCiudades")
+const Initializer = require("../services/InicializarData")
 
 const DepartamentoModel = require("../models/DepartamentoModel")
 const CiudadModel = require("../models/CiudadModel");
@@ -193,82 +193,29 @@ Tipo_nota_credito.hasMany(NotaCredito, {foreignKey: 'cod_tipo_nota_credito', sou
 var resetDb = { force:false };
 
 sequelize.sync( resetDb ).then( async () => {
-    console.log("Conexion con la base de datos establecida")
-    await Tipo_empleado.findOrCreate({
-        where: {cod_tipo_empleado:1},
-        defaults: {cod_tipo_empleado:1,nombre_tipo_empleado:"Empleado"}
-    })
-    await Tipo_documento.findOrCreate({
-        where: {cod_tipo_documento:1},
-        defaults: {cod_tipo_documento:1,nombre_tipo_documento:"Cédula de ciudadania"}
-    })
-    await Tipo_Consentimiento.findOrCreate({
-        where: {cod_tipo_consentimiento:1},
-        defaults: {cod_tipo_consentimiento:1,nombre_tipo_consentimiento:"Consentimiento Covid"}
-    })
-    await Tipo_Consentimiento.findOrCreate({
-        where: {cod_tipo_consentimiento:2},
-        defaults: {cod_tipo_consentimiento:2,nombre_tipo_consentimiento:"Consentimiento Intraoral"}
-    })
-    await Tipo_Consentimiento.findOrCreate({
-        where: {cod_tipo_consentimiento:3},
-        defaults: {cod_tipo_consentimiento:3,nombre_tipo_consentimiento:"Consentimiento Extraoral"}
-    })
-    await Tipo_pago.findOrCreate({
-        where: {cod_tipo_pago:1},
-        defaults: {cod_tipo_pago:1,nombre_tipo_pago:"Efectivo"}
-    })
-    await Tipo_pago.findOrCreate({
-        where: {cod_tipo_pago:2},
-        defaults: {cod_tipo_pago:2,nombre_tipo_pago:"Electrónica"}
-    })
-    await Tipo_facturacion.findOrCreate({
-        where: {cod_tipo_facturacion:1},
-        defaults: {cod_tipo_facturacion:1,nombre_tipo_facturacion:"Efectivo"}
-    })
-    await Tipo_facturacion.findOrCreate({
-        where: {cod_tipo_facturacion:2},
-        defaults: {cod_tipo_facturacion:2,nombre_tipo_facturacion:"Electrónica"}
-    })
-    await Numeracion.findOrCreate({
-        where: {cod_numeracion:1},
-        defaults: {
-            cod_numeracion:1,
-            numeracion_siglas:"FAEL",
-            numeracion_nombre: "Facturación Electrónica",
-            numeracion_inicial: 1,
-            numeracion_final: 10000,
-            numeracion_aumento: 1,
-            numeracion_actual: 1
-        }
-    })
-    await Numeracion.findOrCreate({
-        where: {cod_numeracion:2},
-        defaults: {
-            cod_numeracion:2,
-            numeracion_siglas:"FPOS",
-            numeracion_nombre: "Facturación Manual en Punto de Venta",
-            numeracion_inicial: 1,
-            numeracion_final: 10000,
-            numeracion_aumento: 1,
-            numeracion_actual: 1
-        }
-    })
-    await Numeracion.findOrCreate({
-        where: {cod_numeracion:3},
-        defaults: {
-            cod_numeracion:3,
-            numeracion_siglas:"FTRAN",
-            numeracion_nombre: "Transacción Electrónica",
-            numeracion_inicial: 1,
-            numeracion_final: 10000,
-            numeracion_aumento: 1,
-            numeracion_actual: 1
-        }
-    })
+    var te = Tipo_empleado.findAll()
+    if(te.length == 0) await Initializer.CargarTipoEmpleado(Tipo_empleado)
+    
+    var td = await Tipo_documento.findAll()
+    if(td.length == 0) await Initializer.CargarTipoDocumento(Tipo_documento)
+    
+    var tc = await Tipo_Consentimiento.findAll()
+    if(tc.length == 0) await Initializer.CargarTipoConsentimiento(Tipo_Consentimiento)
+
+    var tp = await Tipo_pago.findAll()
+    if(tp.length == 0) await Initializer.CargarTipoPago(Tipo_pago)
+
+    var tf = await Tipo_facturacion.findAll()
+    if(tf.length == 0) await Initializer.CargarTipoFacturacion(Tipo_facturacion)
+
+    var nums = await Numeracion.findAll()
+    if(nums.length == 0) await Initializer.CargarNumeraciones(Numeracion)
+
     var dep = await Departamento.findAll()
     var ciud = await Ciudad.findAll()
-    if(dep.length == 0 || ciud.length == 0 ) CargarDepartamentos(Departamento,Ciudad)
+    if(dep.length == 0 || ciud.length == 0 ) Initializer.CargarDepartamentos(Departamento,Ciudad)
+
+    console.log("Conexion con la base de datos establecida")
 }).catch(err => {
     console.log(err)
 })

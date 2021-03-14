@@ -8,6 +8,10 @@ module.exports = (sequelize) => {
             autoIncrement: true,
             allowNull: false
         },
+        numero_nota_credito: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         fecha_nota_credito: {
             type: DataTypes.DATE
         },

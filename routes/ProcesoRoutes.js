@@ -1,5 +1,6 @@
 ﻿const router = require('express').Router()
 
+const Constantes = require("../middlewares/Constantes")
 const ProcesoController = require('../controllers/ProcesoController')
 const TipoDocumentoController = require('../controllers/TipoDocumentoController')
 const UsuarioController = require('../controllers/UsuarioController')
@@ -8,6 +9,7 @@ const TransaccionServicioController = require('../controllers/TransaccionServici
 const FacturaController = require('../controllers/FacturaController')
 const TransaccionFactura = require('../controllers/TransaccionFacturaController')
 const ConsentimientoController = require('../controllers/ConsentimientoController')
+const NumeracionController = require('../controllers/NumeracionController')
 
 
 const Mensajes = require('../middlewares/Mensajes')
@@ -192,6 +194,8 @@ router.post('/crearConsentimiento', async(req,res)=>{
     }
     console.log("Usuario obtenido de la BD")
     
+    const numeracionTransaccion = await NumeracionController.getNumeracion(Constantes.TRAN_CODE)
+    usuarioSingleton.transaccion.numero_transaccion = numeracionTransaccion.numeracion_actual
     //Agregar una transacción
     const transaccion = await TransaccionController.createTransaccion(usuarioSingleton.transaccion)
     if(transaccion.errors || transaccion.name){
@@ -200,6 +204,7 @@ router.post('/crearConsentimiento', async(req,res)=>{
             error: Mensajes.ErrorAlGuardar
         })
     }
+    await NumeracionController.aumentarNumeracion(Constantes.TRAN_CODE)
     console.log("Transaccion agregado en la BD")
     //Agregar los servicios a la transaccion
     const tmpServicios = usuarioSingleton.transaccion.servicios
@@ -230,7 +235,7 @@ router.post('/crearConsentimiento', async(req,res)=>{
             ruta = pdfMaker.crearConsentimientoCovid(req.body.signature,dataToConsentimiento)
         }
         var consent = await ConsentimientoController.createConsentimiento({
-            cod_tipo_consentimiento: 1,
+            cod_tipo_consentimiento: Constantes.CONSENTIMIENTO_COVID,
             ubicacion_consentimiento: ruta,
             cod_transaccion: transaccion.cod_transaccion
         })
@@ -245,21 +250,22 @@ router.post('/crearConsentimiento', async(req,res)=>{
 
 
         if(usuarioSingleton.transaccion.tipo_compra != "Convenio"){
+            const numeracionFactura = await NumeracionController.getNumeracion(Constantes.FPOS_CODE)
             var dataToSend = usuarioSingleton.data.tutor ? usuarioSingleton.tutor : usuario[0]
-            const rutaFactura = PDFMaker.createFactura(dataToSend,usuarioSingleton.data.tutor,usuarioSingleton.procesos,123456) //TODO
+            const rutaFactura = PDFMaker.createFactura(dataToSend,usuarioSingleton.data.tutor,usuarioSingleton.procesos,numeracionFactura.numeracion_actual)
             var resumenFactura = ""
             usuarioSingleton.procesos.forEach(p => {
                 resumenFactura += p.nombre_servicio + " "
             })
             const factura = await FacturaController.createFactura({
                 ruta_factura: rutaFactura,
-                numero_factura: 123456,
+                numero_factura: numeracionFactura.numeracion_actual,
                 resumen_factura: resumenFactura,
                 documento_usuario: usuarioSingleton.data.documento_usuario,
                 valor_total_factura: usuarioSingleton.transaccion.valor_transaccion,
                 fecha_factura: new Date(),
                 direccion_mac: "28:cf:da:01:ea:05",
-                cod_tipo_pago: 1
+                cod_tipo_pago: Constantes.TPAGO_EFECTIVO
             });
             if(factura.errors || factura.name){
                 console.log(factura)
@@ -267,6 +273,7 @@ router.post('/crearConsentimiento', async(req,res)=>{
                     error: Mensajes.ErrorAlGuardar
                 })
             }
+            await NumeracionController.aumentarNumeracion(Constantes.FPOS_CODE)
             console.log("Factura creada en la base de datos");
             const transaccionFactura = await TransaccionFactura.createTransaccionFactura({
                 cod_transaccion: transaccion.cod_transaccion,

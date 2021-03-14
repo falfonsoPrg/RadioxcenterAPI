@@ -12,7 +12,9 @@ TransaccionController.getTransaccion = async(cod_transaccion) => {
 
 TransaccionController.getTransacciones = async () => {
     try {
-        return await Transaccion.findAll()
+        return await Transaccion.findAll({
+            include: {all: true}
+        })
     } catch (error) {
         return error
     }

@@ -36,4 +36,19 @@ NumeracionController.updateNumeracion = async(pNumeracion) => {
     }
 }
 
+NumeracionController.aumentarNumeracion = async(cod_numeracion) => {
+    try{
+        var numeracion = await Numeracion.findByPk(cod_numeracion)
+        numeracion.numeracion_actual = numeracion.numeracion_actual + numeracion.numeracion_aumento
+        if(numeracion.numeracion_actual > numeracion.numeracion_final) return [0]
+        return await Numeracion.update(numeracion,{
+            where:{
+                cod_numeracion : numeracion.cod_numeracion
+            }
+        })
+    } catch (error) {
+        return error
+    }
+}
+
 module.exports = NumeracionController
