@@ -145,12 +145,9 @@ class Procesos {
         return false
     }
     completarProceso(documento_usuario, cod_servicio){
-console.log("Entro")
         const index = this.getIndexUsuario(documento_usuario)
         if(index != -1){
-console.log("Encontro")
             if(this.procesos[index].procesosGenerales.actual != "En procesos" && this.procesos[index].procesosGenerales.actual != "Resultados entregados" ) return false
-console.log("Agrego")
             this.procesos[index].procesos.forEach(p => {
                 if(p.cod_servicio == cod_servicio){
                     p.completado = true
@@ -164,7 +161,6 @@ console.log("Agrego")
         return false
     }
     entregarProceso(documento_usuario, cod_servicio){
-console.log("Yes")
         const index = this.getIndexUsuario(documento_usuario)
         if(index != -1){
 
