@@ -1,28 +1,32 @@
-const readXlsxFile = require('read-excel-file/node');
+const Excel = require('exceljs');
 const Constantes = require("../middlewares/Constantes")
 
 Initializer = {}
-Initializer.CargarDepartamentos = (pDep, pCiud) => {
-    readXlsxFile('./services/departamentos.xlsx').then( async (rows) => {
-        console.log("Comienza la carga de departamentos o ciudades");
-        for (let i = 0; i < rows.length; i++) {
-            var dep = await pDep.findAll({where:{nom_departamento: rows[i][0]}});
-            var cod_dep;
-            if(dep.length == 0){
-                dep = await pDep.create({nom_departamento:rows[i][0]})
-                cod_dep=dep.cod_departamento
-            }else{
-                cod_dep = dep[0].cod_departamento
-            }
-            const ciud = await pCiud.findAll({where:{nom_ciudad: rows[i][2]}});
-            if(ciud.length == 0){
-                await pCiud.create({nom_ciudad:rows[i][2],cod_departamento:cod_dep})
-            }
-        }
-        console.log("Departamentos y ciudades cargadas con éxito");
-    }).catch((err) => {
-        console.log(err);
+Initializer.CargarDepartamentos = async (pDep, pCiud) => {
+    var arr = []
+    const workbook = new Excel.Workbook();
+    await workbook.xlsx.readFile('./services/departamentos.xlsx');
+    workbook.eachSheet((sheet, sheetid) => {
+        sheet.eachRow((row, rowNumber) => {
+            arr.push([row.values[1], row.values[3],row.values[2]])
+        })
     })
+    for (let i = 0; i < arr.length; i++) {
+        const row = arr[i];
+        var dep = await pDep.findAll({where:{nom_departamento: row[0]}});
+        var cod_dep;
+        if(dep.length == 0){
+            dep = await pDep.create({nom_departamento:row[0]})
+            cod_dep=dep.cod_departamento
+        }else{
+            cod_dep = dep[0].cod_departamento
+        }
+        const ciud = await pCiud.findAll({where:{nom_ciudad: row[1],id_ciudad: row[2]}});
+        if(ciud.length == 0){
+            await pCiud.create({nom_ciudad:row[1],id_ciudad: row[2],cod_departamento:cod_dep})
+        }
+    }
+    console.log("Departamentos y ciudades cargadas con éxito");
 }
 
 Initializer.CargarNumeraciones = async (pNumeracion) => {

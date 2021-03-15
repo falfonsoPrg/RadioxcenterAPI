@@ -2417,6 +2417,16 @@
         }
       }
     },
+    "/transacciones/generarReporte": {
+      "get": {
+        "tags": [
+          "Transacciones"
+        ],
+        "description": "Endpoint para generar un reporte de transacciones",
+        "parameters": [],
+        "responses": {}
+      }
+    },
     "/transacciones/{cod_transaccion}": {
       "get": {
         "tags": [

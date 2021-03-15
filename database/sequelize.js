@@ -213,7 +213,7 @@ sequelize.sync( resetDb ).then( async () => {
 
     var dep = await Departamento.findAll()
     var ciud = await Ciudad.findAll()
-    if(dep.length == 0 || ciud.length == 0 ) Initializer.CargarDepartamentos(Departamento,Ciudad)
+    if(dep.length == 0 || ciud.length == 0 ) await Initializer.CargarDepartamentos(Departamento,Ciudad)
 
     console.log("Conexion con la base de datos establecida")
 }).catch(err => {
