@@ -3,6 +3,23 @@ const TransaccionController = require('../controllers/TransaccionController')
 const Mensajes = require('../middlewares/Mensajes')
 const { CreateTransaccionValidation, UpdateTransaccionValidation} = require('../middlewares/Validation')
 const Generador = require("../services/GenerateReport")
+
+router.get('/entidades/:cod_entidad',async(req,res)=>{
+    /**
+        #swagger.tags = ['Transacciones']
+        #swagger.path = '/transacciones/entidades/{cod_entidad}'
+        #swagger.description = 'Endpoint para obtener todas las transacciones pendientes de una entidad'
+     */
+    const transacciones = await TransaccionController.getTransaccionesDeEntidadesNoPagadas(req.params.cod_entidad) 
+    if(transacciones.length > 0){
+        return res.send({
+            respuesta: transacciones
+        })
+    }
+    return res.status(404).send({
+        error: Mensajes.RegistroNoEncontrado
+    })
+})
 router.get('/generarReporte',async(req,res)=>{
     /**
         #swagger.tags = ['Transacciones']

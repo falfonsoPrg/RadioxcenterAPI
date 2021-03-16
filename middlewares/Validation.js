@@ -500,3 +500,10 @@ module.exports.DoctorEntidadPutValidation = DoctorEntidadPutValidation = (data) 
     })
     return schema.validate(data)
 }
+
+module.exports.FacturarEntidadValidation = FacturarEntidadValidation = (data) => {
+    const schema = Joi.object({
+        cod_transacciones: Joi.array().min(1).required()
+    })
+    return schema.validate(data)
+}

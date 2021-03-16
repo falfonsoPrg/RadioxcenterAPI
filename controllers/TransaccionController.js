@@ -1,4 +1,5 @@
 const { Transaccion } = require('../database/sequelize')
+const { Op, where, col } = require("sequelize");
 
 TransaccionController = {}
 
@@ -19,6 +20,22 @@ TransaccionController.getTransacciones = async () => {
         return error
     }
 }
+TransaccionController.getTransaccionesDeEntidadesNoPagadas = async (pCodEntidad) => {
+    try {
+        return await Transaccion.findAll({
+            where: {
+                [Op.and]: [
+                    where(col(`Entidad_doctor.cod_entidad_doctor`), Op.not, null),
+                    where(col(`Transaccion_Facturas.cod_transaccion_factura`), Op.eq,null),
+                    where(col(`Entidad_doctor.cod_entidad`), Op.eq,pCodEntidad),
+                ]
+            },
+            include: {all: true}
+        })
+    } catch (error) {
+        return error
+    }
+}//Transaccion_Facturas
 
 TransaccionController.createTransaccion = async (pTransaccion) => {
     try {

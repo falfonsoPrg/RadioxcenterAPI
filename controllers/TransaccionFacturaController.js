@@ -1,4 +1,5 @@
 const { TransaccionFactura } = require('../database/sequelize')
+const { Op, where, col } = require("sequelize");
 
 TransaccionFacturaController = {}
 TransaccionFacturaController.getTransaccionFactura = async (cod_transaccion_factura) => {
@@ -11,7 +12,10 @@ TransaccionFacturaController.getTransaccionFactura = async (cod_transaccion_fact
 
 TransaccionFacturaController.getTransaccionFacturas = async() => {
     try{
-        return await TransaccionFactura.findAll()
+        return await TransaccionFactura.findAll({
+            where: where(col(`Transaccion.cod_entidad_doctor`), Op.not, null),
+            include: {all: true}
+        })
     } catch (error) {
         return error
     }

@@ -2417,6 +2417,26 @@
         }
       }
     },
+    "/transacciones/entidades/{cod_entidad}": {
+      "get": {
+        "tags": [
+          "Transacciones"
+        ],
+        "description": "Endpoint para obtener todas las transacciones pendientes de una entidad",
+        "parameters": [
+          {
+            "name": "cod_entidad",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/transacciones/generarReporte": {
       "get": {
         "tags": [
@@ -2674,6 +2694,20 @@
         }
       }
     },
+    "/facturas/entidades": {
+      "get": {
+        "tags": [
+          "Facturas"
+        ],
+        "description": "Endpoint para obtener facturas de las entidades",
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/facturas/{cod_factura}": {
       "get": {
         "tags": [
@@ -2754,6 +2788,41 @@
           },
           "404": {
             "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/facturas/facturarEntidad/{cod_entidad}": {
+      "put": {
+        "tags": [
+          "Facturas"
+        ],
+        "description": "Endpoint para facturar varias transacciones a una entidad.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Factura"
+            }
+          },
+          {
+            "name": "cod_entidad",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }

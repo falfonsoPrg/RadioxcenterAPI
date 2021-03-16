@@ -1,10 +1,29 @@
 const router = require('express').Router()
+const EntidadController = require('../controllers/EntidadController')
 const FacturaController = require('../controllers/FacturaController')
+const TransaccionController = require('../controllers/TransaccionController')
+const TransaccionFacturaController = require('../controllers/TransaccionFacturaController')
+const NumeracionController = require('../controllers/NumeracionController')
+const Constantes = require('../middlewares/Constantes')
 const Mensajes = require('../middlewares/Mensajes')
-const {  } = require('../middlewares/Validation')
-const path = require("path");
-const fs = require('fs');
+const { FacturarEntidadValidation } = require('../middlewares/Validation')
 
+router.get('/entidades', async (req,res)=>{
+    /**
+        #swagger.tags = ['Facturas']
+        #swagger.path = '/facturas/entidades'
+        #swagger.description = 'Endpoint para obtener facturas de las entidades'
+     */
+    const facturas = await TransaccionFacturaController.getTransaccionFacturas()
+    if(facturas.length > 0){
+        return res.send({
+            respuesta: facturas
+        })
+    }
+    return res.status(404).send({
+        error: Mensajes.RegistroNoEncontrado
+    })
+})
 router.get('/:cod_factura', async (req,res)=>{
     /**
         #swagger.tags = ['Facturas']
@@ -67,6 +86,55 @@ router.post('/', async (req,res)=>{
         })
     }
     return res.status(201).send()
+})
+
+router.put('/facturarEntidad/:cod_entidad', async (req,res)=>{
+    /**
+        #swagger.tags = ['Facturas']
+        #swagger.path = '/facturas/facturarEntidad/{cod_entidad}'
+        #swagger.description = 'Endpoint para facturar varias transacciones a una entidad.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/Factura'
+            }
+        }]
+     */
+    const {error} = FacturarEntidadValidation(req.body)
+    if(error) return res.status(422).send({
+        error: error.details[0].message
+    })
+
+    const entidad = await EntidadController.getEntidad(req.params.cod_entidad)
+
+    const transacciones = await TransaccionController.getTransacciones()
+
+    var cod_transacciones = req.body.cod_transacciones
+
+    const allExist = cod_transacciones.filter(ct => transacciones.includes(t => t.cod_transaccion == ct))
+    if(allExist.length != cod_transacciones.length) return 0
+
+    const numeracion = await NumeracionController.getNumeracion(Constantes.FAEL_CODE)
+    
+    //Calculate total
+
+    const factura = await FacturaController.createFactura({
+        numero_factura: 0,
+        resumen_factura: "",
+        ruta_factura: "",
+        documento_usuario: entidad.nit_entidad,
+        valor_total_factura: 0.0,
+        fecha_factura: new Date(),
+        direccion_mac: "",
+        cod_tipo_pago: Constantes.FAEL_CODE
+    })
+
+    await NumeracionController.aumentarNumeracion(Constantes.FAEL_CODE)
+
+    return res.status(204).send()
 })
 
 router.put('/', async (req,res)=>{
