@@ -195,13 +195,10 @@ router.post('/crearConsentimiento', async(req,res)=>{
     console.log("Usuario obtenido de la BD")
     
     const numeracionTransaccion = await NumeracionController.getNumeracion(Constantes.TRAN_CODE)
-console.log(numeracionTransaccion.numeracion_actual)
     usuarioSingleton.transaccion.numero_transaccion = numeracionTransaccion.numeracion_actual
-console.log(usuarioSingleton.transaccion.numero_transaccion)
     //Agregar una transacción
     const transaccion = await TransaccionController.createTransaccion(usuarioSingleton.transaccion)
     if(transaccion.errors || transaccion.name){
-    console.log(transaccion)
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })
@@ -266,7 +263,7 @@ console.log(usuarioSingleton.transaccion.numero_transaccion)
                 documento_usuario: usuarioSingleton.data.documento_usuario,
                 valor_total_factura: usuarioSingleton.transaccion.valor_transaccion,
                 fecha_factura: new Date(),
-                direccion_mac: "28:cf:da:01:ea:05",
+                direccion_mac: usuarioSingleton.transaccion.ipv4,
                 cod_tipo_pago: Constantes.TPAGO_EFECTIVO
             });
             if(factura.errors || factura.name){

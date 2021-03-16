@@ -503,7 +503,8 @@ module.exports.DoctorEntidadPutValidation = DoctorEntidadPutValidation = (data) 
 
 module.exports.FacturarEntidadValidation = FacturarEntidadValidation = (data) => {
     const schema = Joi.object({
-        cod_transacciones: Joi.array().min(1).required()
+        cod_transacciones: Joi.array().min(1).required(),
+        ipv4: Joi.string().required()
     })
     return schema.validate(data)
 }

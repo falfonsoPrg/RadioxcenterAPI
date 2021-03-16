@@ -6,6 +6,7 @@ const TransaccionFacturaController = require('../controllers/TransaccionFacturaC
 const NumeracionController = require('../controllers/NumeracionController')
 const Constantes = require('../middlewares/Constantes')
 const Mensajes = require('../middlewares/Mensajes')
+const PDFMaker = require('../services/PDFMaker')
 const { FacturarEntidadValidation } = require('../middlewares/Validation')
 
 router.get('/entidades', async (req,res)=>{
@@ -115,22 +116,36 @@ router.put('/facturarEntidad/:cod_entidad', async (req,res)=>{
     var cod_transacciones = req.body.cod_transacciones
 
     const allExist = cod_transacciones.filter(ct => transacciones.includes(t => t.cod_transaccion == ct))
-    if(allExist.length != cod_transacciones.length) return 0
+    if(allExist.length != cod_transacciones.length){
+        return res.status(400).send({error: Mensajes.ErrorAlGuardar})
+    }
 
     const numeracion = await NumeracionController.getNumeracion(Constantes.FAEL_CODE)
-    
-    //Calculate total
+    var ruta = PDFMaker.createFacturaEntidad(entidad, transacciones, numeracion.numeracion_actual)
+    var resumenFactura = ""
+    var total = 0
+    transacciones.forEach(t => {
+        resumenFactura += "Transacción #" + t.numero_transaccion + " "
+        total += t.valor_transaccion
+    });
 
     const factura = await FacturaController.createFactura({
-        numero_factura: 0,
-        resumen_factura: "",
-        ruta_factura: "",
+        numero_factura: numeracion.numeracion_actual,
+        resumen_factura: resumenFactura,
+        ruta_factura: ruta,
         documento_usuario: entidad.nit_entidad,
-        valor_total_factura: 0.0,
+        valor_total_factura: total,
         fecha_factura: new Date(),
-        direccion_mac: "",
+        direccion_mac: req.body.ipv4,
         cod_tipo_pago: Constantes.FAEL_CODE
     })
+
+    await transacciones.forEach(async (t) => {
+        await TransaccionFacturaController.createTransaccionFactura({
+            cod_transacciones: t.cod_transaccion,
+            cod_factura: factura.cod_factura
+        })
+    });
 
     await NumeracionController.aumentarNumeracion(Constantes.FAEL_CODE)
 
