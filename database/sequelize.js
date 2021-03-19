@@ -193,7 +193,7 @@ Tipo_nota_credito.hasMany(NotaCredito, {foreignKey: 'cod_tipo_nota_credito', sou
 var resetDb = { force:false };
 
 sequelize.sync( resetDb ).then( async () => {
-    var te = Tipo_empleado.findAll()
+    var te = await Tipo_empleado.findAll()
     if(te.length == 0) await Initializer.CargarTipoEmpleado(Tipo_empleado)
     
     var td = await Tipo_documento.findAll()
