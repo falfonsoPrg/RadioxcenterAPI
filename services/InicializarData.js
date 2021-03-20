@@ -105,15 +105,15 @@ Initializer.CargarTipoFacturacion = async (pTipoFacturacion) => {
 Initializer.CargarTipoConsentimiento = async (pTipoConsentimiento) => {
     await pTipoConsentimiento.findOrCreate({
         where: {cod_tipo_consentimiento:Constantes.CONSENTIMIENTO_COVID},
-        defaults: {cod_tipo_consentimiento:Constantes.CONSENTIMIENTO_COVID,nombre_tipo_consentimiento:"Consentimiento Covid"}
+        defaults: {cod_tipo_consentimiento:Constantes.CONSENTIMIENTO_COVID,nombre_tipo_consentimiento:"Consentimiento Covid",activo:true}
     })
     await pTipoConsentimiento.findOrCreate({
         where: {cod_tipo_consentimiento:Constantes.CONSENTIMIENTO_INTRAORAL},
-        defaults: {cod_tipo_consentimiento:Constantes.CONSENTIMIENTO_INTRAORAL,nombre_tipo_consentimiento:"Consentimiento Intraoral"}
+        defaults: {cod_tipo_consentimiento:Constantes.CONSENTIMIENTO_INTRAORAL,nombre_tipo_consentimiento:"Consentimiento Intraoral",activo:true}
     })
     await pTipoConsentimiento.findOrCreate({
         where: {cod_tipo_consentimiento:Constantes.CONSENTIMIENTO_EXTRAORAL},
-        defaults: {cod_tipo_consentimiento:Constantes.CONSENTIMIENTO_EXTRAORAL,nombre_tipo_consentimiento:"Consentimiento Extraoral"}
+        defaults: {cod_tipo_consentimiento:Constantes.CONSENTIMIENTO_EXTRAORAL,nombre_tipo_consentimiento:"Consentimiento Extraoral",activo:true}
     })
 }
 

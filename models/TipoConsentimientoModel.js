@@ -12,6 +12,10 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
+        },
+        activo: {
+            type: DataTypes.BOOLEAN,
+            allowNull: true,
         }
     },{
         tableName: 'Tipo_Consentimiento',

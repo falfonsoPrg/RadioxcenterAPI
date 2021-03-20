@@ -184,6 +184,7 @@ class Procesos {
             if(this.procesos[index].procesosGenerales.actual != Constantes.ENPROCESOS && this.procesos[index].procesosGenerales.actual != Constantes.RESULTADOSENTREGADOS) return false
             this.procesos[index].procesos.forEach(p => {
                     p.completado = true
+                    p.entregado = true
             })
             const completados = this.procesos[index].procesos.every(p => p.completado == true)
             if(completados) this.avanzarProcesoGeneral(documento_usuario)

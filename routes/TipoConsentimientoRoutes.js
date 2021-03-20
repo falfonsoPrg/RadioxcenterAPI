@@ -1,8 +1,24 @@
 const router = require('express').Router()
 const TipoConsentimientoController = require('../controllers/TipoConsentimientoController')
-const { Departamento } = require('../database/sequelize')
 const Mensajes = require('../middlewares/Mensajes')
 const {UpdateTipoConsentimientoValidation, CreateTipoConsentimientoValidation} = require('../middlewares/Validation')
+
+router.get('/all' , async (req, res) =>{
+    /**
+        #swagger.tags = ['Tipo Consentimiento']
+        #swagger.path = '/tipoConsentimientos/all'
+        #swagger.description = 'Endpoint para obtener todos los tipos de consentimiento'
+     */
+    const tipo_consentimientos = await TipoConsentimientoController.getTipoConsentimientos()
+    if(tipo_consentimientos.length > 0){
+        return res.send({
+            respuesta: tipo_consentimientos
+        })
+    }
+    return res.status(404).send({
+        error: Mensajes.RegistroNoEncontrado
+    })
+})
 
 router.get('/:cod_tipo_consentimiento', async (req,res)=>{
     /**
@@ -26,9 +42,9 @@ router.get('/' , async (req, res) =>{
     /**
         #swagger.tags = ['Tipo Consentimiento']
         #swagger.path = '/tipoConsentimientos'
-        #swagger.description = 'Endpoint para obtener tipos de consentimiento'
+        #swagger.description = 'Endpoint para obtener tipos de consentimiento activos'
      */
-    const tipo_consentimientos = await TipoConsentimientoController.getTipoConsentimientos()
+    const tipo_consentimientos = await TipoConsentimientoController.getTipoConsentimientosActivos()
     if(tipo_consentimientos.length > 0){
         return res.send({
             respuesta: tipo_consentimientos

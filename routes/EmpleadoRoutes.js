@@ -59,7 +59,7 @@ router.put('/' ,async(req,res)=>{
     if(error) return res.status(422).send({
         error: error.details[0].message
     })
-    if(req.body.contrasenia_empleado != null ){
+    if(req.body.contrasenia_empleado != null && req.body.contrasenia_empleado != ''){
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(req.body.contrasenia_empleado, salt)
         const empl = req.body

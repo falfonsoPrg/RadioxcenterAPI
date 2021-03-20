@@ -33,7 +33,7 @@ module.exports.UpdateEmpleadoValidation = UpdateEmpleadoValidation = (data) => {
         fnacimiento_empleado: Joi.date(),
         telefono_empleado: Joi.string(),
         correo_empleado: Joi.string().email(),
-        contrasenia_empleado: Joi.string(),
+        contrasenia_empleado: Joi.string().allow(''),
         usuario_empleado: Joi.string(),
         cod_tipo_empleado: Joi.number(),
         cod_tipo_documento: Joi.number()
@@ -544,7 +544,7 @@ module.exports.UpdateSatisfaccionValidation = UpdateSatisfaccionValidation = (da
         recomendacion_satifasfaccion: Joi.string().required(),
         ubicacion_satisfaccion: Joi.string().required(),
         entrega_recomendacion_satisfaccion: Joi.bool().required(),
-        sugerencias_satisfaccion: Joi.string().required(),
+        sugerencias_satisfaccion: Joi.string().required().allow(''),
         cod_usuario: Joi.string().required()
     })
     return schema.validate(data)

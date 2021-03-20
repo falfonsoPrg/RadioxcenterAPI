@@ -18,6 +18,16 @@ TipoConsentimientoController.getTipoConsentimientos = async () => {
     }
 }
 
+TipoConsentimientoController.getTipoConsentimientosActivos = async () => {
+    try {
+        return await Tipo_Consentimiento.findAll({
+            where:{activo: true}
+        })
+    } catch (error) {
+        return error
+    }
+}
+
 TipoConsentimientoController.createTipoConsentimiento = async (pTipoConsentimiento) => {
     try {
         return await Tipo_Consentimiento.create(pTipoConsentimiento)

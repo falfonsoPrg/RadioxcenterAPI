@@ -1784,6 +1784,20 @@
         }
       }
     },
+    "/tipoConsentimientos/all": {
+      "get": {
+        "tags": [
+          "Tipo Consentimiento"
+        ],
+        "description": "Endpoint para obtener todos los tipos de consentimiento",
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/tipoConsentimientos/{cod_tipo_consentimiento}": {
       "get": {
         "tags": [
@@ -1809,7 +1823,7 @@
         "tags": [
           "Tipo Consentimiento"
         ],
-        "description": "Endpoint para obtener tipos de consentimiento",
+        "description": "Endpoint para obtener tipos de consentimiento activos",
         "parameters": [],
         "responses": {
           "404": {
