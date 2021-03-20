@@ -510,3 +510,42 @@ module.exports.FacturarEntidadValidation = FacturarEntidadValidation = (data) =>
     })
     return schema.validate(data)
 }
+
+module.exports.CreateSatisfaccionValidation = CreateSatisfaccionValidation = (data) => {
+    const schema = Joi.object({
+        experiencia_satisfaccion: Joi.string().required(),
+        amabilidad_atencion_satisfaccion: Joi.string().required(),
+        amabilidad_radiologo_satisfaccion: Joi.string().required(),
+        presentacion_satisfaccion: Joi.string().required(),
+        tiempo_espera_satisfaccion: Joi.string().required(),
+        tiempo_entrega_satisfaccion: Joi.string().required(),
+        indicacion_satisfaccion: Joi.string().required(),
+        privacidad_satisfaccion: Joi.string().required(),
+        recomendacion_satifasfaccion: Joi.string().required(),
+        ubicacion_satisfaccion: Joi.string().required(),
+        entrega_recomendacion_satisfaccion: Joi.bool().required(),
+        sugerencias_satisfaccion: Joi.string().required(),
+        cod_usuario: Joi.string().required()
+    })
+    return schema.validate(data)
+}
+
+module.exports.UpdateSatisfaccionValidation = UpdateSatisfaccionValidation = (data) => {
+    const schema = Joi.object({
+        cod_satisfaccion: Joi.number().required(),
+        experiencia_satisfaccion: Joi.string().required(),
+        amabilidad_atencion_satisfaccion: Joi.string().required(),
+        amabilidad_radiologo_satisfaccion: Joi.string().required(),
+        presentacion_satisfaccion: Joi.string().required(),
+        tiempo_espera_satisfaccion: Joi.string().required(),
+        tiempo_entrega_satisfaccion: Joi.string().required(),
+        indicacion_satisfaccion: Joi.string().required(),
+        privacidad_satisfaccion: Joi.string().required(),
+        recomendacion_satifasfaccion: Joi.string().required(),
+        ubicacion_satisfaccion: Joi.string().required(),
+        entrega_recomendacion_satisfaccion: Joi.bool().required(),
+        sugerencias_satisfaccion: Joi.string().required(),
+        cod_usuario: Joi.string().required()
+    })
+    return schema.validate(data)
+}

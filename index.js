@@ -62,6 +62,7 @@ const ConsentimientoRoutes = require('./routes/ConsentimientoRoutes')
 const FacturaRoutes = require('./routes/FacturaRoutes');
 const NotaCreditoRoutes = require('./routes/NotaCreditoRoutes');
 const NumeracionRoutes = require('./routes/NumeracionRoutes');
+const SatisfaccionRoutes = require('./routes/SatisfaccionRoutes');
 
 //Middleware
 app.use(express.urlencoded({ extended: false }))
@@ -98,6 +99,7 @@ app.use('/api/consentimientos',ConsentimientoRoutes)
 app.use('/api/facturas',FacturaRoutes)
 app.use('/api/notacredito',NotaCreditoRoutes)
 app.use('/api/numeracion',NumeracionRoutes)
+app.use('/api/satisfacciones',SatisfaccionRoutes)
 
 //Inicializa el servidor 
 

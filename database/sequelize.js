@@ -32,6 +32,7 @@ const FacturaModel = require('../models/FacturaModel')
 const TransaccionFacturaModel = require('../models/TransaccionFacturaModel')
 const NotaCreditoModel = require('../models/NotaCreditoModel')
 const NumeracionModel = require('../models/NumeracionModel')
+const SatisfaccionModel = require('../models/SatisfaccionModel')
 
 
 //Conection with database
@@ -90,6 +91,7 @@ const Factura = FacturaModel(sequelize);
 const TransaccionFactura = TransaccionFacturaModel(sequelize);
 const NotaCredito = NotaCreditoModel(sequelize);
 const Numeracion = NumeracionModel(sequelize);
+const Satisfaccion = SatisfaccionModel(sequelize);
 
 //Create the Relationships
 Departamento.hasMany(Ciudad,{foreignKey: 'cod_departamento', sourceKey:'cod_departamento'});
@@ -188,6 +190,10 @@ Factura.hasMany(NotaCredito, {foreignKey: 'cod_factura', sourceKey:'cod_factura'
 
 NotaCredito.belongsTo(Tipo_nota_credito, {foreignKey: 'cod_tipo_nota_credito', sourceKey:'cod_tipo_nota_credito'})
 Tipo_nota_credito.hasMany(NotaCredito, {foreignKey: 'cod_tipo_nota_credito', sourceKey:'cod_tipo_nota_credito'})
+
+// Relationships Satisfaccion
+Usuario.hasMany(Satisfaccion, {foreignKey:'cod_usuario', sourceKey: 'cod_usuario'});
+Satisfaccion.belongsTo(Usuario, {foreignKey:'cod_usuario', sourceKey: 'cod_usuario'});
 
 //Sync the database and chekc if the connection is Ok
 var resetDb = { force:false };

@@ -32,6 +32,7 @@ const endpointsFiles = [
     './routes/FacturaRoutes.js',
     './routes/NotaCreditoRoutes.js',
     './routes/NumeracionRoutes.js',
+    './routes/SatisfaccionRoutes.js',
 ]
 
 const port = process.env.HOST_FOR_SWAGGER || 'localhost:4000'
@@ -308,8 +309,24 @@ const doc = {
             "numeracion_final":0,
             "numeracion_aumento":0,
             "numeracion_actual":0
+        },
+        Satisfaccion:{
+            "cod_satisfaccion":0,
+            "experiencia_satisfaccion":"",
+            "amabilidad_atencion_satisfaccion":"",
+            "amabilidad_radiologo_satisfaccion":"",
+            "presentacion_satisfaccion":"",
+            "tiempo_espera_satisfaccion":"",
+            "tiempo_entrega_satisfaccion":"",
+            "indicacion_satisfaccion":"",
+            "privacidad_satisfaccion":"",
+            "recomendacion_satifasfaccion":"",
+            "ubicacion_satisfaccion":"",
+            "entrega_recomendacion_satisfaccion":false,
+            "sugerencias_satisfaccion":"",
+            "cod_usuario":0,
+            
         }
-
     }
 }
 

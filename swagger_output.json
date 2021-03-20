@@ -2991,6 +2991,96 @@
           }
         }
       }
+    },
+    "/satisfacciones/{cod_satisfaccion}": {
+      "get": {
+        "tags": [
+          "Satisfaccion"
+        ],
+        "description": "Endpoint para obtener una satisfaccion",
+        "parameters": [
+          {
+            "name": "cod_satisfaccion",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/satisfacciones": {
+      "get": {
+        "tags": [
+          "Satisfaccion"
+        ],
+        "description": "Endpoint para obtener satisfacciones",
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Satisfaccion"
+        ],
+        "description": "Endpoint para crear una satisfaccion.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Satisfaccion"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Satisfaccion"
+        ],
+        "description": "Endpoint para editar una satisfaccion.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Satisfaccion"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -4044,6 +4134,70 @@
       },
       "xml": {
         "name": "Numeracion"
+      }
+    },
+    "Satisfaccion": {
+      "type": "object",
+      "properties": {
+        "cod_satisfaccion": {
+          "type": "number",
+          "example": 0
+        },
+        "experiencia_satisfaccion": {
+          "type": "string",
+          "example": ""
+        },
+        "amabilidad_atencion_satisfaccion": {
+          "type": "string",
+          "example": ""
+        },
+        "amabilidad_radiologo_satisfaccion": {
+          "type": "string",
+          "example": ""
+        },
+        "presentacion_satisfaccion": {
+          "type": "string",
+          "example": ""
+        },
+        "tiempo_espera_satisfaccion": {
+          "type": "string",
+          "example": ""
+        },
+        "tiempo_entrega_satisfaccion": {
+          "type": "string",
+          "example": ""
+        },
+        "indicacion_satisfaccion": {
+          "type": "string",
+          "example": ""
+        },
+        "privacidad_satisfaccion": {
+          "type": "string",
+          "example": ""
+        },
+        "recomendacion_satifasfaccion": {
+          "type": "string",
+          "example": ""
+        },
+        "ubicacion_satisfaccion": {
+          "type": "string",
+          "example": ""
+        },
+        "entrega_recomendacion_satisfaccion": {
+          "type": "boolean",
+          "example": false
+        },
+        "sugerencias_satisfaccion": {
+          "type": "string",
+          "example": ""
+        },
+        "cod_usuario": {
+          "type": "number",
+          "example": 0
+        }
+      },
+      "xml": {
+        "name": "Satisfaccion"
       }
     }
   }
