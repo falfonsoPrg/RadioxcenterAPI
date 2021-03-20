@@ -30,6 +30,9 @@ class Procesos {
             socket.on('eliminar_usuarios', (data) => {
                 this.deleteUsuario(data.documento_usuario)
             })
+            socket.on('completar_procesos', (data) => {
+                this.completarTodosLosProcesos(data.documento_usuario)
+            })
         })
         
     }
@@ -167,6 +170,20 @@ class Procesos {
                 if(p.cod_servicio == cod_servicio){
                     p.completado = true
                 }
+            })
+            const completados = this.procesos[index].procesos.every(p => p.completado == true)
+            if(completados) this.avanzarProcesoGeneral(documento_usuario)
+            this.validar()
+            return true
+        }
+        return false
+    }
+    completarTodosLosProcesos(documento_usuario){
+        const index = this.getIndexUsuario(documento_usuario)
+        if(index != -1){
+            if(this.procesos[index].procesosGenerales.actual != Constantes.ENPROCESOS && this.procesos[index].procesosGenerales.actual != Constantes.RESULTADOSENTREGADOS) return false
+            this.procesos[index].procesos.forEach(p => {
+                    p.completado = true
             })
             const completados = this.procesos[index].procesos.every(p => p.completado == true)
             if(completados) this.avanzarProcesoGeneral(documento_usuario)
