@@ -23,4 +23,12 @@ Constantes.TDOC_TARJETA_IDENTIDAD = 5
 Constantes.TEMPLEADO_EMPLEADO = 1
 Constantes.TEMPLEADO_ADMINISTRADOR = 2
 
+Constantes.REGISTRO = "Registro"
+Constantes.TUTOR = "Tutor"
+Constantes.TRANSACCION = "Transaccion"
+Constantes.CONSENTIMIENTO = "Consentimiento"
+Constantes.ENPROCESOS = "En procesos"
+Constantes.RESULTADOSENTREGADOS = "Resultados entregados"
+Constantes.SATISFACCION = "Satisfaccion"
+
 module.exports = Constantes

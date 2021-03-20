@@ -1,7 +1,7 @@
 //const Singleton = require('../services/ProcesosSingleton')
 //const singleton = new Singleton().getInstance()
 //singleton.log()
-
+const Constantes = require("../middlewares/Constantes")
 class Procesos {
 
     constructor() {
@@ -49,11 +49,9 @@ class Procesos {
     }
 
     setNewUsuario(data){
-        var pendi = []
+        var pendi =  [Constantes.TRANSACCION,Constantes.CONSENTIMIENTO,Constantes.ENPROCESOS,Constantes.RESULTADOSENTREGADOS]
         if(data.tutor == true){
-            pendi = ["Tutor","Transaccion","Consentimiento","En procesos","Resultados entregados"]
-        }else{
-            pendi = ["Transaccion","Consentimiento","En procesos","Resultados entregados"]
+            pendi.unshift(Constantes.TUTOR)
         }
         if(data.correo_usuario == "") data.correo_usuario = null
         var newUsuario = {
@@ -68,10 +66,11 @@ class Procesos {
             },
             transaccion:{},
             consentimiento: {},
+            satisfaccion:{},
             procesosGenerales:{
                 pendientes: pendi,
                 completados: [],
-                actual: "Registro"
+                actual: Constantes.REGISTRO
             },
             procesos: []
         }
@@ -88,7 +87,7 @@ class Procesos {
         var indexUsuario = this.getIndexUsuario(documento_usuario)
         if(indexUsuario != -1){
 
-            if(this.procesos[indexUsuario].procesosGenerales.actual != "Tutor") return false
+            if(this.procesos[indexUsuario].procesosGenerales.actual != Constantes.TUTOR) return false
 
             this.procesos[indexUsuario].tutor = tutor
             this.avanzarProcesoGeneral(documento_usuario)
@@ -102,9 +101,12 @@ class Procesos {
         var indexUsuario = this.getIndexUsuario(documento_usuario)
         if(indexUsuario != -1){
 
-            if(this.procesos[indexUsuario].procesosGenerales.actual != "Transaccion") return false
+            if(this.procesos[indexUsuario].procesosGenerales.actual != Constantes.TRANSACCION) return false
 
             this.procesos[indexUsuario].transaccion = transaccion
+
+            if(transaccion.satisfaccion == true) this.procesos[indexUsuario].procesosGenerales.pendientes.push(Constantes.SATISFACCION)
+
             this.procesos[indexUsuario].transaccion.tutor = this.procesos[indexUsuario].tutor
             this.procesos[indexUsuario].transaccion.nombres_acudiente = this.procesos[indexUsuario].tutor.nombres_tutor
             this.procesos[indexUsuario].transaccion.apellidos_acudiente = this.procesos[indexUsuario].tutor.apellidos_tutor
@@ -135,9 +137,22 @@ class Procesos {
         var indexUsuario = this.getIndexUsuario(documento_usuario)
         if(indexUsuario != -1){
 
-            if(this.procesos[indexUsuario].procesosGenerales.actual != "Consentimiento") return false
+            if(this.procesos[indexUsuario].procesosGenerales.actual != Constantes.CONSENTIMIENTO) return false
 
             this.procesos[indexUsuario].consentimiento = pConsentimiento;
+            this.avanzarProcesoGeneral(documento_usuario)
+            this.validar()
+            return true
+        }
+        return false
+    }
+    setSatisfaccion(pSatisfaccion,documento_usuario){
+        var indexUsuario = this.getIndexUsuario(documento_usuario)
+        if(indexUsuario != -1){
+
+            if(this.procesos[indexUsuario].procesosGenerales.actual != Constantes.SATISFACCION) return false
+
+            this.procesos[indexUsuario].satisfaccion = pSatisfaccion;
             this.avanzarProcesoGeneral(documento_usuario)
             this.validar()
             return true
@@ -147,7 +162,7 @@ class Procesos {
     completarProceso(documento_usuario, cod_servicio){
         const index = this.getIndexUsuario(documento_usuario)
         if(index != -1){
-            if(this.procesos[index].procesosGenerales.actual != "En procesos" && this.procesos[index].procesosGenerales.actual != "Resultados entregados" ) return false
+            if(this.procesos[index].procesosGenerales.actual != Constantes.ENPROCESOS && this.procesos[index].procesosGenerales.actual != Constantes.RESULTADOSENTREGADOS) return false
             this.procesos[index].procesos.forEach(p => {
                 if(p.cod_servicio == cod_servicio){
                     p.completado = true
@@ -164,7 +179,7 @@ class Procesos {
         const index = this.getIndexUsuario(documento_usuario)
         if(index != -1){
 
-            if(this.procesos[index].procesosGenerales.actual != "En procesos" && this.procesos[index].procesosGenerales.actual != "Resultados entregados" ) return false
+            if(this.procesos[index].procesosGenerales.actual != Constantes.ENPROCESOS && this.procesos[index].procesosGenerales.actual != Constantes.RESULTADOSENTREGADOS) return false
 
             this.procesos[index].procesos.forEach(p => {
                 if(p.cod_servicio == cod_servicio){
