@@ -188,6 +188,8 @@ class Procesos {
             })
             const completados = this.procesos[index].procesos.every(p => p.completado == true)
             if(completados) this.avanzarProcesoGeneral(documento_usuario)
+            const entregados = this.procesos[index].procesos.every(p => p.entregado == true)
+            if(entregados) this.avanzarProcesoGeneral(documento_usuario)
             this.validar()
             return true
         }
