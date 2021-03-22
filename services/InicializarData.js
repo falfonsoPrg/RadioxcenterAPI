@@ -164,4 +164,17 @@ Initializer.CargarTipoEmpleado = async (pTipoEmpleado) => {
     console.log("Tipo empleado finalizado");
 }
 
+Initializer.CargarTipoPrefEntrega = async (pTipoPrefentrega) => {
+    console.log("Cargando tipo preferencia entrega");
+    await pTipoPrefentrega.findOrCreate({
+        where: {cod_tipo_empleado:Constantes.TPE_FISICO},
+        defaults: {cod_tipo_empleado:Constantes.TPE_FISICO,nombre_tipo_pref_entrega:"Fisico"}
+    })
+    await pTipoPrefentrega.findOrCreate({
+        where: {cod_tipo_empleado:Constantes.TPE_CORREO},
+        defaults: {cod_tipo_empleado:Constantes.TPE_CORREO,nombre_tipo_pref_entrega:"Correo"}
+    })
+    console.log("Tipo empleado finalizado");
+}
+
 module.exports = Initializer

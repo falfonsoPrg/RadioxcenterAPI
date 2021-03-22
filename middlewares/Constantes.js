@@ -31,4 +31,6 @@ Constantes.ENPROCESOS = "En procesos"
 Constantes.RESULTADOSENTREGADOS = "Resultados entregados"
 Constantes.SATISFACCION = "Satisfaccion"
 
+Constantes.TPE_FISICO = 1
+Constantes.TPE_CORREO = 2
 module.exports = Constantes
