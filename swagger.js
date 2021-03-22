@@ -54,7 +54,7 @@ const doc = {
             "apellidos_empleado": "",
             "documento_empleado": "0",
             "direccion_empleado": "",
-            "fnacimiento_empleado": "dd/MM/YYYYY",
+            "fnacimiento_empleado": "yyyy-MM-dd",
             "telefono_empleado": "",
             "correo_empleado": "email@email.com",
             "contrasenia_empleado": "",
@@ -92,7 +92,7 @@ const doc = {
             "apellidos_empleado": "",
             "documento_empleado": "0",
             "direccion_empleado": "",
-            "fnacimiento_empleado": "dd/MM/YYYYY",
+            "fnacimiento_empleado": "yyyy-MM-dd",
             "telefono_empleado": "",
             "correo_empleado": "email@email.com",
             "contrasenia_empleado": "",
@@ -121,8 +121,8 @@ const doc = {
         EditarConvenioEntidad:{
             "servicios_convenio":[1,2,3],
             "valores_servicios":[1000,2000,3000],
-            "fecha_inicial_convenio":"dd/MM/YYYYY",
-            "fecha_final_convenio":"dd/MM/YYYYY"
+            "fecha_inicial_convenio":"yyyy-MM-dd",
+            "fecha_final_convenio":"yyyy-MM-dd"
         },
         FormaDePagoEntidad:{
             "cod_forma_de_pago_entidad": 0,

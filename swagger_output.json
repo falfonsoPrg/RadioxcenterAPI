@@ -3122,7 +3122,7 @@
         },
         "fnacimiento_empleado": {
           "type": "string",
-          "example": "dd/MM/YYYYY"
+          "example": "yyyy-MM-dd"
         },
         "telefono_empleado": {
           "type": "string",
@@ -3274,7 +3274,7 @@
         },
         "fnacimiento_empleado": {
           "type": "string",
-          "example": "dd/MM/YYYYY"
+          "example": "yyyy-MM-dd"
         },
         "telefono_empleado": {
           "type": "string",
@@ -3394,11 +3394,11 @@
         },
         "fecha_inicial_convenio": {
           "type": "string",
-          "example": "dd/MM/YYYYY"
+          "example": "yyyy-MM-dd"
         },
         "fecha_final_convenio": {
           "type": "string",
-          "example": "dd/MM/YYYYY"
+          "example": "yyyy-MM-dd"
         }
       },
       "xml": {

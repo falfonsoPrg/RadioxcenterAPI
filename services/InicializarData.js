@@ -3,6 +3,7 @@ const Constantes = require("../middlewares/Constantes")
 
 Initializer = {}
 Initializer.CargarDepartamentos = async (pDep, pCiud) => {
+    console.log("Cargando departamentos y ciudades")
     var arr = []
     const workbook = new Excel.Workbook();
     await workbook.xlsx.readFile('./services/departamentos.xlsx');
