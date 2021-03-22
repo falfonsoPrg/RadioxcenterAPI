@@ -100,7 +100,7 @@ router.put('/facturarEntidad/:cod_entidad', async (req,res)=>{
             required: true,
             name: 'body',
             schema: {
-                $ref: '#/definitions/Factura'
+                $ref: '#/definitions/FacturarEntidad'
             }
         }]
      */
@@ -111,15 +111,12 @@ router.put('/facturarEntidad/:cod_entidad', async (req,res)=>{
 
     const entidad = await EntidadController.getEntidad(req.params.cod_entidad)
 
-    const transacciones = await TransaccionController.getTransacciones()
-
-    var cod_transacciones = req.body.cod_transacciones
-
-    const allExist = cod_transacciones.filter(ct => transacciones.includes(t => t.cod_transaccion == ct))
-    if(allExist.length != cod_transacciones.length){
-        return res.status(400).send({error: Mensajes.ErrorAlGuardar})
+    const transacciones = await TransaccionController.getTransacciones(req.body.cod_transacciones)
+    if(transacciones.length <= 0){
+        return res.status(404).send({
+            error: Mensajes.ErrorAlGuardar
+        })
     }
-
     const numeracion = await NumeracionController.getNumeracion(Constantes.FAEL_CODE)
     var ruta = PDFMaker.createFacturaEntidad(entidad, transacciones, numeracion.numeracion_actual)
     var resumenFactura = ""

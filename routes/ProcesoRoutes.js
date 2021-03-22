@@ -223,28 +223,55 @@ router.post('/crearConsentimiento', async(req,res)=>{
                 error: Mensajes.ErrorAlGuardarArchivo
             })
         }
-        var dataToConsentimiento = usuarioSingleton.data
-        dataToConsentimiento.tipoDocumento = usuario[0].Tipo_Documento.nombre_tipo_documento
-        var ruta;
-        if(usuarioSingleton.data.tutor){
-            const tipoDocumentoTutor = await TipoDocumentoController.getTipoDocumento(usuarioSingleton.tutor.cod_tipo_documento)
-            usuarioSingleton.tutor.tipoDocumento = tipoDocumentoTutor.nombre_tipo_documento
-            ruta = pdfMaker.crearConsentimientoCovidTutor(req.body.signature,dataToConsentimiento,usuarioSingleton.tutor)
-        }else{
-            ruta = pdfMaker.crearConsentimientoCovid(req.body.signature,dataToConsentimiento)
-        }
-        var consent = await ConsentimientoController.createConsentimiento({
-            cod_tipo_consentimiento: Constantes.CONSENTIMIENTO_COVID,
-            ubicacion_consentimiento: ruta,
-            cod_transaccion: transaccion.cod_transaccion
-        })
-        if(consent.errors || consent.name){
-            console.log(consent)
-            return res.status(400).send({
-                error: Mensajes.ErrorAlGuardar
+        if(usuarioSingleton.transaccion[Constantes.CONSENTIMIENTO_COVID] == true){
+            var dataToConsentimiento = usuarioSingleton.data
+            dataToConsentimiento.tipoDocumento = usuario[0].Tipo_Documento.nombre_tipo_documento
+            var rutaCovid;
+            if(usuarioSingleton.data.tutor){
+                const tipoDocumentoTutor = await TipoDocumentoController.getTipoDocumento(usuarioSingleton.tutor.cod_tipo_documento)
+                usuarioSingleton.tutor.tipoDocumento = tipoDocumentoTutor.nombre_tipo_documento
+                rutaCovid = pdfMaker.crearConsentimientoCovidTutor(req.body.signature,dataToConsentimiento,usuarioSingleton.tutor,req.body.covid)
+            }else{
+                rutaCovid = pdfMaker.crearConsentimientoCovid(req.body.signature,dataToConsentimiento,req.body.covid)
+            }
+            var consent = await ConsentimientoController.createConsentimiento({
+                cod_tipo_consentimiento: Constantes.CONSENTIMIENTO_COVID,
+                ubicacion_consentimiento: rutaCovid,
+                cod_transaccion: transaccion.cod_transaccion
             })
+            if(consent.errors || consent.name){
+                return res.status(400).send({
+                    error: Mensajes.ErrorAlGuardar
+                })
+            }
         }
-        singleton.setConsentimiento(ruta, req.body.documento_usuario)
+        if(usuarioSingleton.transaccion[Constantes.CONSENTIMIENTO_INTRAORAL] == true){
+            var rutaIntra = pdfMaker.crearConsentimientoIntraoral(usuarioSingleton.data,usuarioSingleton.tutor,req.body.signature,req.body.condiciones)
+            var consentIntra = await ConsentimientoController.createConsentimiento({
+                cod_tipo_consentimiento: Constantes.CONSENTIMIENTO_INTRAORAL,
+                ubicacion_consentimiento: rutaIntra,
+                cod_transaccion: transaccion.cod_transaccion
+            })
+            if(consentIntra.errors || consentIntra.name){
+                return res.status(400).send({
+                    error: Mensajes.ErrorAlGuardar
+                })
+            }
+        }
+        if(usuarioSingleton.transaccion[Constantes.CONSENTIMIENTO_EXTRAORAL] == true){
+            var rutaExtra = pdfMaker.crearConsentimientoExtraoral(usuarioSingleton.data,usuarioSingleton.tutor,req.body.signature,req.body.condiciones)
+            var consentIntra = await ConsentimientoController.createConsentimiento({
+                cod_tipo_consentimiento: Constantes.CONSENTIMIENTO_EXTRAORAL,
+                ubicacion_consentimiento: rutaExtra,
+                cod_transaccion: transaccion.cod_transaccion
+            })
+            if(consentIntra.errors || consentIntra.name){
+                return res.status(400).send({
+                    error: Mensajes.ErrorAlGuardar
+                })
+            }
+        }
+        singleton.setConsentimiento(rutas, req.body.documento_usuario)
         console.log("PDF consentimiento covid Creado")
 
 

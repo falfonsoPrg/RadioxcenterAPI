@@ -30,6 +30,7 @@ Initializer.CargarDepartamentos = async (pDep, pCiud) => {
 }
 
 Initializer.CargarNumeraciones = async (pNumeracion) => {
+    console.log("Cargando numeraciones");
     await pNumeracion.findOrCreate({
         where: {cod_numeracion:Constantes.FAEL_CODE},
         defaults: {
@@ -78,9 +79,11 @@ Initializer.CargarNumeraciones = async (pNumeracion) => {
             numeracion_actual: 1
         }
     })
+    console.log("Numeraciones finalizado");
 }
 
 Initializer.CargarTipoPago = async (pTipoPago) => {
+    console.log("Cargando tipo pago");
     await pTipoPago.findOrCreate({
         where: {cod_tipo_pago:Constantes.TPAGO_EFECTIVO},
         defaults: {cod_tipo_pago:Constantes.TPAGO_EFECTIVO,nombre_tipo_pago:"Efectivo"}
@@ -89,9 +92,11 @@ Initializer.CargarTipoPago = async (pTipoPago) => {
         where: {cod_tipo_pago:Constantes.TPAGO_ELECTRONICO},
         defaults: {cod_tipo_pago:Constantes.TPAGO_ELECTRONICO,nombre_tipo_pago:"Electrónica"}
     })
+    console.log("Tipo pago finalizado");
 }
 
 Initializer.CargarTipoFacturacion = async (pTipoFacturacion) => {
+    console.log("Cargando tipo facturacion");
     await pTipoFacturacion.findOrCreate({
         where: {cod_tipo_facturacion:Constantes.TFACTURACION_EFECTIVO},
         defaults: {cod_tipo_facturacion:Constantes.TFACTURACION_EFECTIVO,nombre_tipo_facturacion:"Efectivo"}
@@ -100,9 +105,11 @@ Initializer.CargarTipoFacturacion = async (pTipoFacturacion) => {
         where: {cod_tipo_facturacion:Constantes.TFACTURACION_ELECTRONICO},
         defaults: {cod_tipo_facturacion:Constantes.TFACTURACION_ELECTRONICO,nombre_tipo_facturacion:"Electrónica"}
     })
+    console.log("Tipo facturacion finalizado");
 }
 
 Initializer.CargarTipoConsentimiento = async (pTipoConsentimiento) => {
+    console.log("Cargando tipo consentimiento");
     await pTipoConsentimiento.findOrCreate({
         where: {cod_tipo_consentimiento:Constantes.CONSENTIMIENTO_COVID},
         defaults: {cod_tipo_consentimiento:Constantes.CONSENTIMIENTO_COVID,nombre_tipo_consentimiento:"Consentimiento Covid",activo:true}
@@ -115,9 +122,11 @@ Initializer.CargarTipoConsentimiento = async (pTipoConsentimiento) => {
         where: {cod_tipo_consentimiento:Constantes.CONSENTIMIENTO_EXTRAORAL},
         defaults: {cod_tipo_consentimiento:Constantes.CONSENTIMIENTO_EXTRAORAL,nombre_tipo_consentimiento:"Consentimiento Extraoral",activo:true}
     })
+    console.log("Tipo consentimiento finalizado");
 }
 
 Initializer.CargarTipoDocumento = async (pTipoDocumento) => {
+    console.log("Cargando tipo documento");
     await pTipoDocumento.findOrCreate({
         where: {cod_tipo_documento:Constantes.TDOC_CEDULA_CIUDADANIA},
         defaults: {cod_tipo_documento:Constantes.TDOC_CEDULA_CIUDADANIA,nombre_tipo_documento:"Cédula de ciudadanía"}
@@ -138,9 +147,11 @@ Initializer.CargarTipoDocumento = async (pTipoDocumento) => {
         where: {cod_tipo_documento:Constantes.TDOC_TARJETA_IDENTIDAD},
         defaults: {cod_tipo_documento:Constantes.TDOC_TARJETA_IDENTIDAD,nombre_tipo_documento:"Tarjeta de identidad"}
     })
+    console.log("Tipo documento finalizado");
 }
 
 Initializer.CargarTipoEmpleado = async (pTipoEmpleado) => {
+    console.log("Cargando tipo empleado");
     await pTipoEmpleado.findOrCreate({
         where: {cod_tipo_empleado:Constantes.TEMPLEADO_EMPLEADO},
         defaults: {cod_tipo_empleado:Constantes.TEMPLEADO_EMPLEADO,nombre_tipo_empleado:"Empleado"}
@@ -149,6 +160,7 @@ Initializer.CargarTipoEmpleado = async (pTipoEmpleado) => {
         where: {cod_tipo_empleado:Constantes.TEMPLEADO_ADMINISTRADOR},
         defaults: {cod_tipo_empleado:Constantes.TEMPLEADO_ADMINISTRADOR,nombre_tipo_empleado:"Administrador"}
     })
+    console.log("Tipo empleado finalizado");
 }
 
 module.exports = Initializer

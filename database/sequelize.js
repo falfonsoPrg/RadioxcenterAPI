@@ -32,7 +32,8 @@ const FacturaModel = require('../models/FacturaModel')
 const TransaccionFacturaModel = require('../models/TransaccionFacturaModel')
 const NotaCreditoModel = require('../models/NotaCreditoModel')
 const NumeracionModel = require('../models/NumeracionModel')
-const SatisfaccionModel = require('../models/SatisfaccionModel')
+const SatisfaccionModel = require('../models/SatisfaccionModel');
+const Constantes = require("../middlewares/Constantes");
 
 
 //Conection with database
@@ -220,6 +221,24 @@ sequelize.sync( resetDb ).then( async () => {
     var dep = await Departamento.findAll()
     var ciud = await Ciudad.findAll()
     if(dep.length == 0 || ciud.length == 0 ) await Initializer.CargarDepartamentos(Departamento,Ciudad)
+
+    await Empleado.findOrCreate({
+        where: {nombres_empleado:"Administrador"},
+        defaults:{
+            cod_empleado: 1,
+            nombres_empleado: "Administrador",
+            apellidos_empleado: "Administrador",
+            documento_empleado: 123456789,
+            direccion_empleado: "Cl. 8 #6-59",
+            fnacimiento_empleado: "2021-03-14",
+            telefono_empleado: "8429548",
+            correo_empleado: "admin@radioxenter.com",
+            contrasenia_empleado: process.env.ADMINPSW,
+            usuario_empleado: "admin",
+            cod_tipo_empleado: Constantes.TEMPLEADO_ADMINISTRADOR,
+            cod_tipo_documento: Constantes.TDOC_CEDULA_CIUDADANIA,
+        }
+    })
 
     console.log("Conexion con la base de datos establecida")
 }).catch(err => {

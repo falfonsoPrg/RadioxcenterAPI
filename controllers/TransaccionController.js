@@ -20,6 +20,16 @@ TransaccionController.getTransacciones = async () => {
         return error
     }
 }
+TransaccionController.getTransacciones = async array => {
+    try {
+        return await Transaccion.findAll({
+            where: {cod_transaccion:array},
+            include: {all: true}
+        })
+    } catch (error) {
+        return error
+    }
+}
 TransaccionController.getTransaccionesDeEntidadesNoPagadas = async (pCodEntidad) => {
     try {
         return await Transaccion.findAll({

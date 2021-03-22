@@ -326,6 +326,10 @@ const doc = {
             "sugerencias_satisfaccion":"",
             "cod_usuario":0,
             
+        },
+        FacturarEntidad:{
+            "cod_transacciones":[],
+            "ipv4":""
         }
     }
 }

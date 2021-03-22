@@ -1,6 +1,6 @@
 Constantes={}
-Constantes.FAEL_CODE = 1
-Constantes.FPOS_CODE = 2
+Constantes.FAEL_CODE = 2
+Constantes.FPOS_CODE = 1
 Constantes.TRAN_CODE = 3
 Constantes.NTCR_CODE = 4
 
