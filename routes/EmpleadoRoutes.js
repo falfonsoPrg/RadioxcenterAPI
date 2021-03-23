@@ -72,6 +72,7 @@ router.put('/' ,async(req,res)=>{
         }
         return res.status(204).send()
     } else {
+        delete req.body.contrasenia_empleado
         const empleado = await EmpleadoController.updateEmpleado(req.body);
         if(empleado[0]== 0 || empleado.name) {
             return res.status(404).send({
