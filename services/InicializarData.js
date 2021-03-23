@@ -177,4 +177,17 @@ Initializer.CargarTipoPrefEntrega = async (pTipoPrefentrega) => {
     console.log("Tipo empleado finalizado");
 }
 
+Initializer.CargarFormaDePagoEntidad = async (pFormaDePagoEntidad) => {
+    console.log("Cargando forma de pago entidad");
+    await pFormaDePagoEntidad.findOrCreate({
+        where: {cod_forma_de_pago_entidad:Constantes.FPE_FISICO},
+        defaults: {cod_forma_de_pago_entidad:Constantes.FPE_FISICO,nombre_forma_de_pago_entidad:"Fisico"}
+    })
+    await pFormaDePagoEntidad.findOrCreate({
+        where: {cod_forma_de_pago_entidad:Constantes.FPE_CORREO},
+        defaults: {cod_forma_de_pago_entidad:Constantes.FPE_CORREO,nombre_forma_de_pago_entidad:"Correo"}
+    })
+    console.log("Forma de pago entidad finalizado");
+}
+
 module.exports = Initializer

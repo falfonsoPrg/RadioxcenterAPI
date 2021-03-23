@@ -218,6 +218,9 @@ sequelize.sync( resetDb ).then( async () => {
     var tf = await Tipo_facturacion.findAll()
     if(tf.length == 0) await Initializer.CargarTipoFacturacion(Tipo_facturacion)
 
+    var fpe = await Forma_de_pago_entidad.findAll()
+    if(fpe.length == 0) await Initializer.CargarFormaDePagoEntidad(Forma_de_pago_entidad)
+
     var nums = await Numeracion.findAll()
     if(nums.length == 0) await Initializer.CargarNumeraciones(Numeracion)
 

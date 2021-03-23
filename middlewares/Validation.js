@@ -96,7 +96,8 @@ module.exports.CreateTipoConsentimientoValidation = CreateTipoConsentimientoVali
 module.exports.UpdateTipoConsentimientoValidation = UpdateTipoConsentimientoValidation = (data) => {
     const schema = Joi.object({
         cod_tipo_consentimiento: Joi.number().required(),
-        nombre_tipo_consentimiento: Joi.string().required()
+        nombre_tipo_consentimiento: Joi.string().required(),
+        activo: Joi.boolean().required()
     })
     return schema.validate(data)
 }

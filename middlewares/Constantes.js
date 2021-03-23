@@ -33,4 +33,7 @@ Constantes.SATISFACCION = "Satisfaccion"
 
 Constantes.TPE_FISICO = 1
 Constantes.TPE_CORREO = 2
+
+Constantes.FPE_FISICO = 1
+Constantes.FPE_CORREO = 2
 module.exports = Constantes
