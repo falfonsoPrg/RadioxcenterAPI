@@ -224,6 +224,9 @@ sequelize.sync( resetDb ).then( async () => {
     var nums = await Numeracion.findAll()
     if(nums.length == 0) await Initializer.CargarNumeraciones(Numeracion)
 
+    var tntcr = await Tipo_nota_credito.findAll()
+    if(tntcr.length == 0) await Initializer.CargarTipoNotaCredito(Tipo_nota_credito)
+
     var dep = await Departamento.findAll()
     var ciud = await Ciudad.findAll()
     if(dep.length == 0 || ciud.length == 0 ) await Initializer.CargarDepartamentos(Departamento,Ciudad)

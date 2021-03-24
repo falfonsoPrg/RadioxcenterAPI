@@ -233,8 +233,8 @@ PDFMaker.createFactura = (data,esTutor,servicios,nFactura) => {
         height: 60,
         margin: [0,0,0,20]
       },
-      {text:"Nit 123456789 Reg. Común Act. Económica 8514",alignment: 'center'},
-      {text:"Número de Formulario DIAN 7818718718187 Fecha 2020/20/20",alignment: 'center'},
+      {text:"Nit 900.311.422-4 Reg. Común Act. Económica 8514",alignment: 'center'},
+      {text:"Número de Formulario DIAN 18763000515449 Fecha 2019/09/17",alignment: 'center'},
       {text:"Habilitada desde 1330001 hasta 150000",alignment: 'center'},
       {columns: [
         {
@@ -694,6 +694,117 @@ PDFMaker.crearConsentimientoExtraoral = (data,tutor,firma,condiciones) => {
   var today = new Date()
   var timestamp = today.getDate()+""+today.getMonth()+""+today.getFullYear()+""+today.getHours()+""+today.getMinutes()
   var filename = data.documento_usuario + "_" + timestamp + "_EXTRA.pdf"
+  var pdfDoc = printer.createPdfKitDocument(docDefinition);
+  pdfDoc.pipe(fs.createWriteStream(savePath+filename))
+  .on('error', (err) => {
+    console.log(err)
+  });
+  pdfDoc.end();
+  return savePath+filename
+}
+
+PDFMaker.crearNotaCredito = (factura, pNumeracion) => {
+  var formatedServicios = [{
+    cant: 1,
+    concepto: "Factura número: " + factura.numero_factura,
+    vlrU: factura.valor_total_factura,
+    vlrT: factura.valor_total_factura,
+  }]
+  function buildTableBody(data, columns) {
+    var body = [];
+    body.push(columns);
+    var subtotal = 0
+    data.forEach(function(row) {
+        var dataRow = [];
+        columns.forEach(function(column) {
+            dataRow.push({text: row[column.label].toString(), margin:[0,15,3,0], width:"200"});
+            if(column.label == "vlrT") subtotal+=row[column.label]
+        })
+        body.push(dataRow);
+    });
+    body.push([{text:"SUB-TOTAL",colSpan: 3},{},{},{text:subtotal}])
+    body.push([{text:"IVA %",colSpan: 3},{},{},{text:"0"}])
+    body.push([{text:"TOTAL",colSpan: 3},{},{},{text:subtotal}])
+
+    //console.log(body)
+    return body;
+  }
+  function table(data, columns) {
+      return {
+        width:'auto',
+        alignment: 'center',
+        //layout: 'lightHorizontalLines',
+          table: {
+              headerRows: 1,
+              body: buildTableBody(data, columns)
+          }
+      };
+  }
+
+  var docDefinition = {
+    content: [
+      {
+        image: './fonts/Images/header_logo.png',
+        width: 130,
+        height: 60,
+        margin: [0,0,0,20]
+      },
+      {text:"Nit 900.311.422-4 Reg. Común Act. Económica 8514",alignment: 'center'},
+      //{text:"Número de Formulario DIAN 7818718718187 Fecha 2020/20/20",alignment: 'center'},
+      {text:"Habilitada desde "+pNumeracion.numeracion_inicial+" hasta " +pNumeracion.numeracion_inicial,alignment: 'center'},
+      {columns: [
+        {
+          ul: [
+            {text: "Señor:(es): ", listType: 'none'},
+            {text: "Dirección: ", listType: 'none'},
+            {text: ["Tel.: ", "    NIT. "] , listType: 'none'}
+          ]
+        },
+        {
+          margin:[85,0,0,0],
+          table:{
+            body: [
+              ["Nota de crédito"],
+              ["NO. " + pNumeracion.numeracion_actual],
+              ["Fecha "+new Date().toISOString().split("T")[0]]
+            ]
+          }
+        }
+      ],
+      margin: [0,20,0,20],
+      alignment: "center"
+    },
+    {
+      columns:[
+        { width: '*', text: '' },
+        table(formatedServicios, [{text: "Cantidad",label:"cant", style: 'tableHeader'},
+              {text:"Concepto",label:'concepto', style: 'tableHeader'},
+              {text:"Valor Unitario",label:'vlrU', style: 'tableHeader'},
+              {text:"Valor Total",label:'vlrT', style: 'tableHeader'}
+            ]),
+        { width: '*', text: '' },
+      ]
+    },
+    {text:"Facatativá (Cund.)",alignment: 'center',margin:[0,10,0,0]},
+    {text:"Calle 8 No 6 - 59. Tel: 8429548 / Fax #######",alignment: 'center'},
+    {text:"radioxenter@gmail.com",alignment: 'center'},
+    {text:"www.radioxenter.com",alignment: 'center'},
+  ],
+    styles:{
+      bold:{
+        bold: true
+      },
+      tableHeader: {
+        bold: true,
+        fontSize: 13,
+        color: 'black'
+      }
+    }
+  };
+  var savePath = "./public/pdf/notaCredito/"
+  var today = new Date()
+  var timestamp = today.getDate()+""+today.getMonth()+""+today.getFullYear()+""+today.getHours()+""+today.getMinutes()
+  var filename = factura.documento_usuario + "_" + timestamp + ".pdf"
   var pdfDoc = printer.createPdfKitDocument(docDefinition);
   pdfDoc.pipe(fs.createWriteStream(savePath+filename))
   .on('error', (err) => {

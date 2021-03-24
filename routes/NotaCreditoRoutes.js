@@ -1,6 +1,10 @@
 const router = require('express').Router()
 const NotaCreditoController = require('../controllers/NotaCreditoController')
+const FacturaController = require('../controllers/FacturaController')
+const NumeracionController = require('../controllers/NumeracionController')
 const Mensajes = require('../middlewares/Mensajes')
+const Constantes = require('../middlewares/Constantes')
+const pdfMaker = require('../services/PDFMaker')
 //const {, } = require('../middlewares/Validation')
 
 router.get('/:cod_nota_credito', async(req,res)=>{
@@ -52,17 +56,31 @@ router.post('/', async(req,res)=>{
             }
         }]
      */
-    // const {error} = CreateFormaDePagoEntidadValidation(req.body)
-    // if(error) return res.status(422).send({
-    //     error: error.details[0].message
-    // })
     
-    const notaCredito = await NotaCreditoController.createNotaCredito(req.body)
+    var factura = await FacturaController.getFactura(req.body.cod_factura)
+
+    var numeracion = await NumeracionController.getNumeracion(Constantes.NTCR_CODE)
+    
+    var ruta = pdfMaker.crearNotaCredito(factura, numeracion, )
+
+    var notaC = {
+        numero_nota_credito: numeracion.numeracion_actual,
+        ruta_factura: ruta,
+        cod_factura: req.body.cod_factura,
+        cod_tipo_nota_credito: Constantes.TNTCR_COMERCIAL,
+        fecha_nota_credito: new Date(),
+        descripcion_nota_credito: "Factura número: " + factura.numero_factura,
+        valor_total: factura.valor_total_factura
+    }
+
+    const notaCredito = await NotaCreditoController.createNotaCredito(notaC)
     if(notaCredito.errors || notaCredito.name){
         return res.status(400).send({
             error:Mensajes.ErrorAlGuardar
         })
     }
+
+    await NumeracionController.aumentarNumeracion(Constantes.NTCR_CODE)
     return res.status(201).send()
 })
 

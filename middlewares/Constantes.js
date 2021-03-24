@@ -36,4 +36,7 @@ Constantes.TPE_CORREO = 2
 
 Constantes.FPE_FISICO = 1
 Constantes.FPE_CORREO = 2
+
+Constantes.TNTCR_COMERCIAL = 1
+Constantes.TNTCR_BANCARIA = 2
 module.exports = Constantes

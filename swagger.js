@@ -295,6 +295,7 @@ const doc = {
         NotaCredito:{
             "fecha_nota_credito": "yyyy-MM-dd",
             "descripcion_nota_credito":"",
+            "ruta_nota_credito":"",
             "valor_total":0,
             "cod_factura":0,
             "cod_tipo_nota_credito":0

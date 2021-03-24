@@ -21,6 +21,9 @@ module.exports = (sequelize) => {
         valor_total:{
             type: DataTypes.DOUBLE
         },
+        ruta_nota_credito:{
+            type: DataTypes.STRING
+        },
         cod_factura:{
             type: DataTypes.INTEGER
         },

@@ -190,4 +190,17 @@ Initializer.CargarFormaDePagoEntidad = async (pFormaDePagoEntidad) => {
     console.log("Forma de pago entidad finalizado");
 }
 
+Initializer.CargarTipoNotaCredito = async (pTipoNotaCredito) => {
+    console.log("Cargando tipo nota credito");
+    await pTipoNotaCredito.findOrCreate({
+        where: {cod_tipo_nota_credito:Constantes.TNTCR_COMERCIAL},
+        defaults: {cod_tipo_nota_credito:Constantes.TNTCR_COMERCIAL,nombre_tipo_nota_credito:"Comercial"}
+    })
+    await pTipoNotaCredito.findOrCreate({
+        where: {cod_tipo_nota_credito:Constantes.TNTCR_BANCARIA},
+        defaults: {cod_tipo_nota_credito:Constantes.TNTCR_BANCARIA,nombre_tipo_nota_credito:"Bancaria"}
+    })
+    console.log("Tipo nota credito finalizado");
+}
+
 module.exports = Initializer
