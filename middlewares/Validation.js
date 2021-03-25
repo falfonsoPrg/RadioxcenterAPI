@@ -525,8 +525,8 @@ module.exports.CreateSatisfaccionValidation = CreateSatisfaccionValidation = (da
         recomendacion_satifasfaccion: Joi.string().required(),
         ubicacion_satisfaccion: Joi.string().required(),
         entrega_recomendacion_satisfaccion: Joi.bool().required(),
-        sugerencias_satisfaccion: Joi.string().required(),
-        cod_usuario: Joi.string().required()
+        sugerencias_satisfaccion: Joi.string().required().allow(''),
+        cod_usuario: Joi.number().required()
     })
     return schema.validate(data)
 }
@@ -546,7 +546,7 @@ module.exports.UpdateSatisfaccionValidation = UpdateSatisfaccionValidation = (da
         ubicacion_satisfaccion: Joi.string().required(),
         entrega_recomendacion_satisfaccion: Joi.bool().required(),
         sugerencias_satisfaccion: Joi.string().required().allow(''),
-        cod_usuario: Joi.string().required()
+        cod_usuario: Joi.number().required()
     })
     return schema.validate(data)
 }
