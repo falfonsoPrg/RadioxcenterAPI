@@ -223,6 +223,7 @@ router.post('/crearConsentimiento', async(req,res)=>{
                 error: Mensajes.ErrorAlGuardarArchivo
             })
         }
+        var rutas = []
         if(usuarioSingleton.transaccion[Constantes.CONSENTIMIENTO_COVID] == true){
             var dataToConsentimiento = usuarioSingleton.data
             dataToConsentimiento.tipoDocumento = usuario[0].Tipo_Documento.nombre_tipo_documento
@@ -244,6 +245,7 @@ router.post('/crearConsentimiento', async(req,res)=>{
                     error: Mensajes.ErrorAlGuardar
                 })
             }
+            rutas.push(rutaCovid)
         }
         if(usuarioSingleton.transaccion[Constantes.CONSENTIMIENTO_INTRAORAL] == true){
             var rutaIntra = pdfMaker.crearConsentimientoIntraoral(usuarioSingleton.data,usuarioSingleton.tutor,req.body.signature,req.body.condiciones)
@@ -257,6 +259,7 @@ router.post('/crearConsentimiento', async(req,res)=>{
                     error: Mensajes.ErrorAlGuardar
                 })
             }
+            rutas.push(rutaIntra)
         }
         if(usuarioSingleton.transaccion[Constantes.CONSENTIMIENTO_EXTRAORAL] == true){
             var rutaExtra = pdfMaker.crearConsentimientoExtraoral(usuarioSingleton.data,usuarioSingleton.tutor,req.body.signature,req.body.condiciones)
@@ -270,6 +273,7 @@ router.post('/crearConsentimiento', async(req,res)=>{
                     error: Mensajes.ErrorAlGuardar
                 })
             }
+            rutas.push(rutaExtra)
         }
         singleton.setConsentimiento(rutas, req.body.documento_usuario)
         console.log("PDF consentimiento covid Creado")
