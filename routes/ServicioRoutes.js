@@ -60,11 +60,9 @@ router.post('/', async(req,res)=> {
     if(error) return res.status(422).send({
         error: error.details[0].message
     })
-    if(!req.body.nombre_servicio.startsWith("SE-")){
-        req.body.nombre_servicio = "SE-"+req.body.nombre_servicio
-    }
+    
 
-    const servicio = await ServicioController.createservicio(req.body)
+    const servicio = await ServicioController.createservicio(req.body,"SE")
     if(servicio.errors || servicio.name){
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
