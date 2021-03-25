@@ -12,7 +12,9 @@ TipoConsentimientoController.getTipoConsentimiento = async (cod_tipo_consentimie
 
 TipoConsentimientoController.getTipoConsentimientos = async () => {
     try {
-        return await Tipo_Consentimiento.findAll()
+        return await Tipo_Consentimiento.findAll({
+            attributes: ['cod_tipo_consentimiento','nombre_tipo_consentimiento','activo']
+        })
     } catch (error) {
         return error
     }
@@ -21,6 +23,7 @@ TipoConsentimientoController.getTipoConsentimientos = async () => {
 TipoConsentimientoController.getTipoConsentimientosActivos = async () => {
     try {
         return await Tipo_Consentimiento.findAll({
+            attributes: ['cod_tipo_consentimiento','nombre_tipo_consentimiento','activo'],
             where:{activo: true}
         })
     } catch (error) {
