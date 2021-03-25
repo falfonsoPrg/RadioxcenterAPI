@@ -14,7 +14,8 @@ FacturaController.getFacturas = async() => {
         return await Factura.findAll({
             order: [
                 ['createdAt', 'DESC']
-            ]
+            ],
+            include: {all: true}
         })
     } catch (error) {
         return error
