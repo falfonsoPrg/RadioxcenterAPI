@@ -224,7 +224,7 @@ router.post('/crearConsentimiento', async(req,res)=>{
             })
         }
         var rutas = []
-        if(usuarioSingleton.transaccion[Constantes.CONSENTIMIENTO_COVID] == true){
+        if(usuarioSingleton.transaccion.consentimiento[Constantes.CONSENTIMIENTO_COVID] == true){
             var dataToConsentimiento = usuarioSingleton.data
             dataToConsentimiento.tipoDocumento = usuario[0].Tipo_Documento.nombre_tipo_documento
             var rutaCovid;
@@ -247,7 +247,7 @@ router.post('/crearConsentimiento', async(req,res)=>{
             }
             rutas.push(rutaCovid)
         }
-        if(usuarioSingleton.transaccion[Constantes.CONSENTIMIENTO_INTRAORAL] == true){
+        if(usuarioSingleton.transaccion.consentimiento[Constantes.CONSENTIMIENTO_INTRAORAL] == true){
             var rutaIntra = pdfMaker.crearConsentimientoIntraoral(usuarioSingleton.data,usuarioSingleton.tutor,req.body.signature,req.body.condiciones)
             var consentIntra = await ConsentimientoController.createConsentimiento({
                 cod_tipo_consentimiento: Constantes.CONSENTIMIENTO_INTRAORAL,
@@ -261,7 +261,7 @@ router.post('/crearConsentimiento', async(req,res)=>{
             }
             rutas.push(rutaIntra)
         }
-        if(usuarioSingleton.transaccion[Constantes.CONSENTIMIENTO_EXTRAORAL] == true){
+        if(usuarioSingleton.transaccion.consentimiento[Constantes.CONSENTIMIENTO_EXTRAORAL] == true){
             var rutaExtra = pdfMaker.crearConsentimientoExtraoral(usuarioSingleton.data,usuarioSingleton.tutor,req.body.signature,req.body.condiciones)
             var consentIntra = await ConsentimientoController.createConsentimiento({
                 cod_tipo_consentimiento: Constantes.CONSENTIMIENTO_EXTRAORAL,
