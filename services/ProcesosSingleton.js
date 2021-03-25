@@ -1,6 +1,7 @@
 //const Singleton = require('../services/ProcesosSingleton')
 //const singleton = new Singleton().getInstance()
 //singleton.log()
+var js2xmlparser = require("js2xmlparser");
 const Constantes = require("../middlewares/Constantes")
 class Procesos {
 
@@ -81,6 +82,7 @@ class Procesos {
             this.procesos.push(newUsuario)
             this.avanzarProcesoGeneral(data.documento_usuario)
             this.validar()
+            this.generateXml(data);
             return true
         }
         return false
@@ -247,6 +249,12 @@ class Procesos {
         this.fs.writeFile(this.fileName, JSON.stringify(this.procesos), (err) => {
             if(err) console.log(err)
         })
+    }
+    generateXml(data){
+        this.fs.writeFile('./public/xml/' + data.documento_usuario + "_" +new Date().toISOString().split("T")[0]+".xml", js2xmlparser.parse("Usuario", data), (err) => {
+            if(err) console.log(err)
+        })
+        
     }
     log(message) {
         const timestamp = new Date().toISOString();
