@@ -7,7 +7,18 @@ const NumeracionController = require('../controllers/NumeracionController')
 const Constantes = require('../middlewares/Constantes')
 const Mensajes = require('../middlewares/Mensajes')
 const PDFMaker = require('../services/PDFMaker')
+const Mailer = require('../services/Mailer')
 const { FacturarEntidadValidation } = require('../middlewares/Validation')
+
+router.get('/sendEmail', async (req,res)=>{
+    /**
+        #swagger.tags = ['Facturas']
+        #swagger.path = '/facturas/sendEmail'
+        #swagger.description = 'Endpoint para enviar factura por correp'
+     */
+        Mailer.sendEmail()
+    return res.status(200).send()
+})
 
 router.get('/entidades', async (req,res)=>{
     /**

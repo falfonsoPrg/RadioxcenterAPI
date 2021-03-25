@@ -2705,6 +2705,20 @@
         }
       }
     },
+    "/facturas/sendEmail": {
+      "get": {
+        "tags": [
+          "Facturas"
+        ],
+        "description": "Endpoint para enviar factura por correp",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/facturas/entidades": {
       "get": {
         "tags": [
