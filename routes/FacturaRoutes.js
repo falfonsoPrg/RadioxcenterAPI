@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const EntidadController = require('../controllers/EntidadController')
+const UsuarioController = require('../controllers/UsuarioController')
 const FacturaController = require('../controllers/FacturaController')
 const TransaccionController = require('../controllers/TransaccionController')
 const TransaccionFacturaController = require('../controllers/TransaccionFacturaController')
@@ -78,6 +79,7 @@ router.get('/sendEmail', async (req,res)=>{
             }
         }]
      */
+    var usuario = await 
     Mailer.sendEmail()
     return res.status(200).send()
 })

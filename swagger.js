@@ -325,12 +325,16 @@ const doc = {
             "ubicacion_satisfaccion":"",
             "entrega_recomendacion_satisfaccion":false,
             "sugerencias_satisfaccion":"",
-            "cod_usuario":0,
+            "documento_usuario":0,
             
         },
         FacturarEntidad:{
             "cod_transacciones":[],
             "ipv4":""
+        },
+        FacturaSendEmail:{
+            "documento_usuario":0,
+            "cod_factura":0
         }
     }
 }
