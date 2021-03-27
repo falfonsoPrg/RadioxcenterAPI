@@ -526,7 +526,7 @@ module.exports.CreateSatisfaccionValidation = CreateSatisfaccionValidation = (da
         ubicacion_satisfaccion: Joi.string().required(),
         entrega_recomendacion_satisfaccion: Joi.bool().required(),
         sugerencias_satisfaccion: Joi.string().required().allow(''),
-        cod_usuario: Joi.number().required()
+        documento_usuario: Joi.number().required()
     })
     return schema.validate(data)
 }

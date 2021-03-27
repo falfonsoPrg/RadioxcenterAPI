@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const SatisfaccionController = require('../controllers/SatisfaccionController')
+const UsuarioController = require('../controllers/UsuarioController')
 const Mensajes = require ('../middlewares/Mensajes')
 const { CreateSatisfaccionValidation, UpdateSatisfaccionValidation } = require('../middlewares/Validation')
 
@@ -54,6 +55,8 @@ router.post('/', async(req,res)=>{
         }]
      */
     const {error} = CreateSatisfaccionValidation(req.body)
+    const usuario = await UsuarioController.getUsuarioPorDocumento(req.body.documento_usuario)
+    req.body.cod_usuario = usuario.cod_usuario
     if(error) return res.status(422).send({
         error: error.details[0].message
     })
