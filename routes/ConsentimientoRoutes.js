@@ -1,23 +1,25 @@
 const router = require('express').Router()
 const pdfMaker = require("../services/PDFMaker")
 const ConsentimientoController = require('../controllers/ConsentimientoController')
+const TransaccionController = require('../controllers/TransaccionController')
 const Mensajes = require('../middlewares/Mensajes')
 const {CreateConsentimientoValidation} = require('../middlewares/Validation')
-const path = require("path");
-const fs = require('fs');
 
-router.get('/download/:nombre_archivo', (req,res) => {
+router.get('/usuario/:documento_usuario' , async(req,res)=>{
     /**
         #swagger.tags = ['Consentimientos']
-        #swagger.path = '/consentimientos/download/{nombre_archivo}'
-        #swagger.description = 'Endpoint para descargar un consentimiento'
+        #swagger.path = '/consentimientos/usuario/{documento_usuario}'
+        #swagger.description = 'Endpoint para obtener consentimientos de un usuario'
      */
-    var ruta = 'files/pdf/consentimientos/' + req.params.nombre_archivo
-    const file = path.join(__dirname,'..',ruta)
-    if(!fs.existsSync(file)) return res.status(404).send({
-        error: Mensajes.RegistroNoEncontradoPorParametro
+    const consentimientos = await TransaccionController.getAllConsentimientosDeUsuario(req.params.documento_usuario);
+    if(consentimientos.length > 0){
+        return res.send({
+            respuesta: consentimientos
+        })
+    }
+    return res.status(404).send({
+        error: Mensajes.RegistroNoEncontrado
     })
-    return res.download(file)
 })
 
 router.get('/:cod_consentimiento', async(req,res)=>{

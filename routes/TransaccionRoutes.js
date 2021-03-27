@@ -26,7 +26,7 @@ router.get('/generarReporte',async(req,res)=>{
         #swagger.path = '/transacciones/generarReporte'
         #swagger.description = 'Endpoint para generar un reporte de transacciones'
      */
-    const transacciones = await TransaccionController.getTransacciones() 
+    const transacciones = await TransaccionController.getAllTransacciones() 
     await Generador.GenerarReporteDiarioDeTransacciones(transacciones)
     res.send()
 })
@@ -55,8 +55,7 @@ router.get('/',async(req,res)=>{
         #swagger.path = '/transacciones'
         #swagger.description = 'Endpoint para obtener transacciones'
      */
-    const transaccion = await TransaccionController.getTransacciones()
-
+    const transaccion = await TransaccionController.getAllTransacciones()
     if(transaccion.length > 0){
         return res.send({
             respuesta: transaccion

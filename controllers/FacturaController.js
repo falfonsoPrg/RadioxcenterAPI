@@ -12,10 +12,10 @@ FacturaController.getFactura = async (cod_factura) => {
 FacturaController.getFacturas = async() => {
     try{
         return await Factura.findAll({
+            include: { all: true },
             order: [
                 ['createdAt', 'DESC']
-            ],
-            include: {all: true}
+            ]
         })
     } catch (error) {
         return error

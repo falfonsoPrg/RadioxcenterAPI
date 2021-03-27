@@ -171,15 +171,15 @@
         }
       }
     },
-    "/consentimientos/download/{nombre_archivo}": {
+    "/consentimientos/usuario/{documento_usuario}": {
       "get": {
         "tags": [
           "Consentimientos"
         ],
-        "description": "Endpoint para descargar un consentimiento",
+        "description": "Endpoint para obtener consentimientos de un usuario",
         "parameters": [
           {
-            "name": "nombre_archivo",
+            "name": "documento_usuario",
             "in": "path",
             "required": true
           }

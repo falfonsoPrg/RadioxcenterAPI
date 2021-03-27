@@ -61,11 +61,11 @@ router.post('/', async(req,res)=>{
 
     var numeracion = await NumeracionController.getNumeracion(Constantes.NTCR_CODE)
     
-    var ruta = pdfMaker.crearNotaCredito(factura, numeracion, )
+    var ruta = pdfMaker.crearNotaCredito(factura, numeracion)
 
     var notaC = {
         numero_nota_credito: numeracion.numeracion_actual,
-        ruta_factura: ruta,
+        ruta_nota_credito: ruta,
         cod_factura: req.body.cod_factura,
         cod_tipo_nota_credito: Constantes.TNTCR_COMERCIAL,
         fecha_nota_credito: new Date(),

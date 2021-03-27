@@ -11,7 +11,17 @@ TransaccionController.getTransaccion = async(cod_transaccion) => {
     }
 }
 
-TransaccionController.getTransacciones = async () => {
+TransaccionController.getAllConsentimientosDeUsuario = async (pDocUsuario) => {
+    try {
+        return await Transaccion.findAll({
+            where:{documento_usuario: pDocUsuario},
+            include: {all: true}
+        })
+    } catch (error) {
+        return error
+    }
+}
+TransaccionController.getAllTransacciones = async () => {
     try {
         return await Transaccion.findAll({
             include: {all: true}
