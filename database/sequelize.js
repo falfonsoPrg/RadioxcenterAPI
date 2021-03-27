@@ -286,6 +286,7 @@ module.exports = {
     Factura,
     TransaccionFactura,
     NotaCredito,
-    Numeracion
+    Numeracion,
+    Satisfaccion
 
 }
