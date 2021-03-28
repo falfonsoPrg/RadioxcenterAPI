@@ -23,15 +23,17 @@ Mailer.sendEmail = (correo,factura) => {
             }
         ]
     };
-
+    var rta = true;
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            return false
+            rta = false
         } else {
             console.log('Email sent: ' + info.response);
-            return true
+            rta = true
         }
     })
+    console.log(rta)
+    return rta
 }
 
 module.exports = Mailer
