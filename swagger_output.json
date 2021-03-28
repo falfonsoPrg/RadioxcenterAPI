@@ -2804,7 +2804,7 @@
       }
     },
     "/facturas/sendEmail": {
-      "get": {
+      "post": {
         "tags": [
           "Facturas"
         ],

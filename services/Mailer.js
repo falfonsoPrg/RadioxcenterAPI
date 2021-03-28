@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 
 Mailer = {}
 
-Mailer.sendEmail = () => {
+Mailer.sendEmail = (correo,factura) => {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -13,16 +13,23 @@ Mailer.sendEmail = () => {
 
     var mailOptions = {
         from: process.env.EMAIL,
-        to: process.env.EMAIL,
+        to: correo,
         subject: 'Sending Email using Node.js',
-        text: 'That was easy!'
+        text: 'That was easy!',
+        attachments:[
+            {
+                filename: "factura.pdf",
+                path: factura.ruta_factura
+            }
+        ]
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            console.log(error);
+            return false
         } else {
             console.log('Email sent: ' + info.response);
+            return true
         }
     })
 }

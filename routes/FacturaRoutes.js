@@ -64,7 +64,7 @@ router.get('/', async (req,res)=>{
     })
 })
 
-router.get('/sendEmail', async (req,res)=>{
+router.post('/sendEmail', async (req,res)=>{
     /**
         #swagger.tags = ['Facturas']
         #swagger.path = '/facturas/sendEmail'
@@ -79,9 +79,20 @@ router.get('/sendEmail', async (req,res)=>{
             }
         }]
      */
-    var usuario = await 
-    Mailer.sendEmail()
-    return res.status(200).send()
+    var correo = ""
+    var usuario = await UsuarioController.getUsuarioPorDocumento(req.body.documento_usuario)
+    if(usuario[0] == undefined){
+        var entidad = await EntidadController.getEntidadPorNit(req.body.documento_usuario);
+        correo = entidad.correo_representante
+    }else{
+        correo = usuario[0].correo_usuario
+    }
+    var factura = await FacturaController.getFactura(req.body.cod_factura)
+    var rta = Mailer.sendEmail(correo, factura)
+    if(rta) return res.status(200).send()
+    return res.status(400).send({
+        error: Mensajes.ErrorAlGuardar
+    })
 })
 
 router.post('/', async (req,res)=>{

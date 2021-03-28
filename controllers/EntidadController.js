@@ -9,6 +9,15 @@ EntidadController.getEntidad = async (cod_entidad) => {
         return error
     }
 }
+EntidadController.getEntidadPorNit = async (pNitEntidad) => {
+    try {
+        return await Entidad.findOne({
+            where: {nit_entidad: pNitEntidad}
+        })
+    } catch (error) {
+        return error
+    }
+}
 EntidadController.getAllFromEntidad = async () => {
     try {
         return await Entidad.findAll({
