@@ -3,6 +3,8 @@ const SatisfaccionController = require('../controllers/SatisfaccionController')
 const UsuarioController = require('../controllers/UsuarioController')
 const Mensajes = require ('../middlewares/Mensajes')
 const { CreateSatisfaccionValidation, UpdateSatisfaccionValidation } = require('../middlewares/Validation')
+const Singleton = require('../services/ProcesosSingleton')
+const singleton = new Singleton().getInstance()
 
 router.get('/:cod_satisfaccion', async (req, res)=>{
     /**
@@ -62,7 +64,8 @@ router.post('/', async(req,res)=>{
         error: error.details[0].message
     })
     const satisfaccion = await SatisfaccionController.createSatisfaccion(req.body)
-    if (satisfaccion.errors || satisfaccion.name){
+    var error = singleton.setSatisfaccion(satisfaccion, req.body.documento_usuario)
+    if (satisfaccion.errors || satisfaccion.name || error==false){
         return res.status(404).send({
             error: Mensajes.ErrorAlGuardar
         })
