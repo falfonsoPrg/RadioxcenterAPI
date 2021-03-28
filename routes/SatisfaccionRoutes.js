@@ -64,8 +64,8 @@ router.post('/', async(req,res)=>{
         error: error.details[0].message
     })
     const satisfaccion = await SatisfaccionController.createSatisfaccion(req.body)
-    var error = singleton.setSatisfaccion(satisfaccion, req.body.documento_usuario)
-    if (satisfaccion.errors || satisfaccion.name || error==false){
+    var errorSingleton = singleton.setSatisfaccion(satisfaccion, req.body.documento_usuario)
+    if (satisfaccion.errors || satisfaccion.name || errorSingleton==false){
         return res.status(404).send({
             error: Mensajes.ErrorAlGuardar
         })
