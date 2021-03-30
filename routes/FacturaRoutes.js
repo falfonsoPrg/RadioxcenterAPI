@@ -174,7 +174,7 @@ router.put('/facturarEntidad/:cod_entidad', async (req,res)=>{
 
     await transacciones.forEach(async (t) => {
         await TransaccionFacturaController.createTransaccionFactura({
-            cod_transacciones: t.cod_transaccion,
+            cod_transaccion: t.cod_transaccion,
             cod_factura: factura.cod_factura
         })
     });
