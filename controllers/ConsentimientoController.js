@@ -25,7 +25,10 @@ ConsentimientoController.getConsentimientosPorUsuario = async(pDocumentoUsuario)
                     where(col(`Transaccion.documento_usuario`), Op.eq, pDocumentoUsuario)
                 ]
             },
-            include: {all: true}
+            include: {all: true},
+            order: [
+                ['createdAt', 'DESC']
+            ]
         })
     } catch (error){
         return error
