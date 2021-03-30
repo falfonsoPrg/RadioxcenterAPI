@@ -12,7 +12,7 @@ router.get('/usuario/:documento_usuario' , async(req,res)=>{
         #swagger.description = 'Endpoint para obtener consentimientos de un usuario'
      */
     const consentimientos = await TransaccionController.getAllConsentimientosDeUnUsuario(req.params.documento_usuario);
-    if(consentimientos.length > 0){
+    if(consentimientos){
         return res.send({
             respuesta: consentimientos
         })
