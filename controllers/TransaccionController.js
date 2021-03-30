@@ -21,6 +21,16 @@ TransaccionController.getAllConsentimientosDeUsuario = async (pDocUsuario) => {
         return error
     }
 }
+TransaccionController.getAllConsentimientosDeUnUsuario = async (pDocUsuario) => {
+    try {
+        return await Transaccion.findOne({
+            where:{documento_usuario: pDocUsuario},
+            include: {all: true}
+        })
+    } catch (error) {
+        return error
+    }
+}
 TransaccionController.getAllTransacciones = async () => {
     try {
         return await Transaccion.findAll({
