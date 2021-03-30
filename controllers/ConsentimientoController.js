@@ -1,4 +1,5 @@
 const {Consentimiento} = require('../database/sequelize')
+const { Op, where, col } = require("sequelize");
 
 ConsentimientoController = {}
 
@@ -11,7 +12,21 @@ ConsentimientoController.getConsentimiento = async (cod_consentimiento) =>{
 }
 ConsentimientoController.getConsentimientos = async() =>{
     try{
-        return await Consentimiento.findAll()
+        return await Consentimiento.findAll({include: {all: true}})
+    } catch (error){
+        return error
+    }
+}
+ConsentimientoController.getConsentimientosPorUsuario = async(pDocumentoUsuario) =>{
+    try{
+        return await Consentimiento.findAll({
+            where:{
+                [Op.and]: [
+                    where(col(`Transaccion.documento_usuario`), Op.eq, pDocumentoUsuario)
+                ]
+            },
+            include: {all: true}
+        })
     } catch (error){
         return error
     }
