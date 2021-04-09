@@ -41,7 +41,9 @@ EntidadController.getAllDoctoresFromEntidad = async () => {
 }
 EntidadController.getEntidades = async() => {
     try {
-        return await Entidad.findAll()
+        return await Entidad.findAll({
+            include: {all: true},
+        })
     } catch (error) {
         return error
     }
