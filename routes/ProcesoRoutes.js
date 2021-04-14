@@ -282,6 +282,10 @@ router.post('/crearConsentimiento', async(req,res)=>{
         }
         singleton.setConsentimiento(rutas, req.body.documento_usuario)
         console.log("PDF consentimiento covid Creado")
+        
+        if(usuarioSingleton.transaccion.paga_cliente == true){
+            usuarioSingleton.transaccion.cod_entidad_doctor=null
+        }
 
         if(usuarioSingleton.transaccion.tipo_compra != "Convenio" && (usuarioSingleton.transaccion.cod_entidad_doctor == 0 || usuarioSingleton.transaccion.cod_entidad_doctor==null)){
             const numeracionFactura = await NumeracionController.getNumeracion(Constantes.FPOS_CODE)

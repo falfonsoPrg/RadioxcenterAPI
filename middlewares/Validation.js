@@ -491,6 +491,7 @@ module.exports.AgregarTransaccionValidation = AgregarTransaccionValidation = (da
         valor_transaccion: Joi.number().required(),
         fecha_transaccion: Joi.string().required(),
         tipo_compra: Joi.string().required(),
+        paga_cliente: Joi.bool().required(),
         servicios: Joi.array().min(1).required(),
         consentimiento: Joi.object().required()
     })
