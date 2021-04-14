@@ -225,13 +225,14 @@ router.post('/crearConsentimiento', async(req,res)=>{
         }
         var rutas = []
         if(usuarioSingleton.transaccion.consentimiento[Constantes.CONSENTIMIENTO_COVID] == true){
-            var dataToConsentimiento = usuarioSingleton.data
+            var dataToConsentimiento = Object.assign({}, usuarioSingleton.data)
+            var tutorToConsentimiento = Object.assign({}, usuarioSingleton.tutor)
             dataToConsentimiento.tipoDocumento = usuario[0].Tipo_Documento.nombre_tipo_documento
             var rutaCovid;
             if(usuarioSingleton.data.tutor){
                 const tipoDocumentoTutor = await TipoDocumentoController.getTipoDocumento(usuarioSingleton.tutor.cod_tipo_documento)
                 usuarioSingleton.tutor.tipoDocumento = tipoDocumentoTutor.nombre_tipo_documento
-                rutaCovid = pdfMaker.crearConsentimientoCovidTutor(req.body.signature,dataToConsentimiento,usuarioSingleton.tutor,req.body.covid)
+                rutaCovid = pdfMaker.crearConsentimientoCovidTutor(req.body.signature,dataToConsentimiento,tutorToConsentimiento,req.body.covid)
             }else{
                 rutaCovid = pdfMaker.crearConsentimientoCovid(req.body.signature,dataToConsentimiento,req.body.covid)
             }
@@ -248,7 +249,9 @@ router.post('/crearConsentimiento', async(req,res)=>{
             rutas.push(rutaCovid)
         }
         if(usuarioSingleton.transaccion.consentimiento[Constantes.CONSENTIMIENTO_INTRAORAL] == true){
-            var rutaIntra = pdfMaker.crearConsentimientoIntraoral(usuarioSingleton.data,usuarioSingleton.tutor,req.body.signature,req.body.condiciones)
+            var dataToSendIntra = Object.assign({}, usuarioSingleton.data)
+            var tutorToSendIntra = Object.assign({}, usuarioSingleton.tutor)
+            var rutaIntra = pdfMaker.crearConsentimientoIntraoral(dataToSendIntra,tutorToSendIntra,req.body.signature,req.body.condiciones)
             var consentIntra = await ConsentimientoController.createConsentimiento({
                 cod_tipo_consentimiento: Constantes.CONSENTIMIENTO_INTRAORAL,
                 ubicacion_consentimiento: rutaIntra,
@@ -262,7 +265,9 @@ router.post('/crearConsentimiento', async(req,res)=>{
             rutas.push(rutaIntra)
         }
         if(usuarioSingleton.transaccion.consentimiento[Constantes.CONSENTIMIENTO_EXTRAORAL] == true){
-            var rutaExtra = pdfMaker.crearConsentimientoExtraoral(usuarioSingleton.data,usuarioSingleton.tutor,req.body.signature,req.body.condiciones)
+            var dataToSendExtra = Object.assign({},usuarioSingleton.data)
+            var tutorToSendExtra = Object.assign({},usuarioSingleton.tutor)
+            var rutaExtra = pdfMaker.crearConsentimientoExtraoral(dataToSendExtra,tutorToSendExtra,req.body.signature,req.body.condiciones)
             var consentIntra = await ConsentimientoController.createConsentimiento({
                 cod_tipo_consentimiento: Constantes.CONSENTIMIENTO_EXTRAORAL,
                 ubicacion_consentimiento: rutaExtra,
@@ -278,11 +283,10 @@ router.post('/crearConsentimiento', async(req,res)=>{
         singleton.setConsentimiento(rutas, req.body.documento_usuario)
         console.log("PDF consentimiento covid Creado")
 
-
-        if(usuarioSingleton.transaccion.tipo_compra != "Convenio"){
+        if(usuarioSingleton.transaccion.tipo_compra != "Convenio" && (usuarioSingleton.transaccion.cod_entidad_doctor == 0 || usuarioSingleton.transaccion.cod_entidad_doctor==null)){
             const numeracionFactura = await NumeracionController.getNumeracion(Constantes.FPOS_CODE)
             var dataToSend = usuarioSingleton.data.tutor ? usuarioSingleton.tutor : usuario[0]
-            const rutaFactura = PDFMaker.createFactura(dataToSend,usuarioSingleton.data.tutor,usuarioSingleton.procesos,numeracionFactura.numeracion_actual)
+            const rutaFactura = PDFMaker.createFactura(dataToSend,usuarioSingleton.data.tutor,usuarioSingleton.procesos,numeracionFactura,"FPOS")
             var resumenFactura = ""
             usuarioSingleton.procesos.forEach(p => {
                 resumenFactura += p.nombre_servicio + " "

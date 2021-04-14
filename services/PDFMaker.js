@@ -6,8 +6,8 @@
     bolditalics: './fonts/Roboto-MediumItalic.ttf'
   }
 };
-const PdfPrinter  = require("pdfmake");
-const printer  = new PdfPrinter(fonts);
+const PdfPrinter = require("pdfmake");
+const printer = new PdfPrinter(fonts);
 const fs = require('fs');
 
 PDFMaker = {}
@@ -43,7 +43,6 @@ PDFMaker.crearConsentimientoCovid = (imagePath,data,covid) => {
           {text: ["Declaro que no he estado en contacto con alguna persona con confirmación de COVID-19 o con cuadro respiratorio agudo en los últimos 14 días.",covid.declaracion_contacto,"(Iniciales)"],alignment: "justify"},
           {text: ["Ha presentado la enfermedad del COVID-19?",covid.presentado_covid ? "SI":"NO",". En caso de haber presentado la enfermedad ¿sigue usted en cuarentena?",covid.cuarentena ? "SI":"NO","(Iniciales)"],alignment: "justify"},
           {text: ["Entiendo que organismos internacionales de salud recomiendan el distanciamiento social de mínimo 1.8 metros, lo cual es imposible durante la toma de las Radiografías y/o estudios diagnósticos." ,covid.entender_distancia, "(Iniciales)"],alignment: "justify"},
-          {text: ["Toma de temperatura ", covid.toma_temperatura],alignment: "justify"},
         ],
         margin: [0,20,20,0],
       },
@@ -121,7 +120,6 @@ PDFMaker.crearConsentimientoCovidTutor = (imagePath,data,tutor,covid) => {
           {text: ["Declaro que no he estado en contacto con alguna persona con confirmación de COVID-19 o con cuadro respiratorio agudo en los últimos 14 días.",covid.declaracion_contacto,"(Iniciales)"],alignment: "justify"},
           {text: ["Ha presentado la enfermedad del COVID-19?",covid.presentado_covid ? "SI":"NO",". En caso de haber presentado la enfermedad ¿sigue usted en cuarentena?",covid.cuarentena ? "SI":"NO","(Iniciales)"],alignment: "justify"},
           {text: ["Entiendo que organismos internacionales de salud recomiendan el distanciamiento social de mínimo 1.8 metros, lo cual es imposible durante la toma de las Radiografías y/o estudios diagnósticos." ,covid.entender_distancia, "(Iniciales)"],alignment: "justify"},
-          {text: ["Toma de temperatura ", covid.toma_temperatura],alignment: "justify"},
         ],
         margin: [0,20,20,0],
       },
@@ -167,7 +165,7 @@ PDFMaker.crearConsentimientoCovidTutor = (imagePath,data,tutor,covid) => {
   return savePath+filename
 }
 
-PDFMaker.createFactura = (data,esTutor,servicios,nFactura) => {
+PDFMaker.createFactura = (data,esTutor,servicios,nFactura,sigla) => {
   var dataToShow = {}
   if(esTutor){
     dataToShow = {
@@ -229,13 +227,13 @@ PDFMaker.createFactura = (data,esTutor,servicios,nFactura) => {
     content: [
       {
         image: './fonts/Images/header_logo.png',
-        width: 130,
-        height: 60,
+        width: 100,
+        height: 40,
         margin: [0,0,0,20]
       },
       {text:"Nit 900.311.422-4 Reg. Común Act. Económica 8514",alignment: 'center'},
       {text:"Número de Formulario DIAN 18763000515449 Fecha 2019/09/17",alignment: 'center'},
-      {text:"Habilitada desde 1330001 hasta 150000",alignment: 'center'},
+      {text:"Habilitada desde "+nFactura.numeracion_inicial+" hasta "+nFactura.numeracion_final,alignment: 'center'},
       {columns: [
         {
           ul: [
@@ -249,7 +247,7 @@ PDFMaker.createFactura = (data,esTutor,servicios,nFactura) => {
           table:{
             body: [
               ["Factura de venta"],
-              ["NO. " + nFactura],
+              [sigla+". " + nFactura.numeracion_actual],
               ["Fecha "+new Date().toISOString().split("T")[0]]
             ]
           }
@@ -269,10 +267,8 @@ PDFMaker.createFactura = (data,esTutor,servicios,nFactura) => {
         { width: '*', text: '' },
       ]
     },
-    {text:"Facatativá (Cund.)",alignment: 'center',margin:[0,10,0,0]},
-    {text:"Calle 8 No 6 - 59. Tel: 8429548 / Fax #######",alignment: 'center'},
-    {text:"radioxenter@gmail.com",alignment: 'center'},
-    {text:"www.radioxenter.com",alignment: 'center'},
+    {text:"Facatativá (Cund.) Calle 8 No 6 - 59. Tel: 8429548 / Fax #######",alignment: 'center',margin:[0,5,0,0]},
+    {text:"radioxenter@gmail.com - www.radioxenter.com",alignment: 'center'},
   ],
     styles:{
       bold:{
@@ -298,7 +294,7 @@ PDFMaker.createFactura = (data,esTutor,servicios,nFactura) => {
   return savePath+filename
 }
 
-PDFMaker.createFacturaEntidad = (entidad,transacciones,nFactura) => {
+PDFMaker.createFacturaEntidad = (entidad,transacciones,nFactura,sigla) => {
 
   var formatedTransacciones = []
   transacciones.forEach(t => {
@@ -348,8 +344,8 @@ PDFMaker.createFacturaEntidad = (entidad,transacciones,nFactura) => {
         margin: [0,0,0,20]
       },
       {text:"Nit 123456789 Reg. Común Act. Económica 8514",alignment: 'center'},
-      {text:"Número de Formulario DIAN 7818718718187 Fecha 2020/20/20",alignment: 'center'},
-      {text:"Habilitada desde 1330001 hasta 150000",alignment: 'center'},
+      {text:"Número de Formulario DIAN 18763000515449 Fecha 2019/09/17",alignment: 'center'},
+      {text:"Habilitada desde "+nFactura.numeracion_inicial+" hasta "+nFactura.numeracion_final,alignment: 'center'},
       {columns: [
         {
           ul: [
@@ -363,7 +359,7 @@ PDFMaker.createFacturaEntidad = (entidad,transacciones,nFactura) => {
           table:{
             body: [
               ["Factura de venta"],
-              ["NO. " + nFactura],
+              [sigla+". " + nFactura.numeracion_actual],
               ["Fecha "+new Date().toISOString().split("T")[0]]
             ]
           }
@@ -383,10 +379,8 @@ PDFMaker.createFacturaEntidad = (entidad,transacciones,nFactura) => {
         { width: '*', text: '' },
       ]
     },
-    {text:"Facatativá (Cund.)",alignment: 'center',margin:[0,10,0,0]},
-    {text:"Calle 8 No 6 - 59. Tel: 8429548 / Fax #######",alignment: 'center'},
-    {text:"radioxenter@gmail.com",alignment: 'center'},
-    {text:"www.radioxenter.com",alignment: 'center'},
+    {text:"Facatativá (Cund.) Calle 8 No 6 - 59. Tel: 8429548 / Fax #######",alignment: 'center',margin:[0,5,0,0]},
+    {text:"radioxenter@gmail.com - www.radioxenter.com",alignment: 'center'},
   ],
     styles:{
       bold:{
@@ -765,7 +759,7 @@ PDFMaker.crearNotaCredito = (factura, pNumeracion) => {
           table:{
             body: [
               ["Nota de crédito"],
-              ["NO. " + pNumeracion.numeracion_actual],
+              ["NTCR. " + pNumeracion.numeracion_actual],
               ["Fecha "+new Date().toISOString().split("T")[0]]
             ]
           }

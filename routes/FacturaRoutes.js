@@ -153,7 +153,7 @@ router.put('/facturarEntidad/:cod_entidad', async (req,res)=>{
         })
     }
     const numeracion = await NumeracionController.getNumeracion(Constantes.FAEL_CODE)
-    var ruta = PDFMaker.createFacturaEntidad(entidad, transacciones, numeracion.numeracion_actual)
+    var ruta = PDFMaker.createFacturaEntidad(entidad, transacciones, numeracion,"FAEL")
     var resumenFactura = ""
     var total = 0
     transacciones.forEach(t => {

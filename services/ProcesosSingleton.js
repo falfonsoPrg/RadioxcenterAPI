@@ -3,6 +3,7 @@
 //singleton.log()
 var js2xmlparser = require("js2xmlparser");
 const Constantes = require("../middlewares/Constantes")
+const Mailer = require("./Mailer")
 class Procesos {
 
     constructor() {
@@ -110,8 +111,6 @@ class Procesos {
 
             this.procesos[indexUsuario].transaccion = transaccion
 
-            if(transaccion.satisfaccion == true) this.procesos[indexUsuario].procesosGenerales.pendientes.push(Constantes.SATISFACCION)
-
             this.procesos[indexUsuario].transaccion.tutor = this.procesos[indexUsuario].tutor
             this.procesos[indexUsuario].transaccion.nombres_acudiente = this.procesos[indexUsuario].tutor.nombres_tutor
             this.procesos[indexUsuario].transaccion.apellidos_acudiente = this.procesos[indexUsuario].tutor.apellidos_tutor
@@ -188,10 +187,14 @@ class Procesos {
                     p.completado = true
                     p.entregado = true
             })
-            const completados = this.procesos[index].procesos.every(p => p.completado == true)
-            if(completados) this.avanzarProcesoGeneral(documento_usuario)
-            const entregados = this.procesos[index].procesos.every(p => p.entregado == true)
-            if(entregados) this.avanzarProcesoGeneral(documento_usuario)
+            if(this.procesos[index].procesosGenerales.actual == Constantes.ENPROCESOS){
+                const completados = this.procesos[index].procesos.every(p => p.completado == true)
+                if(completados) this.avanzarProcesoGeneral(documento_usuario)
+            }
+            if(this.procesos[index].procesosGenerales.actual == Constantes.RESULTADOSENTREGADOS){
+                const entregados = this.procesos[index].procesos.every(p => p.entregado == true)
+                if(entregados) this.avanzarProcesoGeneral(documento_usuario)
+            }
             this.validar()
             return true
         }
@@ -240,6 +243,7 @@ class Procesos {
             this.procesos[indexUsuario].procesosGenerales.actual = this.procesos[indexUsuario].procesosGenerales.pendientes.shift();
 
             if(!this.procesos[indexUsuario].procesosGenerales.actual){
+                Mailer.sendEmailSatisfaccion(this.procesos[indexUsuario].data.correo_usuario)
                 this.deleteUsuario(pCodUsuario)
             }
         }
