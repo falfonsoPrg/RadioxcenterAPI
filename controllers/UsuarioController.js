@@ -38,7 +38,11 @@ UsuarioController.getUsuarioPorDocumentoYCorreo = async(pDocumento_usuario,pCorr
 }
 UsuarioController.getUsuarios = async () =>{
     try {
-        return await Usuario.findAll()
+        return await Usuario.findAll({
+            order:[
+                ['documento_usuario','ASC']
+            ]
+        })
     } catch (error) {
         return error
     }

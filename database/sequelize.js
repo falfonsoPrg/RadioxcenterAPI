@@ -198,7 +198,7 @@ Satisfaccion.belongsTo(Usuario, {foreignKey:'cod_usuario', sourceKey: 'cod_usuar
 
 //Sync the database and chekc if the connection is Ok
 var resetDb = { force:false };
-
+Initializer.CargarCarpetas()
 sequelize.sync( resetDb ).then( async () => {
     var te = await Tipo_empleado.findAll()
     if(te.length == 0) await Initializer.CargarTipoEmpleado(Tipo_empleado)

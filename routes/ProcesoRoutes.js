@@ -21,6 +21,8 @@ const {CreateProcesoValidation,
 
 const Singleton = require('../services/ProcesosSingleton')
 const singleton = new Singleton().getInstance()
+const SingletonLogger = require('../services/Logger')
+const logger = new SingletonLogger().getInstance()
 const pdfMaker = require("../services/PDFMaker")
 
 router.get('/:cod_proceso', async(req,res)=>{
@@ -90,12 +92,10 @@ router.post('/crearUsuario', async(req,res)=>{
         //Agregar el usuario a la bd
         const usuario = await UsuarioController.createUsuario( req.body )
         if(usuario.errors || usuario.name){
-            console.log(usuario)
             return res.status(400).send({
                 error: Mensajes.ErrorAlGuardar
             })
         }
-        console.log("Usuario agregado en la BD")
     }else{
         await UsuarioController.updateUsuario( req.body )
     }
@@ -178,22 +178,23 @@ router.post('/crearConsentimiento', async(req,res)=>{
             }
         }]
      */
+    logger.log("Proceso crearConsentimiento INICIADO");
+
     const usuarioSingleton = singleton.getUsuario(req.body.documento_usuario)
     if(usuarioSingleton == undefined){
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })
     }
-    console.log("Usuario obtenido de la memoria")
-
+    logger.log("Usuario obtenido de la memoria");
     const usuario = await UsuarioController.getUsuarioPorDocumento( usuarioSingleton.data.documento_usuario )
     if(usuario.length == 0){
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })
     }
-    console.log("Usuario obtenido de la BD")
-    
+    logger.log("Usuario obtenido de la base de datos");
+
     const numeracionTransaccion = await NumeracionController.getNumeracion(Constantes.TRAN_CODE)
     usuarioSingleton.transaccion.numero_transaccion = numeracionTransaccion.numeracion_actual
     //Agregar una transacción
@@ -203,8 +204,9 @@ router.post('/crearConsentimiento', async(req,res)=>{
             error: Mensajes.ErrorAlGuardar
         })
     }
+    logger.log("Transacción creada en la base de datos");
+
     await NumeracionController.aumentarNumeracion(Constantes.TRAN_CODE)
-    console.log("Transaccion agregado en la BD")
     //Agregar los servicios a la transaccion
     const tmpServicios = usuarioSingleton.transaccion.servicios
     tmpServicios.forEach( async (serv) => {
@@ -213,7 +215,7 @@ router.post('/crearConsentimiento', async(req,res)=>{
             cod_transaccion: transaccion.cod_transaccion
         })
     });
-    console.log("Servicios agregados en la BD")
+    logger.log("Servicios agregados a la transacción");
 
     //Agregar el consentimiento
     try {
@@ -229,13 +231,18 @@ router.post('/crearConsentimiento', async(req,res)=>{
             var tutorToConsentimiento = Object.assign({}, usuarioSingleton.tutor)
             dataToConsentimiento.tipoDocumento = usuario[0].Tipo_Documento.nombre_tipo_documento
             var rutaCovid;
-            if(usuarioSingleton.data.tutor){
-                const tipoDocumentoTutor = await TipoDocumentoController.getTipoDocumento(usuarioSingleton.tutor.cod_tipo_documento)
-                usuarioSingleton.tutor.tipoDocumento = tipoDocumentoTutor.nombre_tipo_documento
-                rutaCovid = pdfMaker.crearConsentimientoCovidTutor(req.body.signature,dataToConsentimiento,tutorToConsentimiento,req.body.covid)
-            }else{
-                rutaCovid = pdfMaker.crearConsentimientoCovid(req.body.signature,dataToConsentimiento,req.body.covid)
+            try {
+                if(usuarioSingleton.data.tutor){
+                    const tipoDocumentoTutor = await TipoDocumentoController.getTipoDocumento(usuarioSingleton.tutor.cod_tipo_documento)
+                    usuarioSingleton.tutor.tipoDocumento = tipoDocumentoTutor.nombre_tipo_documento
+                    rutaCovid = pdfMaker.crearConsentimientoCovidTutor(req.body.signature,dataToConsentimiento,tutorToConsentimiento,req.body.covid,req.body.responsable)
+                }else{
+                    rutaCovid = pdfMaker.crearConsentimientoCovid(req.body.signature,dataToConsentimiento,req.body.covid,req.body.responsable)
+                }
+            } catch (error) {
+                console.log(error)
             }
+            
             var consent = await ConsentimientoController.createConsentimiento({
                 cod_tipo_consentimiento: Constantes.CONSENTIMIENTO_COVID,
                 ubicacion_consentimiento: rutaCovid,
@@ -246,12 +253,14 @@ router.post('/crearConsentimiento', async(req,res)=>{
                     error: Mensajes.ErrorAlGuardar
                 })
             }
+            logger.log("Consentimiento Covid creado");
+
             rutas.push(rutaCovid)
         }
         if(usuarioSingleton.transaccion.consentimiento[Constantes.CONSENTIMIENTO_INTRAORAL] == true){
             var dataToSendIntra = Object.assign({}, usuarioSingleton.data)
             var tutorToSendIntra = Object.assign({}, usuarioSingleton.tutor)
-            var rutaIntra = pdfMaker.crearConsentimientoIntraoral(dataToSendIntra,tutorToSendIntra,req.body.signature,req.body.condiciones)
+            var rutaIntra = pdfMaker.crearConsentimientoIntraoral(dataToSendIntra,tutorToSendIntra,req.body.signature,req.body.condiciones,req.body.responsable)
             var consentIntra = await ConsentimientoController.createConsentimiento({
                 cod_tipo_consentimiento: Constantes.CONSENTIMIENTO_INTRAORAL,
                 ubicacion_consentimiento: rutaIntra,
@@ -262,12 +271,13 @@ router.post('/crearConsentimiento', async(req,res)=>{
                     error: Mensajes.ErrorAlGuardar
                 })
             }
+            logger.log("Consentimiento Intra oral creado");
             rutas.push(rutaIntra)
         }
         if(usuarioSingleton.transaccion.consentimiento[Constantes.CONSENTIMIENTO_EXTRAORAL] == true){
             var dataToSendExtra = Object.assign({},usuarioSingleton.data)
             var tutorToSendExtra = Object.assign({},usuarioSingleton.tutor)
-            var rutaExtra = pdfMaker.crearConsentimientoExtraoral(dataToSendExtra,tutorToSendExtra,req.body.signature,req.body.condiciones)
+            var rutaExtra = pdfMaker.crearConsentimientoExtraoral(dataToSendExtra,tutorToSendExtra,req.body.signature,req.body.condiciones,req.body.responsable)
             var consentIntra = await ConsentimientoController.createConsentimiento({
                 cod_tipo_consentimiento: Constantes.CONSENTIMIENTO_EXTRAORAL,
                 ubicacion_consentimiento: rutaExtra,
@@ -278,19 +288,19 @@ router.post('/crearConsentimiento', async(req,res)=>{
                     error: Mensajes.ErrorAlGuardar
                 })
             }
+            logger.log("Consentimiento Extra oral creado");
             rutas.push(rutaExtra)
         }
         singleton.setConsentimiento(rutas, req.body.documento_usuario)
-        console.log("PDF consentimiento covid Creado")
-        
         if(usuarioSingleton.transaccion.paga_cliente == true){
             usuarioSingleton.transaccion.cod_entidad_doctor=null
         }
 
-        if(usuarioSingleton.transaccion.tipo_compra != "Convenio" && (usuarioSingleton.transaccion.cod_entidad_doctor == 0 || usuarioSingleton.transaccion.cod_entidad_doctor==null)){
+        if(usuarioSingleton.transaccion.paga_cliente || (usuarioSingleton.transaccion.tipo_compra != "Convenio" && (usuarioSingleton.transaccion.cod_entidad_doctor == 0 || usuarioSingleton.transaccion.cod_entidad_doctor==null))  ){
             const numeracionFactura = await NumeracionController.getNumeracion(Constantes.FPOS_CODE)
             var dataToSend = usuarioSingleton.data.tutor ? usuarioSingleton.tutor : usuario[0]
             const rutaFactura = PDFMaker.createFactura(dataToSend,usuarioSingleton.data.tutor,usuarioSingleton.procesos,numeracionFactura,"FPOS")
+            logger.log("Factura creada en el servidor");
             var resumenFactura = ""
             usuarioSingleton.procesos.forEach(p => {
                 resumenFactura += p.nombre_servicio + " "
@@ -306,29 +316,27 @@ router.post('/crearConsentimiento', async(req,res)=>{
                 cod_tipo_pago: Constantes.TPAGO_EFECTIVO
             });
             if(factura.errors || factura.name){
-                console.log(factura)
                 return res.status(400).send({
                     error: Mensajes.ErrorAlGuardar
                 })
             }
+            logger.log("Factura creada en la base de datos");
             await NumeracionController.aumentarNumeracion(Constantes.FPOS_CODE)
-            console.log("Factura creada en la base de datos");
             const transaccionFactura = await TransaccionFactura.createTransaccionFactura({
                 cod_transaccion: transaccion.cod_transaccion,
                 cod_factura: factura.cod_factura
             })
             if(transaccionFactura.errors || transaccionFactura.name){
-                console.log(transaccionFactura)
                 return res.status(400).send({
                     error: Mensajes.ErrorAlGuardar
                 })
             }
-            console.log("Transacción agregada a la factura en la base de datos");
+            logger.log("Agregada transaccion a la factura en la base de datos");
         }
+        logger.log("Proceso crearConsentimiento TERMINADO");
 
         res.status(201).send();
     } catch (error) {
-        console.log(error)
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardarArchivo
         })

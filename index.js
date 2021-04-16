@@ -1,7 +1,7 @@
 ﻿const express = require('express')
 const dotenv = require('dotenv')
 const cors = require('cors');
-var path = require('path');
+var compression = require('compression')
 const app = express()
 const port = process.env.PORT || 4000
 dotenv.config();
@@ -27,7 +27,7 @@ const config = {
 app.use(cors(
     config.application.cors.server
 ));
-
+app.use(compression())
 //Fisrt route
 app.get('/',(req,res)=>{
     res.send("Esta es la API Para Radioxenter, para ver la especificación en Swagger haga click <a href='/swagger'>aqui</a>")

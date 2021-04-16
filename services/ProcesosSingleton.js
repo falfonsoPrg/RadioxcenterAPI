@@ -19,8 +19,6 @@ class Procesos {
         const port = process.env.SOCKET_PORT || 4001
         httpServer.listen(port, ()=> console.log("Sockets on port " + port))
         this.io.on('connection', (socket) => {
-            console.log("Client connected")
-
             this.io.emit("data",this.procesos)
 
             socket.on('finalizar_proceso', (data) => {
@@ -84,6 +82,7 @@ class Procesos {
             this.avanzarProcesoGeneral(data.documento_usuario)
             this.validar()
             this.generateXml(data);
+            this.generateLog("INICIA PROCESO",newUsuario);
             return true
         }
         return false
@@ -98,6 +97,7 @@ class Procesos {
             this.procesos[indexUsuario].tutor = tutor
             this.avanzarProcesoGeneral(documento_usuario)
             this.validar()
+            this.generateLog("AGREGA TUTOR",this.procesos[indexUsuario]);
             return true
         }
         return false
@@ -132,6 +132,7 @@ class Procesos {
             });
             this.avanzarProcesoGeneral(documento_usuario)
             this.validar()
+            this.generateLog("AGREGAR TRANSACCION",this.procesos[indexUsuario]);
             return true
         }
         return false
@@ -146,6 +147,7 @@ class Procesos {
             this.procesos[indexUsuario].consentimiento = pConsentimiento;
             this.avanzarProcesoGeneral(documento_usuario)
             this.validar()
+            this.generateLog("AGREGAR CONSENTIMIENTO",this.procesos[indexUsuario]);
             return true
         }
         return false
@@ -244,6 +246,7 @@ class Procesos {
 
             if(!this.procesos[indexUsuario].procesosGenerales.actual){
                 Mailer.sendEmailSatisfaccion(this.procesos[indexUsuario].data.correo_usuario)
+                this.generateLog("FINALIZO PROCESO",this.procesos[indexUsuario]);
                 this.deleteUsuario(pCodUsuario)
             }
         }
@@ -258,17 +261,17 @@ class Procesos {
         this.fs.writeFile('./public/xml/' + data.documento_usuario + "_" +new Date().toISOString().split("T")[0]+".xml", js2xmlparser.parse("Usuario", data), (err) => {
             if(err) console.log(err)
         })
-        
+    }
+    generateLog(proceso,data){
+        const timestamp = new Date().toISOString();
+        this.fs.appendFile('./public/log/' + data.documento_usuario + "_" +new Date().toISOString().split("T")[0]+".txt",timestamp + " - " +proceso + "\n",(err) => {
+            if(err) console.log(err)
+        })
     }
     log(message) {
         const timestamp = new Date().toISOString();
-        this.procesos.push({ message, timestamp });
         console.log(`${timestamp} - ${message}`);
     }
-    log(){
-        console.log(this.procesos)
-    }
-
 }
 
 class Singleton {

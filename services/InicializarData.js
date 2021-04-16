@@ -1,7 +1,32 @@
 const Excel = require('exceljs');
 const Constantes = require("../middlewares/Constantes")
-
+const fs = require('fs')
+const path = require('path')
 Initializer = {}
+
+Initializer.CargarCarpetas = () => {
+    console.log("Cargando carpetas");
+    fs.mkdir('./logs',{ recursive: true }, (err) => {
+        if (err) console.log("La carpeta /logs no pudo ser creada")
+    });
+    fs.mkdir('./public/log',{ recursive: true }, (err) => {
+        if (err) console.log("La carpeta /public/log no pudo ser creada")
+    });
+    fs.mkdir('./public/pdf/consentimientos',{ recursive: true }, (err) => {
+        if (err) console.log("La carpeta /public/pdf/consentimientos no pudo ser creada")
+    });
+    fs.mkdir('./public/pdf/facturas',{ recursive: true }, (err) => {
+        if (err) console.log("La carpeta /public/pdf/facturas no pudo ser creada")
+    });
+    fs.mkdir('./public/pdf/notaCredito',{ recursive: true }, (err) => {
+        if (err) console.log("La carpeta /public/pdf/notaCredito no pudo ser creada")
+    });
+    fs.mkdir('./public/xml',{ recursive: true }, (err) => {
+        if (err) console.log("La carpeta /public/xml no pudo ser creada")
+    });
+    console.log("Carpetas cargadas");
+}
+
 Initializer.CargarDepartamentos = async (pDep, pCiud) => {
     console.log("Cargando departamentos y ciudades")
     var arr = []
