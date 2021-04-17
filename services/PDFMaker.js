@@ -188,11 +188,10 @@ PDFMaker.createFactura = (data,esTutor,servicios,nFactura,sigla) => {
   servicios.forEach(s => {
     formatedServicios.push({
       cant: s.cantidad,
-      //concepto: s.nombre_servicio +" " + s.descripcion_servicio,
       concepto: s.nombre_servicio,
       vlrU: s.precio_servicio,
-      vlrT: (s.precio_servicio * s.cantidad) + (s.iva_servicio /100 * (s.precio_servicio * s.cantidad)) ,
-      iva: s.iva_servicio
+      iva: s.iva_servicio,
+      vlrT: (s.precio_servicio * s.cantidad) + (s.iva_servicio /100 * (s.precio_servicio * s.cantidad))
     })
   })
   function buildTableBody(data, columns) {
@@ -207,9 +206,9 @@ PDFMaker.createFactura = (data,esTutor,servicios,nFactura,sigla) => {
         })
         body.push(dataRow);
     });
-    body.push([{text:"SUB-TOTAL",colSpan: 3},{},{},{text:subtotal}])
-    body.push([{text:"IVA %",colSpan: 3},{},{},{text:"0"}])
-    body.push([{text:"TOTAL",colSpan: 3},{},{},{text:subtotal}])
+    body.push([{text:"SUB-TOTAL",colSpan: 4},{},{},{},{text:subtotal}])
+    body.push([{text:"IVA %",colSpan: 4},{},{},{},{text:"0"}])
+    body.push([{text:"TOTAL",colSpan: 4},{},{},{},{text:subtotal}])
 
     //console.log(body)
     return body;

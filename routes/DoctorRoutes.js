@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const DoctorController = require('../controllers/DoctorController')
+const EntidadDoctorController = require('../controllers/EntidadDoctorController')
 const Mensajes = require('../middlewares/Mensajes')
 const {CreateDoctorValidation, UpdateDoctorValidation} = require('../middlewares/Validation')
 
@@ -61,6 +62,17 @@ router.post('/', async(req,res)=>{
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar
         })
+    }
+    if(req.body.esParticular){
+        const entidad_doctor = await EntidadDoctorController.createEntidadDoctor({
+            cod_entidad: Constantes.ENTIDADPARTICULAR,
+            cod_doctor: doctor.cod_doctor
+        })
+        if(entidad_doctor.errors || entidad_doctor.name){
+            return res.status(400).send({
+                error: Mensajes.ErrorAlGuardar
+            })
+        }
     }
     return res.status(201).send()
 })

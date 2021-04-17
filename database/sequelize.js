@@ -233,6 +233,9 @@ sequelize.sync( resetDb ).then( async () => {
     var sex = await Sexo.findAll()
     if(sex.length == 0) await Initializer.CargarSexo(Sexo)
 
+    var entidades = await Entidad.findAll()
+    if(entidades.length == 0) await Initializer.CargarEntidad(Entidad)
+
     var dep = await Departamento.findAll()
     var ciud = await Ciudad.findAll()
     if(dep.length == 0 || ciud.length == 0 ) await Initializer.CargarDepartamentos(Departamento,Ciudad)

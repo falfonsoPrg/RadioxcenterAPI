@@ -265,7 +265,7 @@ Initializer.CargarEntidad= async (pEntidad) => {
             telefono_representante: "N/A",
             correo_representante: "particular@particular.com",
             nombre_contacto: "Particular",
-            cedula_contacto: "N/A",
+            cedula_contacto: "1",
             telefono_contacto: "N/A",
             correo_contacto: "particular@particular.com",
             cod_forma_de_pago_entidad: Constantes.FPE_QUINCENAL,

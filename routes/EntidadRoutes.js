@@ -210,10 +210,21 @@ router.put('/:cod_entidad/doctores/', async(req,res)=>{
         error: error.details[0].message
     })
     const doctores_entidad = req.body.doctores_entidad
+
+    //Valida que un doctor no se pueda eliminar si ya tiene transacciones activas
+    var entidadDoctores = await EntidadDoctorController.getEntidadDoctores();
+    entidadDoctores = entidadDoctores.filter( ed => ed.cod_entidad == req.params.cod_entidad && ed.Transaccions.length > 0)
+    var errorEntidadDoctor = entidadDoctores.every(ed => doctores_entidad.find(d => ed.cod_doctor == d.cod_doctor))
+    if(!errorEntidadDoctor){
+        return res.status(404).send({
+            error: Mensajes.ErrorAlActualizar
+        })
+    }
+
     const doctores = await DoctorController.getDoctores()
     const errorDoctores = doctores_entidad.every(element => doctores.find(x => x.cod_doctor == element));
     if(!errorDoctores){
-        return res.status(400).send({
+        return res.status(500).send({
             error: Mensajes.ErrorAlActualizar
         })
     }
@@ -226,7 +237,7 @@ router.put('/:cod_entidad/doctores/', async(req,res)=>{
             cod_doctor: doctores_entidad[i]
         });
         if(savedDoctor.errors || savedDoctor.name){
-            return res.status(400).send({
+            return res.status(500).send({
                 error: Mensajes.ErrorAlActualizar
             })
         }
