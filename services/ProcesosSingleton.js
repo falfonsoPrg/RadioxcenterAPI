@@ -103,13 +103,13 @@ class Procesos {
         return false
     }
 
-    setTransaccion(transaccion, documento_usuario){
+    setTransaccion(pTransaccion, documento_usuario){
         var indexUsuario = this.getIndexUsuario(documento_usuario)
         if(indexUsuario != -1){
 
             if(this.procesos[indexUsuario].procesosGenerales.actual != Constantes.TRANSACCION) return false
 
-            this.procesos[indexUsuario].transaccion = transaccion
+            this.procesos[indexUsuario].transaccion = pTransaccion
 
             this.procesos[indexUsuario].transaccion.tutor = this.procesos[indexUsuario].tutor
             this.procesos[indexUsuario].transaccion.nombres_acudiente = this.procesos[indexUsuario].tutor.nombres_tutor
@@ -125,6 +125,7 @@ class Procesos {
                         descripcion_servicio: servicio.descripcion_servicio,
                         precio_servicio: servicio.precio_servicio,
                         iva_servicio: servicio.iva_servicio,
+                        cantidad: servicio.cantidad,
                         completado: false,
                         entregado: false
                     }

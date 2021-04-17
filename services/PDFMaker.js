@@ -187,11 +187,11 @@ PDFMaker.createFactura = (data,esTutor,servicios,nFactura,sigla) => {
   var formatedServicios = []
   servicios.forEach(s => {
     formatedServicios.push({
-      cant: 1,
+      cant: s.cantidad,
       //concepto: s.nombre_servicio +" " + s.descripcion_servicio,
       concepto: s.nombre_servicio,
       vlrU: s.precio_servicio,
-      vlrT: s.precio_servicio
+      vlrT: s.precio_servicio * s.cantidad
     })
   })
   function buildTableBody(data, columns) {

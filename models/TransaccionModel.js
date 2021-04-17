@@ -20,6 +20,10 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        motivo_transaccion:{
+            type: DataTypes.STRING,
+            allowNull: true
+        },
         fecha_transaccion: {
             type: DataTypes.DATEONLY
         },
