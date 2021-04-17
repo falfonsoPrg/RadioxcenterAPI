@@ -13,6 +13,9 @@ module.exports = (sequelize) => {
         },
         cod_entidad: {
             type: DataTypes.INTEGER
+        },
+        activo: {
+            type: DataTypes.BOOLEAN
         }
     },{
         tableName: 'Entidad_doctor',

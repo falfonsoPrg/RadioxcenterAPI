@@ -214,7 +214,9 @@ router.put('/:cod_entidad/doctores/', async(req,res)=>{
     //Valida que un doctor no se pueda eliminar si ya tiene transacciones activas
     var entidadDoctores = await EntidadDoctorController.getEntidadDoctores();
     entidadDoctores = entidadDoctores.filter( ed => ed.cod_entidad == req.params.cod_entidad && ed.Transaccions.length > 0)
-    var errorEntidadDoctor = entidadDoctores.every(ed => doctores_entidad.find(d => ed.cod_doctor == d.cod_doctor))
+    console.log(entidadDoctores)
+    var errorEntidadDoctor = entidadDoctores.every(ed => doctores_entidad.find(d => ed.cod_doctor == d))
+    console.log(errorEntidadDoctor)
     if(!errorEntidadDoctor){
         return res.status(404).send({
             error: Mensajes.ErrorAlActualizar
