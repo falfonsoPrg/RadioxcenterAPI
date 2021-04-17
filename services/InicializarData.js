@@ -222,12 +222,16 @@ Initializer.CargarTipoPrefEntrega = async (pTipoPrefentrega) => {
 Initializer.CargarFormaDePagoEntidad = async (pFormaDePagoEntidad) => {
     console.log("Cargando forma de pago entidad");
     await pFormaDePagoEntidad.findOrCreate({
-        where: {cod_forma_de_pago_entidad:Constantes.FPE_FISICO},
-        defaults: {cod_forma_de_pago_entidad:Constantes.FPE_FISICO,nombre_forma_de_pago_entidad:"Fisico"}
+        where: {cod_forma_de_pago_entidad:Constantes.FPE_SEMANAL},
+        defaults: {cod_forma_de_pago_entidad:Constantes.FPE_SEMANAL,nombre_forma_de_pago_entidad:"Semanal"}
     })
     await pFormaDePagoEntidad.findOrCreate({
-        where: {cod_forma_de_pago_entidad:Constantes.FPE_CORREO},
-        defaults: {cod_forma_de_pago_entidad:Constantes.FPE_CORREO,nombre_forma_de_pago_entidad:"Correo"}
+        where: {cod_forma_de_pago_entidad:Constantes.FPE_QUINCENAL},
+        defaults: {cod_forma_de_pago_entidad:Constantes.FPE_QUINCENAL,nombre_forma_de_pago_entidad:"Quincenal"}
+    })
+    await pFormaDePagoEntidad.findOrCreate({
+        where: {cod_forma_de_pago_entidad:Constantes.FPE_MENSUAL},
+        defaults: {cod_forma_de_pago_entidad:Constantes.FPE_MENSUAL,nombre_forma_de_pago_entidad:"Mensual"}
     })
     console.log("Forma de pago entidad finalizado");
 }
@@ -264,7 +268,7 @@ Initializer.CargarEntidad= async (pEntidad) => {
             cedula_contacto: "N/A",
             telefono_contacto: "N/A",
             correo_contacto: "particular@particular.com",
-            cod_forma_de_pago_entidad: Constantes.FPE_CORREO,
+            cod_forma_de_pago_entidad: Constantes.FPE_QUINCENAL,
             cod_tipo_facturacion: Constantes.TPE_CORREO
         }
     })
