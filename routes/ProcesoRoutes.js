@@ -226,9 +226,10 @@ router.post('/crearConsentimiento', async(req,res)=>{
             })
         }
         var rutas = []
+        var dataToConsentimiento = Object.assign({}, usuarioSingleton.data)
+        var tutorToConsentimiento = Object.assign({}, usuarioSingleton.tutor)
+        pdfMaker.crearConsentimientoDatos(dataToConsentimiento, usuarioSingleton.data.tutor,tutorToConsentimiento,req.body.signature)
         if(usuarioSingleton.transaccion.consentimiento[Constantes.CONSENTIMIENTO_COVID] == true){
-            var dataToConsentimiento = Object.assign({}, usuarioSingleton.data)
-            var tutorToConsentimiento = Object.assign({}, usuarioSingleton.tutor)
             dataToConsentimiento.tipoDocumento = usuario[0].Tipo_Documento.nombre_tipo_documento
             var rutaCovid;
             try {

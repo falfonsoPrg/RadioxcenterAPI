@@ -812,4 +812,70 @@ PDFMaker.crearNotaCredito = (factura, pNumeracion) => {
   return savePath+filename
 }
 
+PDFMaker.crearConsentimientoDatos = (data,esTutor,tutor,firma) => {
+  if(esTutor){
+    dataToShow = {
+      nombre: tutor.nombres_tutor +" "+ tutor.apellidos_tutor,
+      documento: tutor.documento_tutor
+    }
+  }else{
+    dataToShow = {
+      nombre: data.nombres_usuario +" "+ data.apellidos_usuario,
+      documento: data.documento_usuario
+    }
+  }
+  var docDefinition = {
+    content: [
+      {
+        image: './fonts/Images/header_logo.png',
+        width: 130,
+        height: 60,
+      },
+      {
+        text: 'INGRESO A RX - ENTREGA DE RADIOGRAFIAS DIARIAS',
+        alignment: 'center',
+        margin: [0, 20],
+        style: 'bold'
+      },
+      {
+        text: ['Yo, ', {text: dataToShow.nombre ,decoration: 'underline'}," acepto que RadioXenter Ltda. solicitará el suministro de algunos de sus datos personales con el exclusivo fin de atender su solicitud de prestación de servicios de Radiología Oral, facturarlos y generar los indicadores de calidad correspondientes. Dichos datos serán tratados en forma estrictamente confidencial y serán procesados, utilizados, protegidos y almacenados de conformidad con las normas legales vigentes sobre protección de datos personales."],
+        alignment: 'justify'
+      },
+      {
+        margin: [0,50,50,0],
+        alignment: 'justify',
+        columns: [
+          {
+            ul: [
+              [{text:"Nombre: ",style:"bold"},{text: dataToShow.nombre}],
+              [{text:data.tipoDocumento,style:"bold"},{text: dataToShow.documento}],
+              [{text:"Firma:",style:"bold"}, {image: firma,width: 130,height: 60,}],
+            ]
+          }
+        ]
+      }
+    ],
+    defaultStyle: {
+      fontSize: 10,
+    },
+    styles:{
+      bold:{
+        bold: true
+      }
+    }
+  };
+
+  var savePath = "./public/pdf/consentimientos/"
+  var today = new Date()
+  var timestamp = today.getDate()+""+today.getMonth()+""+today.getFullYear()+""+today.getHours()+""+today.getMinutes()
+  var filename = dataToShow.documento + "_" + timestamp + "_DATOS.pdf"
+  var pdfDoc = printer.createPdfKitDocument(docDefinition);
+  pdfDoc.pipe(fs.createWriteStream(savePath+filename))
+  .on('error', (err) => {
+    console.log(err)
+  });
+  pdfDoc.end();
+  return savePath+filename
+}
+
 module.exports = PDFMaker;

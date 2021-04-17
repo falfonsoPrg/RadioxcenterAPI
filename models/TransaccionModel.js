@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         documento_usuario: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false
         },
         numero_transaccion: {
