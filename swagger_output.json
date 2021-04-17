@@ -3273,6 +3273,10 @@
         "cod_tipo_pref_entrega": {
           "type": "number",
           "example": 0
+        },
+        "cod_ciudad": {
+          "type": "number",
+          "example": 0
         }
       },
       "xml": {

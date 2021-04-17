@@ -136,6 +136,9 @@ Doctor.belongsTo(Tipo_documento, {foreignKey:'cod_tipo_documento', sourceKey: 'c
 Tipo_pref_entrega.hasMany(Doctor, {foreignKey: 'cod_tipo_pref_entrega', sourceKey: 'cod_tipo_pref_entrega'});
 Doctor.belongsTo(Tipo_pref_entrega, {foreignKey: 'cod_tipo_pref_entrega', sourceKey: 'cod_tipo_pref_entrega'});
 
+Ciudad.hasMany(Doctor, {foreignKey: 'cod_ciudad', sourceKey: 'cod_ciudad'});
+Doctor.belongsTo(Ciudad, {foreignKey: 'cod_ciudad', sourceKey: 'cod_ciudad'});
+
 // Relationships Convenio
 Entidad.hasMany(Convenio,{foreignKey: 'cod_entidad', sourceKey: 'cod_entidad'});
 Convenio.belongsTo(Entidad,{foreignKey: 'cod_entidad', sourceKey: 'cod_entidad'});
@@ -226,6 +229,9 @@ sequelize.sync( resetDb ).then( async () => {
 
     var tntcr = await Tipo_nota_credito.findAll()
     if(tntcr.length == 0) await Initializer.CargarTipoNotaCredito(Tipo_nota_credito)
+
+    var sex = await Sexo.findAll()
+    if(sex.length == 0) await Initializer.CargarSexo(Sexo)
 
     var dep = await Departamento.findAll()
     var ciud = await Ciudad.findAll()

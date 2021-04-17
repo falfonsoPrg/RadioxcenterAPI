@@ -323,26 +323,30 @@ module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
      const schema = Joi.object({
          nombres_doctor: Joi.string().required(),
          apellidos_doctor: Joi.string().required(),
-         direccion_doctor: Joi.string().required(),
-         telefono_doctor: Joi.string().required(),
-         documento_doctor: Joi.string().required(),
+         direccion_doctor: Joi.string().allow(''),
+         telefono_doctor: Joi.string().allow(''),
+         documento_doctor: Joi.string().allow('').required(),
+         esParticular: Joi.bool().required(),
          correo_doctor: Joi.string().required(),
          cod_tipo_documento: Joi.number().required(),
-         cod_tipo_pref_entrega: Joi.number().required()
+         cod_tipo_pref_entrega: Joi.number().required(),
+         cod_ciudad: Joi.number().required()
      })
      return schema.validate(data)
  }
  module.exports.UpdateDoctorValidation = UpdateDoctorValidation = (data) => {
      const schema = Joi.object({
-         cod_doctor: Joi.number().required(),
-        nombres_doctor: Joi.string(),
-        apellidos_doctor: Joi.string(),
-        direccion_doctor: Joi.string(),
-        telefono_doctor: Joi.string(),
-        documento_doctor: Joi.string(),
-        correo_doctor: Joi.string(),
+        cod_doctor: Joi.number().required(),
+        nombres_doctor: Joi.string().allow(''),
+        apellidos_doctor: Joi.string().allow(''),
+        direccion_doctor: Joi.string().allow(''),
+        telefono_doctor: Joi.string().allow(''),
+        documento_doctor: Joi.string().allow(''),
+        esParticular: Joi.bool().required(),
+        correo_doctor: Joi.string().allow(''),
         cod_tipo_documento: Joi.number(),
-        cod_tipo_pref_entrega: Joi.number()
+        cod_tipo_pref_entrega: Joi.number(),
+        cod_ciudad: Joi.number()
      })
      return schema.validate(data)
  }

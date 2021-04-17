@@ -19,6 +19,7 @@ Constantes.TDOC_CEDULA_EXTRANJERIA = 2
 Constantes.TDOC_PASAPORTE = 3
 Constantes.TDOC_REGISTRO_CIVIL = 4
 Constantes.TDOC_TARJETA_IDENTIDAD = 5
+Constantes.TDOC_NOAPLICA = 6
 
 Constantes.TEMPLEADO_EMPLEADO = 1
 Constantes.TEMPLEADO_ADMINISTRADOR = 2
@@ -37,6 +38,12 @@ Constantes.TPE_CORREO = 2
 Constantes.FPE_FISICO = 1
 Constantes.FPE_CORREO = 2
 
+Constantes.SXMASCODE = 1
+Constantes.SXFEMCODE = 2
+
 Constantes.TNTCR_COMERCIAL = 1
 Constantes.TNTCR_BANCARIA = 2
+
+Constantes.ENTIDADPARTICULAR = 1
+
 module.exports = Constantes

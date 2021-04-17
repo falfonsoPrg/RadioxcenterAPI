@@ -26,7 +26,6 @@ module.exports = (sequelize) => {
         },
         documento_doctor: {
             type: DataTypes.STRING,
-            unique: true,
             allowNull: false
         },
         correo_doctor: {
@@ -40,6 +39,9 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER
         },
         cod_tipo_pref_entrega: {
+            type: DataTypes.INTEGER
+        },
+        cod_ciudad: {
             type: DataTypes.INTEGER
         }
     },{

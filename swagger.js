@@ -84,7 +84,8 @@ const doc = {
             "documento_doctor": "0",
             "correo_doctor": "email@email.com",
             "cod_tipo_documento": 0,
-            "cod_tipo_pref_entrega": 0
+            "cod_tipo_pref_entrega": 0,
+            "cod_ciudad": 0
         },
         Empleado:{
             "cod_empleado": 0,

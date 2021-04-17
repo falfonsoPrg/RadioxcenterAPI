@@ -173,6 +173,10 @@ Initializer.CargarTipoDocumento = async (pTipoDocumento) => {
         where: {cod_tipo_documento:Constantes.TDOC_TARJETA_IDENTIDAD},
         defaults: {cod_tipo_documento:Constantes.TDOC_TARJETA_IDENTIDAD,nombre_tipo_documento:"Tarjeta de identidad"}
     })
+    await pTipoDocumento.findOrCreate({
+        where: {cod_tipo_documento:Constantes.TDOC_NOAPLICA},
+        defaults: {cod_tipo_documento:Constantes.TDOC_NOAPLICA,nombre_tipo_documento:"No aplica"}
+    })
     console.log("Tipo documento finalizado");
 }
 
@@ -187,6 +191,19 @@ Initializer.CargarTipoEmpleado = async (pTipoEmpleado) => {
         defaults: {cod_tipo_empleado:Constantes.TEMPLEADO_ADMINISTRADOR,nombre_tipo_empleado:"Administrador"}
     })
     console.log("Tipo empleado finalizado");
+}
+
+Initializer.CargarSexo = async (pSexo) => {
+    console.log("Cargando sexo");
+    await pSexo.findOrCreate({
+        where: {cod_tipo_sexo:Constantes.SXMASCODE},
+        defaults: {cod_tipo_sexo:Constantes.SXMASCODE,nombre_tipo_sexo:"Masculino"}
+    })
+    await pSexo.findOrCreate({
+        where: {cod_tipo_sexo:Constantes.SXFEMCODE},
+        defaults: {cod_tipo_sexo:Constantes.SXFEMCODE,nombre_tipo_sexo:"Femenino"}
+    })
+    console.log("Sexo finalizado");
 }
 
 Initializer.CargarTipoPrefEntrega = async (pTipoPrefentrega) => {
@@ -226,6 +243,32 @@ Initializer.CargarTipoNotaCredito = async (pTipoNotaCredito) => {
         defaults: {cod_tipo_nota_credito:Constantes.TNTCR_BANCARIA,nombre_tipo_nota_credito:"Bancaria"}
     })
     console.log("Tipo nota credito finalizado");
+}
+
+Initializer.CargarEntidad= async (pEntidad) => {
+    console.log("Cargando entidad");
+    await pEntidad.findOrCreate({
+        where: {cod_entidad:Constantes.ENTIDADPARTICULAR},
+        defaults: {
+            cod_entidad: Constantes.ENTIDADPARTICULAR,
+            razon_social_entidad:"Particular",
+            nombre_comercial_entidad: "Particular",
+            nit_entidad: "1",
+            direccion_entidad: "N/A",
+            telefono_entidad: "N/A",
+            nombre_representante: "Particular",
+            cedula_representante: "1",
+            telefono_representante: "N/A",
+            correo_representante: "particular@particular.com",
+            nombre_contacto: "Particular",
+            cedula_contacto: "N/A",
+            telefono_contacto: "N/A",
+            correo_contacto: "particular@particular.com",
+            cod_forma_de_pago_entidad: Constantes.FPE_CORREO,
+            cod_tipo_facturacion: Constantes.TPE_CORREO
+        }
+    })
+    console.log("Entidad finalizado");
 }
 
 module.exports = Initializer
