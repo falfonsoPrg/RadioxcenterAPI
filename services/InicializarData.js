@@ -196,12 +196,12 @@ Initializer.CargarTipoEmpleado = async (pTipoEmpleado) => {
 Initializer.CargarSexo = async (pSexo) => {
     console.log("Cargando sexo");
     await pSexo.findOrCreate({
-        where: {cod_tipo_sexo:Constantes.SXMASCODE},
-        defaults: {cod_tipo_sexo:Constantes.SXMASCODE,nombre_tipo_sexo:"Masculino"}
+        where: {cod_sexo:Constantes.SXMASCODE},
+        defaults: {cod_sexo:Constantes.SXMASCODE,nombre_sexo:"Masculino"}
     })
     await pSexo.findOrCreate({
-        where: {cod_tipo_sexo:Constantes.SXFEMCODE},
-        defaults: {cod_tipo_sexo:Constantes.SXFEMCODE,nombre_tipo_sexo:"Femenino"}
+        where: {cod_sexo:Constantes.SXFEMCODE},
+        defaults: {cod_sexo:Constantes.SXFEMCODE,nombre_sexo:"Femenino"}
     })
     console.log("Sexo finalizado");
 }
