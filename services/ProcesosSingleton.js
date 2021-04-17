@@ -75,6 +75,7 @@ class Procesos {
                 completados: [],
                 actual: Constantes.REGISTRO
             },
+            factura: null,
             procesos: []
         }
         if(!this.procesos.find( x => x.documento_usuario == data.documento_usuario)){
@@ -178,6 +179,14 @@ class Procesos {
             const completados = this.procesos[index].procesos.every(p => p.completado == true)
             if(completados) this.avanzarProcesoGeneral(documento_usuario)
             this.validar()
+            return true
+        }
+        return false
+    }
+    setFactura(documento_usuario, ruta){
+        const index = this.getIndexUsuario(documento_usuario)
+        if(index != -1){
+            this.procesos[index].factura = ruta
             return true
         }
         return false

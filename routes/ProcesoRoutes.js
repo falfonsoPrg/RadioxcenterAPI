@@ -302,6 +302,7 @@ router.post('/crearConsentimiento', async(req,res)=>{
             var dataToSend = usuarioSingleton.data.tutor ? usuarioSingleton.tutor : usuario[0]
             const rutaFactura = PDFMaker.createFactura(dataToSend,usuarioSingleton.data.tutor,usuarioSingleton.procesos,numeracionFactura,"FPOS")
             logger.log("Factura creada en el servidor");
+            singleton.setFactura(usuarioSingleton.data.documento_usuario, rutaFactura)
             var resumenFactura = ""
             usuarioSingleton.procesos.forEach(p => {
                 resumenFactura += p.nombre_servicio + " "

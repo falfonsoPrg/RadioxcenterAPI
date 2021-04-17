@@ -191,7 +191,8 @@ PDFMaker.createFactura = (data,esTutor,servicios,nFactura,sigla) => {
       //concepto: s.nombre_servicio +" " + s.descripcion_servicio,
       concepto: s.nombre_servicio,
       vlrU: s.precio_servicio,
-      vlrT: s.precio_servicio * s.cantidad
+      vlrT: (s.precio_servicio * s.cantidad) + (s.iva_servicio /100 * (s.precio_servicio * s.cantidad)) ,
+      iva: s.iva_servicio
     })
   })
   function buildTableBody(data, columns) {
@@ -264,6 +265,7 @@ PDFMaker.createFactura = (data,esTutor,servicios,nFactura,sigla) => {
         table(formatedServicios, [{text: "Cantidad",label:"cant", style: 'tableHeader'},
               {text:"Concepto",label:'concepto', style: 'tableHeader'},
               {text:"Valor Unitario",label:'vlrU', style: 'tableHeader'},
+              {text:"% IVA",label:'iva', style: 'tableHeader'},
               {text:"Valor Total",label:'vlrT', style: 'tableHeader'}
             ]),
         { width: '*', text: '' },
