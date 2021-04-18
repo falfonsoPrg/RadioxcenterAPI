@@ -1,10 +1,10 @@
 const Excel = require('exceljs');
 
-function getData(pTransaccion,pUsuario,pEntidad,pDoctor) {
+function getData(fechaInicia,fechaFinal,pTransaccion,pUsuario,pEntidad,pDoctor) {
     var month = parseInt(new Date().getMonth())+1
     month = month.toString().length == 1 ? "0"+month.toString():month.toString()
     var actual = new Date().getFullYear()+"-"+ month +"-"+new Date().getDate()
-    var transaccionesDelDia = pTransaccion.filter(t => t.fecha_transaccion==actual)
+    var transaccionesDelDia = pTransaccion.filter(t => t.fecha_transaccion>=fechaInicia && t.fecha_transaccion<=fechaFinal)
     transaccionesDelDia.sort((a,b) => (a.numero_transaccion > b.numero_transaccion) ? 1 : ((b.numero_transaccion > a.numero_transaccion) ? -1 : 0))
     var dataToReturn = []
     transaccionesDelDia.forEach(t =>{
@@ -47,7 +47,7 @@ function getData(pTransaccion,pUsuario,pEntidad,pDoctor) {
 }
 
 Generador = {}
-Generador.GenerarReporteDiarioDeTransacciones = async (pTransaccion, pUsuario, pEntidad, pDoctores) => {
+Generador.GenerarReporteDiarioDeTransacciones = async (fechaInicia,fechaFinal,pTransaccion, pUsuario, pEntidad, pDoctores) => {
     const cols = [
         {header: 'Fecha', key: 'fecha', width: 10},
         {header: 'Hora llegada', key: 'hora_llegada', width: 10},
@@ -81,7 +81,7 @@ Generador.GenerarReporteDiarioDeTransacciones = async (pTransaccion, pUsuario, p
             var newWorksheet = workbook.addWorksheet(sheetName);
         }
         newWorksheet.columns = cols
-        newWorksheet.addRows(getData(pTransaccion, pUsuario, pEntidad, pDoctores))
+        newWorksheet.addRows(getData(fechaInicia,fechaFinal,pTransaccion, pUsuario, pEntidad, pDoctores))
         await workbook.xlsx.writeFile('./services/reporteGeneral.xlsx');
 
         console.log("Registro generado")
@@ -90,7 +90,7 @@ Generador.GenerarReporteDiarioDeTransacciones = async (pTransaccion, pUsuario, p
             const workbook = new Excel.Workbook();
             const worksheet = workbook.addWorksheet(sheetName);
             worksheet.columns = cols
-            worksheet.addRows(getData(pTransaccion, pUsuario,  pEntidad, pDoctores))
+            worksheet.addRows(getData(fechaInicia,fechaFinal,pTransaccion, pUsuario,  pEntidad, pDoctores))
             await workbook.xlsx.writeFile('./services/reporteGeneral.xlsx');
         }
         else{

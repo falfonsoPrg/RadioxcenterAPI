@@ -811,14 +811,14 @@
           "204": {
             "description": "No Content"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Not Found"
           },
           "422": {
             "description": "Unprocessable Entity"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -2452,12 +2452,22 @@
       }
     },
     "/transacciones/generarReporte": {
-      "get": {
+      "post": {
         "tags": [
           "Transacciones"
         ],
-        "description": "Endpoint para generar un reporte de transacciones",
-        "parameters": [],
+        "description": "Endpoint para crear un reporte de transacciones.",
+        "parameters": [
+          {
+            "description": "description",
+            "in": "body",
+            "required": true,
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/ReporteTransaccion"
+            }
+          }
+        ],
         "responses": {}
       }
     },
@@ -4288,6 +4298,22 @@
       },
       "xml": {
         "name": "FacturaSendEmail"
+      }
+    },
+    "ReporteTransaccion": {
+      "type": "object",
+      "properties": {
+        "fecha_inicial": {
+          "type": "string",
+          "example": "yyyy-MM-dd"
+        },
+        "fecha_final": {
+          "type": "string",
+          "example": "yyyy-MM-dd"
+        }
+      },
+      "xml": {
+        "name": "ReporteTransaccion"
       }
     }
   }

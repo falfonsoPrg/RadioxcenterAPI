@@ -23,17 +23,28 @@ router.get('/entidades/:cod_entidad',async(req,res)=>{
         error: Mensajes.RegistroNoEncontrado
     })
 })
-router.get('/generarReporte',async(req,res)=>{
-    /**
+router.post('/generarReporte',async(req,res)=>{
+   /**
         #swagger.tags = ['Transacciones']
         #swagger.path = '/transacciones/generarReporte'
-        #swagger.description = 'Endpoint para generar un reporte de transacciones'
+        #swagger.description = 'Endpoint para crear un reporte de transacciones.'
+        #swagger.parameters = [{
+            description: 'description',
+            in:'body',
+            required: true,
+            name: 'body',
+            schema: {
+                $ref: '#/definitions/ReporteTransaccion'
+            }
+        }]
      */
     const transacciones = await TransaccionController.getAllTransacciones()
     const usuarios = await UsuarioController.getUsuariosParaReporte()
     const entidades = await EntidadController.getEntidades()
     const doctores = await DoctorController.getDoctores()
-    await Generador.GenerarReporteDiarioDeTransacciones(transacciones,usuarios,entidades,doctores)
+    var fechaInicial = req.body.fecha_inicial
+    var fechaFinal = req.body.fecha_final
+    await Generador.GenerarReporteDiarioDeTransacciones(fechaInicial, fechaFinal,transacciones,usuarios,entidades,doctores)
     res.send()
 })
 router.get('/:cod_transaccion', async(req,res)=>{

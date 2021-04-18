@@ -6,7 +6,7 @@ Initializer = {}
 
 Initializer.CargarCarpetas = () => {
     console.log("Cargando carpetas");
-    fs.mkdir('./logs',{ recursive: true }, (err) => {
+    fs.mkdir('./logs/errores',{ recursive: true }, (err) => {
         if (err) console.log("La carpeta /logs no pudo ser creada")
     });
     fs.mkdir('./public/log',{ recursive: true }, (err) => {

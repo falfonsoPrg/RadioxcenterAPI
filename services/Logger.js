@@ -10,6 +10,12 @@ class Logger {
             if(err) console.log(err)
         })
     }
+    log_error = (label,message) => {
+        const timestamp = new Date().toISOString();
+        this.fs.appendFile('./logs/errores/log_' +new Date().toISOString().split("T")[0]+".txt", "["+label+"]-" +timestamp + " - " +message + "\n",(err) => {
+            if(err) console.log(err)
+        })
+    }
 }
 class SingletonLogger {
 

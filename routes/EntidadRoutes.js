@@ -210,40 +210,32 @@ router.put('/:cod_entidad/doctores/', async(req,res)=>{
         error: error.details[0].message
     })
     const doctores_entidad = req.body.doctores_entidad
-
-    //Valida que un doctor no se pueda eliminar si ya tiene transacciones activas
     var entidadDoctores = await EntidadDoctorController.getEntidadDoctores();
-    entidadDoctores = entidadDoctores.filter( ed => ed.cod_entidad == req.params.cod_entidad && ed.Transaccions.length > 0)
+    entidadDoctores = entidadDoctores.filter( ed => ed.cod_entidad == req.params.cod_entidad)
     console.log(entidadDoctores)
-    var errorEntidadDoctor = entidadDoctores.every(ed => doctores_entidad.find(d => ed.cod_doctor == d))
-    console.log(errorEntidadDoctor)
-    if(!errorEntidadDoctor){
-        return res.status(404).send({
-            error: Mensajes.ErrorAlActualizar
-        })
-    }
-
-    const doctores = await DoctorController.getDoctores()
-    const errorDoctores = doctores_entidad.every(element => doctores.find(x => x.cod_doctor == element));
-    if(!errorDoctores){
-        return res.status(500).send({
-            error: Mensajes.ErrorAlActualizar
-        })
-    }
-    //Remove all convenios
-    await EntidadDoctorController.deleteAllDoctoresFromEntidad(req.params.cod_entidad)
-    //Iterate through doctores_entidad adding them
-    for (let i = 0; i < doctores_entidad.length; i++) {
-        const savedDoctor = await EntidadDoctorController.createEntidadDoctor({
-            cod_entidad: req.params.cod_entidad,
-            cod_doctor: doctores_entidad[i]
-        });
-        if(savedDoctor.errors || savedDoctor.name){
-            return res.status(500).send({
-                error: Mensajes.ErrorAlActualizar
+    doctores_entidad.forEach( async doc => {
+        var actual = entidadDoctores.find(ed => ed.cod_doctor == doc.cod_doctor)
+        if(actual == undefined){
+            var rtaCrear = await EntidadDoctorController.createEntidadDoctor({
+                cod_doctor: doc.cod_doctor,
+                cod_entidad: req.params.cod_entidad,
+                activo: doc.activo
             })
+            if( rtaCrear.errors || rtaCrear.name) {
+                return res.status(400).send({
+                    error: Mensajes.ErrorAlGuardar
+                })
+            }
+        }else{
+            actual.activo = doc.activo
+            var rtaActualizar = await EntidadDoctorController.updateEntidadDoctor(actual)
+            if(rtaActualizar[0]==0 || rtaActualizar.name){
+                return res.status(404).send({
+                    error: Mensajes.ErrorAlActualizar
+                })
+            }
         }
-    }
+    });
     return res.status(204).send()
 })
 

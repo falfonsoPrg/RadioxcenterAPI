@@ -336,6 +336,10 @@ const doc = {
         FacturaSendEmail:{
             "documento_usuario":0,
             "cod_factura":0
+        },
+        ReporteTransaccion:{
+            "fecha_inicial":"yyyy-MM-dd",
+            "fecha_final":"yyyy-MM-dd"
         }
     }
 }
