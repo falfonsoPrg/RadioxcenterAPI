@@ -1,5 +1,8 @@
 const router  = require('express').Router()
 const TransaccionController = require('../controllers/TransaccionController')
+const UsuarioController = require('../controllers/UsuarioController')
+const EntidadController = require('../controllers/EntidadController')
+const DoctorController = require('../controllers/DoctorController')
 const Mensajes = require('../middlewares/Mensajes')
 const { CreateTransaccionValidation, UpdateTransaccionValidation} = require('../middlewares/Validation')
 const Generador = require("../services/GenerateReport")
@@ -26,8 +29,11 @@ router.get('/generarReporte',async(req,res)=>{
         #swagger.path = '/transacciones/generarReporte'
         #swagger.description = 'Endpoint para generar un reporte de transacciones'
      */
-    const transacciones = await TransaccionController.getAllTransacciones() 
-    await Generador.GenerarReporteDiarioDeTransacciones(transacciones)
+    const transacciones = await TransaccionController.getAllTransacciones()
+    const usuarios = await UsuarioController.getUsuariosParaReporte()
+    const entidades = await EntidadController.getEntidades()
+    const doctores = await DoctorController.getDoctores()
+    await Generador.GenerarReporteDiarioDeTransacciones(transacciones,usuarios,entidades,doctores)
     res.send()
 })
 router.get('/:cod_transaccion', async(req,res)=>{

@@ -275,4 +275,35 @@ Initializer.CargarEntidad= async (pEntidad) => {
     console.log("Entidad finalizado");
 }
 
+Initializer.CargarServicio = async (pServicio) => {
+    console.log("Cargando servicio");
+    await pServicio.findOrCreate({
+        where: {cod_servicio:Constantes.SERVICIOPERIAPICAL},
+        defaults: {
+            cod_servicio: Constantes.SERVICIOPERIAPICAL,
+            nombre_servicio: "PERIAPICAL",
+            descripcion_servicio: "PERIAPICAL",
+            precio_servicio: 12000,
+            iva_servicio: 0
+        }
+    })
+    console.log("Servicio finalizado");
+}
+
+Initializer.CargarConvenio = async (pServicio) => {
+    console.log("Cargando convenio");
+    await pServicio.findOrCreate({
+        where: {cod_convenio:Constantes.CONVENIOPERI},
+        defaults: {
+            cod_convenio: Constantes.CONVENIOPERI,
+            cod_servicio: Constantes.SERVICIOPERIAPICAL,
+            cod_entidad: Constantes.ENTIDADPARTICULAR,
+            valor_servicio: 12000,
+            fecha_inicial_convenio: new Date(),
+            fecha_final_convenio: new Date()
+        }
+    })
+    console.log("Convenio finalizado");
+}
+
 module.exports = Initializer

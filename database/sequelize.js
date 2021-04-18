@@ -236,6 +236,12 @@ sequelize.sync( resetDb ).then( async () => {
     var entidades = await Entidad.findAll()
     if(entidades.length == 0) await Initializer.CargarEntidad(Entidad)
 
+    var servicios = await Servicio.findAll()
+    if(servicios.length == 0) await Initializer.CargarServicio(Servicio)
+
+    var convenios = await Convenio.findAll()
+    if(convenios.length == 0) await Initializer.CargarConvenio(Convenio)
+
     var dep = await Departamento.findAll()
     var ciud = await Ciudad.findAll()
     if(dep.length == 0 || ciud.length == 0 ) await Initializer.CargarDepartamentos(Departamento,Ciudad)

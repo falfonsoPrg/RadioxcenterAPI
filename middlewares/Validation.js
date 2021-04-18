@@ -203,7 +203,7 @@ module.exports.UpdateSexoValidation = UpdateSexoValidation = (data) =>{
 module.exports.CreateServicioValidation = CreateServicioValidation = (data) =>{
     const schema = Joi.object({
         nombre_servicio: Joi.string().required(),
-        descripcion_servicio: Joi.string().required(),
+        descripcion_servicio: Joi.string().allow(''),
         precio_servicio: Joi.number().min(1000).required(),
         iva_servicio: Joi.number().min(0).max(100)
     })

@@ -1,32 +1,41 @@
 const Excel = require('exceljs');
 
-function getData(pTransaccion) {
+function getData(pTransaccion,pUsuario,pEntidad,pDoctor) {
     var month = parseInt(new Date().getMonth())+1
     month = month.toString().length == 1 ? "0"+month.toString():month.toString()
     var actual = new Date().getFullYear()+"-"+ month +"-"+new Date().getDate()
-    console.log(actual)
     var transaccionesDelDia = pTransaccion.filter(t => t.fecha_transaccion==actual)
-    console.log(transaccionesDelDia)
+    transaccionesDelDia.sort((a,b) => (a.numero_transaccion > b.numero_transaccion) ? 1 : ((b.numero_transaccion > a.numero_transaccion) ? -1 : 0))
     var dataToReturn = []
     transaccionesDelDia.forEach(t =>{
+        var usuario = pUsuario.find(u => u.documento_usuario == t.documento_usuario)
+        var tipoDoc = usuario.Tipo_Documento.nombre_tipo_documento
+        var nombreDoctor = "N/A"
+        var nombreEntidad = "N/A"
+        if(t.cod_entidad_doctor != null){
+            var doc = pDoctor.find(d => d.cod_doctor == t.Entidad_doctor.cod_doctor)
+            nombreDoctor = doc.nombres_doctor + " " + doc.apellidos_doctor
+            nombreEntidad = pEntidad.find(d => d.cod_entidad == t.Entidad_doctor.cod_entidad).razon_social_entidad
+        }
+        //Armar objeto
         var exampleObj = {
-            fecha: new Date(),
-            hora_llegada: new Date(),
+            fecha: usuario.updatedAt,
+            hora_llegada: usuario.updatedAt,
             hora_atencion: new Date(),
-            tipo_documento: "",
+            tipo_documento: tipoDoc,
             numero_documento: t.documento_usuario,
-            nombres: "",
-            apellidos: "",
+            nombres: usuario.nombres_usuario,
+            apellidos: usuario.apellidos_usuario,
             numero_transaccion: t.numero_transaccion,
-            nombre_acudiente:t.nombres_acudiente + " " + t.apellidos_acudiente,
-            parentesco_acudiente: t.parentesco_acudiente,
-            usuario_telefono:"",
-            usuario_celular:"",
-            usuario_direccion: "",
-            usuario_ciudad: "",
-            departamento_ciudad: "",
-            nombre_doctor: "",
-            nombre_entidad: "",
+            nombre_acudiente:t.nombres_acudiente + " " + t.apellidos_acudiente == "" ? "N/A": t.nombres_acudiente + " " + t.apellidos_acudiente,
+            parentesco_acudiente: t.parentesco_acudiente == "" ? "N/A":t.parentesco_acudiente ,
+            usuario_telefono:usuario.telefono_usuario,
+            usuario_celular:usuario.celular_usuario,
+            usuario_direccion: usuario.direccion_usuario,
+            usuario_ciudad: usuario.Ciudad.nom_ciudad,
+            departamento_ciudad: usuario.Ciudad.Departamento.nom_departamento,
+            nombre_doctor: nombreDoctor,
+            nombre_entidad: nombreEntidad,
             resumen:"",
             valor_total: t.valor_transaccion,
             valor_efectivo: t.cod_entidad_doctor ? 0:t.valor_transaccion,
@@ -38,7 +47,7 @@ function getData(pTransaccion) {
 }
 
 Generador = {}
-Generador.GenerarReporteDiarioDeTransacciones = async (pTransaccion) => {
+Generador.GenerarReporteDiarioDeTransacciones = async (pTransaccion, pUsuario, pEntidad, pDoctores) => {
     const cols = [
         {header: 'Fecha', key: 'fecha', width: 10},
         {header: 'Hora llegada', key: 'hora_llegada', width: 10},
@@ -62,7 +71,7 @@ Generador.GenerarReporteDiarioDeTransacciones = async (pTransaccion) => {
         {header: 'Efectivo', key: 'valor_efectivo', width: 35},
         {header: 'Credito', key: 'valor_credito', width: 35},
     ]
-    const sheetName = new Date().getFullYear()+"-"+new Date().getMonth()
+    const sheetName = new Date().getFullYear()+"-"+new Date().getMonth()+1
     try {
         
         const workbook = new Excel.Workbook();
@@ -72,7 +81,7 @@ Generador.GenerarReporteDiarioDeTransacciones = async (pTransaccion) => {
             var newWorksheet = workbook.addWorksheet(sheetName);
         }
         newWorksheet.columns = cols
-        newWorksheet.addRows(getData(pTransaccion))
+        newWorksheet.addRows(getData(pTransaccion, pUsuario, pEntidad, pDoctores))
         await workbook.xlsx.writeFile('./services/reporteGeneral.xlsx');
 
         console.log("Registro generado")
@@ -81,7 +90,7 @@ Generador.GenerarReporteDiarioDeTransacciones = async (pTransaccion) => {
             const workbook = new Excel.Workbook();
             const worksheet = workbook.addWorksheet(sheetName);
             worksheet.columns = cols
-            worksheet.addRows(getData(pTransaccion))
+            worksheet.addRows(getData(pTransaccion, pUsuario,  pEntidad, pDoctores))
             await workbook.xlsx.writeFile('./services/reporteGeneral.xlsx');
         }
         else{

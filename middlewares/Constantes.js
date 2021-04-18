@@ -47,4 +47,8 @@ Constantes.TNTCR_BANCARIA = 2
 
 Constantes.ENTIDADPARTICULAR = 1
 
+Constantes.SERVICIOPERIAPICAL = 1
+
+Constantes.CONVENIOPERI = 1
+
 module.exports = Constantes

@@ -1,4 +1,4 @@
-const { Usuario, Tipo_documento } = require ('../database/sequelize')
+const { Usuario, Tipo_documento, Departamento, Ciudad, Sexo, Tipo_pref_entrega } = require ('../database/sequelize')
 const { Op } = require("sequelize");
 UsuarioController = {}
 
@@ -41,6 +41,26 @@ UsuarioController.getUsuarios = async () =>{
         return await Usuario.findAll({
             order:[
                 ['documento_usuario','ASC']
+            ]
+        })
+    } catch (error) {
+        return error
+    }
+}
+UsuarioController.getUsuariosParaReporte = async () =>{
+    try {
+        return await Usuario.findAll({
+            order:[
+                ['documento_usuario','ASC']
+            ],
+            include:[
+                {
+                    model: Ciudad,
+                    include:[Departamento]
+                },
+                {model: Sexo},
+                {model: Tipo_pref_entrega},
+                {model: Tipo_documento}
             ]
         })
     } catch (error) {
