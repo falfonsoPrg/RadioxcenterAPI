@@ -411,6 +411,7 @@ PDFMaker.createFacturaEntidad = (entidad,transacciones,nFactura,sigla) => {
 
 PDFMaker.crearConsentimientoIntraoral = (data,tutor,firma,condiciones,responsable) => {
   var rutaImagen = responsable==1?'lina.jpg':'cecilia.jpg'
+  var nombreResponsable = responsable==1?'LINA PAOLA ALONSO SANABRIA':'YOSELEN CECILIA TRIANA GALEANO'
   var esTutor;
   if(tutor.documento_tutor == -1){
     tutor.documento_tutor = "__________"
@@ -526,7 +527,7 @@ PDFMaker.crearConsentimientoIntraoral = (data,tutor,firma,condiciones,responsabl
               {text:[{text:"NOMBRE DEL PACIENTE",style:'bold',decoration: 'underline'}," O PERSONA RESPONSABLE: ", esTutor ? tutor.nombres_tutor + " " + tutor.apellidos_tutor : data.nombres_usuario + " " + data.apellidos_usuario ]},
               [{text:[{text:"FIRMA DEL PACIENTE",style:'bold',decoration: 'underline'}," O PERSONA RESPONSABLE"]},{image: firma,width: 130,height: 60,}],
             ],
-            [{text:"Nombre del prestador de salud responsable " + responsable==1?'LINA PAOLA ALONSO SANABRIA':'YOSELEN CECILIA TRIANA GALEANO'},[{text:"Firma del prestador de salud oral responsable"},{image: './fonts/Images/'+ rutaImagen,width: 130,height: 60,}]]
+            [{text:"Nombre del prestador de salud responsable " + nombreResponsable},[{text:"Firma del prestador de salud oral responsable"},{image: './fonts/Images/'+ rutaImagen,width: 130,height: 60,}]]
           ]
         },
         margin:[0,15]
@@ -556,6 +557,7 @@ PDFMaker.crearConsentimientoIntraoral = (data,tutor,firma,condiciones,responsabl
 
 PDFMaker.crearConsentimientoExtraoral = (data,tutor,firma,condiciones,responsable) => {
   var rutaImagen = responsable==1?'lina.jpg':'cecilia.jpg'
+  var nombreResponsable = responsable==1?'LINA PAOLA ALONSO SANABRIA':'YOSELEN CECILIA TRIANA GALEANO'
   var esTutor;
   if(tutor.documento_tutor == -1){
     tutor.documento_tutor = "__________"
@@ -674,7 +676,7 @@ PDFMaker.crearConsentimientoExtraoral = (data,tutor,firma,condiciones,responsabl
               {text:[{text:"NOMBRE DEL PACIENTE",style:'bold',decoration: 'underline'}," O PERSONA RESPONSABLE: ", esTutor ? tutor.nombres_tutor + " " + tutor.apellidos_tutor : data.nombres_usuario + " " + data.apellidos_usuario ]},
               [{text:[{text:"FIRMA DEL PACIENTE",style:'bold',decoration: 'underline'}," O PERSONA RESPONSABLE"]},{image: firma,width: 130,height: 60,}],
             ],
-            [{text:"Nombre del prestador de salud responsable " + responsable==1?'LINA PAOLA ALONSO SANABRIA':'YOSELEN CECILIA TRIANA GALEANO'},[{text:"Firma del prestador de salud oral responsable"},{image: './fonts/Images/'+ rutaImagen,width: 130,height: 60,}]]
+            [{text:"Nombre del prestador de salud responsable " + nombreResponsable},[{text:"Firma del prestador de salud oral responsable"},{image: './fonts/Images/'+ rutaImagen,width: 130,height: 60,}]]
           ]
         },
         margin:[0,15]
