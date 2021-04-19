@@ -24,6 +24,9 @@ Initializer.CargarCarpetas = () => {
     fs.mkdir('./public/xml',{ recursive: true }, (err) => {
         if (err) console.log("La carpeta /public/xml no pudo ser creada")
     });
+    fs.mkdir('./public/xlsx',{ recursive: true }, (err) => {
+        if (err) console.log("La carpeta /public/xlsx no pudo ser creada")
+    });
     console.log("Carpetas cargadas");
 }
 

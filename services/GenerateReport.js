@@ -3,7 +3,6 @@ const Excel = require('exceljs');
 function getData(fechaInicia,fechaFinal,pTransaccion,pUsuario,pEntidad,pDoctor,pServicio) {
     var month = parseInt(new Date().getMonth())+1
     month = month.toString().length == 1 ? "0"+month.toString():month.toString()
-    var actual = new Date().getFullYear()+"-"+ month +"-"+new Date().getDate()
     var transaccionesDelDia = pTransaccion.filter(t => t.fecha_transaccion>=fechaInicia && t.fecha_transaccion<=fechaFinal)
     transaccionesDelDia.sort((a,b) => (a.numero_transaccion > b.numero_transaccion) ? 1 : ((b.numero_transaccion > a.numero_transaccion) ? -1 : 0))
     var dataToReturn = []
@@ -46,7 +45,7 @@ function getData(fechaInicia,fechaFinal,pTransaccion,pUsuario,pEntidad,pDoctor,p
             nombre_doctor: nombreDoctor,
             nombre_entidad: nombreEntidad,
             resumen:resumenTransaccion,
-            fpago: "",
+            fpago: t.forma_de_pago,
             valor_total: t.valor_transaccion,
             valor_efectivo: t.cod_entidad_doctor ? 0:t.valor_transaccion,
             valor_credito: t.cod_entidad_doctor ? t.valor_transaccion:0,
@@ -83,26 +82,30 @@ Generador.GenerarReporteDiarioDeTransacciones = async (fechaInicia,fechaFinal,pT
         {header: 'Credito', key: 'valor_credito', width: 35},
     ]
     const sheetName = new Date().getFullYear()+"-"+new Date().getMonth()+1
+    var today = new Date()
+    var timestamp = today.getDate()+""+today.getMonth()+""+today.getFullYear()+""+today.getHours()+""+today.getMinutes()
+    var filename = './public/xlsx/reporteGeneral_'+timestamp+'.xlsx'
     try {
         
         const workbook = new Excel.Workbook();
-        await workbook.xlsx.readFile('./services/reporteGeneral.xlsx');
+        await workbook.xlsx.readFile(filename);
         var newWorksheet = workbook.getWorksheet(sheetName);
         if(!newWorksheet){
             var newWorksheet = workbook.addWorksheet(sheetName);
         }
         newWorksheet.columns = cols
         newWorksheet.addRows(getData(fechaInicia,fechaFinal,pTransaccion, pUsuario, pEntidad, pDoctores, pServicio))
-        await workbook.xlsx.writeFile('./services/reporteGeneral.xlsx');
+        await workbook.xlsx.writeFile(filename);
 
-        console.log("Registro generado")
+        return filename
     } catch (error) {
         if(error.name == "Error"){
             const workbook = new Excel.Workbook();
             const worksheet = workbook.addWorksheet(sheetName);
             worksheet.columns = cols
             worksheet.addRows(getData(fechaInicia,fechaFinal,pTransaccion, pUsuario,  pEntidad, pDoctores, pServicio))
-            await workbook.xlsx.writeFile('./services/reporteGeneral.xlsx');
+            await workbook.xlsx.writeFile(filename);
+            return filename
         }
         else{
             return error

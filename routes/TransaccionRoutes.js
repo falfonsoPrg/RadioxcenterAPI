@@ -46,8 +46,8 @@ router.post('/generarReporte',async(req,res)=>{
     const servicios = await ServicioController.getServicios()
     var fechaInicial = req.body.fecha_inicial
     var fechaFinal = req.body.fecha_final
-    await Generador.GenerarReporteDiarioDeTransacciones(fechaInicial, fechaFinal,transacciones,usuarios,entidades,doctores, servicios)
-    res.send()
+    var ruta = await Generador.GenerarReporteDiarioDeTransacciones(fechaInicial, fechaFinal,transacciones,usuarios,entidades,doctores, servicios)
+    res.send(ruta)
 })
 router.get('/:cod_transaccion', async(req,res)=>{
     /**
