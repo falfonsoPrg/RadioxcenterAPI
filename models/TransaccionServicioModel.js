@@ -8,12 +8,15 @@ module.exports = (sequelize) => {
             autoIncrement: true,
             allowNull: false
         },
+        cantidad:{
+            type: DataTypes.INTEGER
+        },
         cod_transaccion: {
             type: DataTypes.INTEGER
         },
         cod_servicio: {
             type: DataTypes.INTEGER
-        }
+        },
     },{
         tableName: 'Transaccion_servicio' ,
         freezeTableName: true

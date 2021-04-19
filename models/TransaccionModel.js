@@ -27,6 +27,9 @@ module.exports = (sequelize) => {
         fecha_transaccion: {
             type: DataTypes.DATEONLY
         },
+        forma_de_pago:{
+            type: DataTypes.STRING
+        },
         nombres_acudiente: {
             type: DataTypes.STRING,
             allowNull: true

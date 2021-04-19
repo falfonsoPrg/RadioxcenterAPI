@@ -218,7 +218,8 @@ router.post('/crearConsentimiento', async(req,res)=>{
     tmpServicios.forEach( async (serv) => {
         await TransaccionServicioController.createTransaccionServicio({
             cod_servicio: serv.cod_servicio,
-            cod_transaccion: transaccion.cod_transaccion
+            cod_transaccion: transaccion.cod_transaccion,
+            cantidad: serv.cantidad
         })
     });
     logger.log("Servicios agregados a la transacción");
