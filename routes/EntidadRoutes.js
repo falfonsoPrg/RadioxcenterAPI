@@ -212,8 +212,8 @@ router.put('/:cod_entidad/doctores/', async(req,res)=>{
     const doctores_entidad = req.body.doctores_entidad
     var entidadDoctores = await EntidadDoctorController.getEntidadDoctores();
     entidadDoctores = entidadDoctores.filter( ed => ed.cod_entidad == req.params.cod_entidad)
-    console.log(entidadDoctores)
-    doctores_entidad.forEach( async doc => {
+    for (let i = 0; i < doctores_entidad.length; i++) {
+        const doc = doctores_entidad[i];
         var actual = entidadDoctores.find(ed => ed.cod_doctor == doc.cod_doctor)
         if(actual == undefined){
             var rtaCrear = await EntidadDoctorController.createEntidadDoctor({
@@ -227,15 +227,20 @@ router.put('/:cod_entidad/doctores/', async(req,res)=>{
                 })
             }
         }else{
-            actual.activo = doc.activo
-            var rtaActualizar = await EntidadDoctorController.updateEntidadDoctor(actual)
+            var rtaActualizar = await EntidadDoctorController.updateEntidadDoctor({
+                cod_entidad_doctor: actual.cod_entidad_doctor,
+                cod_doctor: actual.cod_doctor,
+                cod_entidad: actual.cod_entidad,
+                activo: doc.activo
+            })
             if(rtaActualizar[0]==0 || rtaActualizar.name){
                 return res.status(404).send({
                     error: Mensajes.ErrorAlActualizar
                 })
             }
         }
-    });
+        
+    }
     return res.status(204).send()
 })
 
