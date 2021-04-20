@@ -66,7 +66,8 @@ router.post('/', async(req,res)=>{
     if(req.body.esParticular){
         const entidad_doctor = await EntidadDoctorController.createEntidadDoctor({
             cod_entidad: Constantes.ENTIDADPARTICULAR,
-            cod_doctor: doctor.cod_doctor
+            cod_doctor: doctor.cod_doctor,
+            activo: true
         })
         if(entidad_doctor.errors || entidad_doctor.name){
             return res.status(400).send({

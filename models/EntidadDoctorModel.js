@@ -15,7 +15,8 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER
         },
         activo: {
-            type: DataTypes.BOOLEAN
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
         }
     },{
         tableName: 'Entidad_doctor',

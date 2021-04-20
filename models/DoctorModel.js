@@ -28,6 +28,10 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        esParticular: {
+            type: DataTypes.STRING,
+            defaultValue: false
+        },
         correo_doctor: {
             type: DataTypes.STRING,
             allowNull: false,

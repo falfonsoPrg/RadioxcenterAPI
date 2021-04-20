@@ -83,7 +83,7 @@ Generador.GenerarReporteDiarioDeTransacciones = async (fechaInicia,fechaFinal,pT
     ]
     const sheetName = new Date().getFullYear()+"-"+new Date().getMonth()+1
     var today = new Date()
-    var timestamp = today.getDate()+""+today.getMonth()+""+today.getFullYear()+""+today.getHours()+""+today.getMinutes()
+    var timestamp = today.getDate()+""+today.getMonth()+""+today.getFullYear()+""+today.getHours()+""+today.getMinutes()+""+today.getSeconds()
     var filename = './public/xlsx/reporteGeneral_'+timestamp+'.xlsx'
     try {
         
