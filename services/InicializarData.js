@@ -284,7 +284,7 @@ Initializer.CargarServicio = async (pServicio) => {
         where: {cod_servicio:Constantes.SERVICIOPERIAPICAL},
         defaults: {
             cod_servicio: Constantes.SERVICIOPERIAPICAL,
-            nombre_servicio: "PERIAPICAL",
+            nombre_servicio: "SE-PERIAPICAL",
             descripcion_servicio: "PERIAPICAL",
             precio_servicio: 12000,
             iva_servicio: 0
