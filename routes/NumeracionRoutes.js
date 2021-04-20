@@ -99,7 +99,6 @@ router.put('/', async(req,res)=>{
             error: "La numeración inicial no puede ser mayor o igual que la final"
         })
     }
-    console.log(req.body.numeracion_inicial != actual.numeracion_inicial || req.body.numeracion_final != actual.numeracion_final);
     if(req.body.numeracion_inicial != actual.numeracion_inicial || req.body.numeracion_final != actual.numeracion_final){
         if(req.body.cod_numeracion == Constantes.FAEL_CODE || req.body.cod_numeracion == Constantes.FPOS_CODE){
             var facturas = await FacturaController.getFacturas()
@@ -119,6 +118,7 @@ router.put('/', async(req,res)=>{
                 })
             }
         }
+        req.body.numeracion_actual = actual.numeracion_inicial
     }
 
     const numeracion = await NumeracionController.updateNumeracion(req.body)
