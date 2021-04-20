@@ -118,7 +118,7 @@ router.put('/', async(req,res)=>{
                 })
             }
         }
-        req.body.numeracion_actual = actual.numeracion_inicial
+        req.body.numeracion_actual = actual.numeracion_inicial - 1
     }
 
     const numeracion = await NumeracionController.updateNumeracion(req.body)
