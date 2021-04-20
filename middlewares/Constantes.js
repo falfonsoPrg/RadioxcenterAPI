@@ -45,7 +45,7 @@ Constantes.SXFEMCODE = 2
 Constantes.TNTCR_COMERCIAL = 1
 Constantes.TNTCR_BANCARIA = 2
 
-Constantes.ENTIDADPARTICULAR = 0
+Constantes.ENTIDADPARTICULAR = 1
 
 Constantes.SERVICIOPERIAPICAL = 1
 

@@ -7,7 +7,8 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            allowNull: false
+            allowNull: false,
+            initialAutoIncrement: 2
         },
         razon_social_entidad: {
             type: DataTypes.STRING,
