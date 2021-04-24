@@ -74,10 +74,17 @@ router.get('/',async(req,res)=>{
         #swagger.path = '/transacciones'
         #swagger.description = 'Endpoint para obtener transacciones'
      */
-    const transaccion = await TransaccionController.getAllTransacciones()
+    var transaccion = await TransaccionController.getAllTransacciones()
+    var rta = []
     if(transaccion.length > 0){
+        for (let i = 0; i < transaccion.length; i++) {
+            const t = transaccion[i].toJSON();
+            var x = await UsuarioController.getUsuarioPorDocumento(t.documento_usuario);
+            t.usuario = x[0].nombres_usuario + " " + x[0].apellidos_usuario
+            rta.push(t)
+        }
         return res.send({
-            respuesta: transaccion
+            respuesta: rta
         })
     }
     return res.status(404).send({
