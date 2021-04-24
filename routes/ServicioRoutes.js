@@ -62,7 +62,7 @@ router.post('/', async(req,res)=> {
     })
     
 
-    const servicio = await ServicioController.createservicio(req.body,"SE")
+    const servicio = await ServicioController.createservicioConPrefijo(req.body,"SE")
     if(servicio.errors || servicio.name){
         return res.status(400).send({
             error: Mensajes.ErrorAlGuardar

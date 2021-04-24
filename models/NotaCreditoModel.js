@@ -24,6 +24,12 @@ module.exports = (sequelize) => {
         ruta_nota_credito:{
             type: DataTypes.STRING
         },
+        motivo:{
+            type: DataTypes.STRING
+        },
+        cod_empleado:{
+            type: DataTypes.INTEGER
+        },
         cod_factura:{
             type: DataTypes.INTEGER
         },

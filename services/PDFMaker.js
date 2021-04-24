@@ -270,7 +270,7 @@ PDFMaker.createFactura = (data,esTutor,servicios,nFactura,sigla) => {
         { width: '*', text: '' },
       ]
     },
-    {text:"Facatativá (Cund.) Calle 8 No 6 - 59. Tel: 8429548 / Fax #######",alignment: 'center',margin:[0,5,0,0]},
+    {text:"Facatativá (Cund.) Calle 8 No 6 - 59. Tel: 8429548",alignment: 'center',margin:[0,5,0,0]},
     {text:"radioxenter@gmail.com - www.radioxenter.com",alignment: 'center'},
   ],
     styles:{
@@ -382,7 +382,7 @@ PDFMaker.createFacturaEntidad = (entidad,transacciones,nFactura,sigla) => {
         { width: '*', text: '' },
       ]
     },
-    {text:"Facatativá (Cund.) Calle 8 No 6 - 59. Tel: 8429548 / Fax #######",alignment: 'center',margin:[0,5,0,0]},
+    {text:"Facatativá (Cund.) Calle 8 No 6 - 59. Tel: 8429548",alignment: 'center',margin:[0,5,0,0]},
     {text:"radioxenter@gmail.com - www.radioxenter.com",alignment: 'center'},
   ],
     styles:{
@@ -704,10 +704,10 @@ PDFMaker.crearConsentimientoExtraoral = (data,tutor,firma,condiciones,responsabl
   return savePath+filename
 }
 
-PDFMaker.crearNotaCredito = (factura, pNumeracion) => {
+PDFMaker.crearNotaCredito = (factura, pNumeracion, pMotivo) => {
   var formatedServicios = [{
     cant: 1,
-    concepto: "Factura número: " + factura.numero_factura,
+    concepto: "Factura número: " + factura.numero_factura + " motivo: " + pMotivo,
     vlrU: factura.valor_total_factura,
     vlrT: factura.valor_total_factura,
   }]
@@ -787,7 +787,7 @@ PDFMaker.crearNotaCredito = (factura, pNumeracion) => {
       ]
     },
     {text:"Facatativá (Cund.)",alignment: 'center',margin:[0,10,0,0]},
-    {text:"Calle 8 No 6 - 59. Tel: 8429548 / Fax #######",alignment: 'center'},
+    {text:"Calle 8 No 6 - 59. Tel: 8429548",alignment: 'center'},
     {text:"radioxenter@gmail.com",alignment: 'center'},
     {text:"www.radioxenter.com",alignment: 'center'},
   ],

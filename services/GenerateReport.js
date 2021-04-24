@@ -27,9 +27,10 @@ function getData(fechaInicia,fechaFinal,pTransaccion,pUsuario,pEntidad,pDoctor,p
 
         //Armar objeto
         var exampleObj = {
+            responsable: "TEST",
             fecha: usuario.updatedAt,
             hora_llegada: usuario.updatedAt,
-            hora_atencion: new Date(),
+            hora_atencion: t.updatedAt,
             tipo_documento: tipoDoc,
             numero_documento: t.documento_usuario,
             nombres: usuario.nombres_usuario,
@@ -58,6 +59,7 @@ function getData(fechaInicia,fechaFinal,pTransaccion,pUsuario,pEntidad,pDoctor,p
 Generador = {}
 Generador.GenerarReporteDiarioDeTransacciones = async (fechaInicia,fechaFinal,pTransaccion, pUsuario, pEntidad, pDoctores, pServicio) => {
     const cols = [
+        {header: 'Responsable', key: 'responsable', width: 40},
         {header: 'Fecha', key: 'fecha', width: 10},
         {header: 'Hora llegada', key: 'hora_llegada', width: 10},
         {header: 'Hora atención', key: 'hora_atencion', width: 10},

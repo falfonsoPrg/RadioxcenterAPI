@@ -500,7 +500,8 @@ module.exports.AgregarTransaccionValidation = AgregarTransaccionValidation = (da
         tipo_compra: Joi.string().required(),
         paga_cliente: Joi.bool().required(),
         servicios: Joi.array().min(1).required(),
-        consentimiento: Joi.object().required()
+        consentimiento: Joi.object().required(),
+        cod_empleado: Joi.number().required()
     })
     return schema.validate(data)
 }

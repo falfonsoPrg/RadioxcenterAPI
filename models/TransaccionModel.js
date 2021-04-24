@@ -48,6 +48,9 @@ module.exports = (sequelize) => {
         },
         cod_entidad_doctor: {
             type: DataTypes.INTEGER
+        },
+        cod_empleado: {
+            type: DataTypes.INTEGER
         }
     },{
         tableName: 'Transaccion',

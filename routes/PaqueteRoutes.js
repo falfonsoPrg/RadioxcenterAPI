@@ -61,7 +61,7 @@ router.post('/', async(req,res)=>{
     })
 
     //TODO: Crear el servicio que  comienze con PA
-    const servicioPaquete = await ServicioController.createservicio({
+    const servicioPaquete = await ServicioController.createservicioConPrefijo({
         nombre_servicio: req.body.nombre_paquete,
         descripcion_servicio: req.body.nombre_paquete,
         precio_servicio: req.body.precio_paquete,
