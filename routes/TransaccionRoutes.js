@@ -15,9 +15,16 @@ router.get('/entidades/:cod_entidad',async(req,res)=>{
         #swagger.description = 'Endpoint para obtener todas las transacciones pendientes de una entidad'
      */
     const transacciones = await TransaccionController.getTransaccionesDeEntidadesNoPagadas(req.params.cod_entidad) 
+    var rta = []
     if(transacciones.length > 0){
+        for (let i = 0; i < transaccion.length; i++) {
+            const t = transaccion[i].toJSON();
+            var x = await UsuarioController.getUsuarioPorDocumento(t.documento_usuario);
+            t.usuario = x[0].nombres_usuario + " " + x[0].apellidos_usuario
+            rta.push(t)
+        }
         return res.send({
-            respuesta: transacciones
+            respuesta: rta
         })
     }
     return res.status(404).send({
