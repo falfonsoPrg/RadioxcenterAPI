@@ -17,8 +17,8 @@ router.get('/entidades/:cod_entidad',async(req,res)=>{
     const transacciones = await TransaccionController.getTransaccionesDeEntidadesNoPagadas(req.params.cod_entidad) 
     var rta = []
     if(transacciones.length > 0){
-        for (let i = 0; i < transaccion.length; i++) {
-            const t = transaccion[i].toJSON();
+        for (let i = 0; i < transacciones.length; i++) {
+            const t = transacciones[i].toJSON();
             var x = await UsuarioController.getUsuarioPorDocumento(t.documento_usuario);
             t.usuario = x[0].nombres_usuario + " " + x[0].apellidos_usuario
             rta.push(t)
