@@ -48,7 +48,7 @@ Mailer.sendEmailSatisfaccion = (correo) => {
         from: process.env.EMAIL,
         to: correo,
         subject: 'Encuesta de Satisfacción Radioxenter LTDA',
-        text: 'Muchas gracias por adquirir nuestros servicios, a continuación le solicitamos cordialmente nos colabore rellendando nuestra encuesta de satisfacción accediendo al siguiente formulario: ',
+        text: 'Muchas gracias por adquirir nuestros servicios, a continuación le solicitamos cordialmente nos colabore rellendando nuestra encuesta de satisfacción accediendo al siguiente formulario: ' + process.env.LINKENCUESTA,
     };
     var rta = true;
     transporter.sendMail(mailOptions, (error, info) => {

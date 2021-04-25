@@ -707,7 +707,7 @@ PDFMaker.crearConsentimientoExtraoral = (data,tutor,firma,condiciones,responsabl
 PDFMaker.crearNotaCredito = (factura, pNumeracion, pMotivo) => {
   var formatedServicios = [{
     cant: 1,
-    concepto: "Factura número: " + factura.numero_factura + " motivo: " + pMotivo,
+    concepto: "Factura número: " + factura.numero_factura + ", Motivo: " + pMotivo,
     vlrU: factura.valor_total_factura,
     vlrT: factura.valor_total_factura,
   }]
@@ -752,7 +752,7 @@ PDFMaker.crearNotaCredito = (factura, pNumeracion, pMotivo) => {
       },
       {text:"Nit 900.311.422-4 Reg. Común Act. Económica 8514",alignment: 'center'},
       //{text:"Número de Formulario DIAN 7818718718187 Fecha 2020/20/20",alignment: 'center'},
-      {text:"Habilitada desde "+pNumeracion.numeracion_inicial+" hasta " +pNumeracion.numeracion_inicial,alignment: 'center'},
+      {text:"Habilitada desde "+pNumeracion.numeracion_inicial+" hasta " +pNumeracion.numeracion_final,alignment: 'center'},
       {columns: [
         {
           ul: [

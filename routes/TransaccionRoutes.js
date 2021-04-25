@@ -4,6 +4,9 @@ const UsuarioController = require('../controllers/UsuarioController')
 const EntidadController = require('../controllers/EntidadController')
 const DoctorController = require('../controllers/DoctorController')
 const ServicioController = require('../controllers/ServicioController')
+const EmpleadoController = require('../controllers/EmpleadoController')
+const FacturaController = require('../controllers/FacturaController')
+const NotaCreditoController = require('../controllers/NotaCreditoController')
 const Mensajes = require('../middlewares/Mensajes')
 const { CreateTransaccionValidation, UpdateTransaccionValidation} = require('../middlewares/Validation')
 const Generador = require("../services/GenerateReport")
@@ -51,9 +54,12 @@ router.post('/generarReporte',async(req,res)=>{
     const entidades = await EntidadController.getEntidades()
     const doctores = await DoctorController.getDoctores()
     const servicios = await ServicioController.getServicios()
+    const empleados = await EmpleadoController.getEmpleados()
+    const facturas = await FacturaController.getFacturas()
+    const notasCredito = await NotaCreditoController.getNotasCredito()
     var fechaInicial = req.body.fecha_inicial
     var fechaFinal = req.body.fecha_final
-    var ruta = await Generador.GenerarReporteDiarioDeTransacciones(fechaInicial, fechaFinal,transacciones,usuarios,entidades,doctores, servicios)
+    var ruta = await Generador.GenerarReporteDiarioDeTransacciones(fechaInicial, fechaFinal,transacciones,usuarios,entidades,doctores, servicios,empleados,facturas,notasCredito)
     res.send(ruta)
 })
 router.get('/:cod_transaccion', async(req,res)=>{

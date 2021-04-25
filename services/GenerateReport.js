@@ -1,6 +1,6 @@
 const Excel = require('exceljs');
 
-function getData(fechaInicia,fechaFinal,pTransaccion,pUsuario,pEntidad,pDoctor,pServicio) {
+function getData(fechaInicia,fechaFinal,pTransaccion,pUsuario,pEntidad,pDoctor,pServicio,pEmpleado,pFactura,pNotaCredito) {
     var month = parseInt(new Date().getMonth())+1
     month = month.toString().length == 1 ? "0"+month.toString():month.toString()
     var transaccionesDelDia = pTransaccion.filter(t => t.fecha_transaccion>=fechaInicia && t.fecha_transaccion<=fechaFinal)
@@ -25,9 +25,16 @@ function getData(fechaInicia,fechaFinal,pTransaccion,pUsuario,pEntidad,pDoctor,p
             }
         })
 
+        var empleado = pEmpleado.find(e => e.cod_empleado == t.cod_empleado)
+        var nFactura = "N/A"
+        if(t.Transaccion_Facturas.length > 0){
+            var fac = pFactura.find(f => f.cod_factura == t.Transaccion_Facturas[0].cod_factura)
+            nFactura = fac.numero_factura
+        }
+
         //Armar objeto
         var exampleObj = {
-            responsable: "TEST",
+            responsable: empleado.nombres_empleado + " " + empleado.apellidos_empleado,
             fecha: usuario.updatedAt,
             hora_llegada: usuario.updatedAt,
             hora_atencion: t.updatedAt,
@@ -36,6 +43,7 @@ function getData(fechaInicia,fechaFinal,pTransaccion,pUsuario,pEntidad,pDoctor,p
             nombres: usuario.nombres_usuario,
             apellidos: usuario.apellidos_usuario,
             numero_transaccion: t.numero_transaccion,
+            numero_factura: nFactura,
             nombre_acudiente:t.nombres_acudiente + " " + t.apellidos_acudiente == "" ? "N/A": t.nombres_acudiente + " " + t.apellidos_acudiente,
             parentesco_acudiente: t.parentesco_acudiente == "" ? "N/A":t.parentesco_acudiente ,
             usuario_telefono:usuario.telefono_usuario,
@@ -55,9 +63,32 @@ function getData(fechaInicia,fechaFinal,pTransaccion,pUsuario,pEntidad,pDoctor,p
     });
     return dataToReturn
 }
-
+function getNTData(fechaInicia,fechaFinal,pEmpleado,pNotaCredito){
+    var dataToReturn = []
+    var transaccionesDelDia = pNotaCredito.filter(t => {
+        var month = t.fecha_nota_credito.getMonth() + 1
+        month = month.toString().length == 1 ? "0"+month.toString():month.toString()
+        var fechaAux = t.fecha_nota_credito.getFullYear() + "-"+ month +"-"+ t.fecha_nota_credito.getDate()
+        if(fechaAux>=fechaInicia && fechaAux<=fechaFinal){
+            return t
+        }
+    })
+    transaccionesDelDia.forEach(nt => {
+        var empleado = pEmpleado.find(e => e.cod_empleado == nt.cod_empleado)
+        var exampleObj = {
+            responsable:empleado.nombres_empleado + " " + empleado.apellidos_empleado,
+            fecha:nt.updatedAt,
+            numero:nt.numero_nota_credito,
+            descripcion:nt.descripcion_nota_credito,
+            motivo:nt.motivo,
+            valor:nt.valor_total
+        }
+        dataToReturn.push(exampleObj)
+    });
+    return dataToReturn
+}
 Generador = {}
-Generador.GenerarReporteDiarioDeTransacciones = async (fechaInicia,fechaFinal,pTransaccion, pUsuario, pEntidad, pDoctores, pServicio) => {
+Generador.GenerarReporteDiarioDeTransacciones = async (fechaInicia,fechaFinal,pTransaccion, pUsuario, pEntidad, pDoctores, pServicio, pEmpleado,pFactura,pNotaCredito) => {
     const cols = [
         {header: 'Responsable', key: 'responsable', width: 40},
         {header: 'Fecha', key: 'fecha', width: 10},
@@ -68,6 +99,7 @@ Generador.GenerarReporteDiarioDeTransacciones = async (fechaInicia,fechaFinal,pT
         {header: 'Nombres.', key: 'nombres', width: 35},
         {header: 'Apellidos.', key: 'apellidos', width: 35},
         {header: 'Numero Transaccion', key: 'numero_transaccion', width: 35},
+        {header: 'Numero Factura', key: 'numero_factura', width: 35},
         {header: 'Nombre de Adulto Responsable', key: 'nombre_acudiente', width: 35},
         {header: 'Parentesco', key: 'parentesco_acudiente', width: 35},
         {header: 'Teléfono', key: 'usuario_telefono', width: 35},
@@ -83,20 +115,34 @@ Generador.GenerarReporteDiarioDeTransacciones = async (fechaInicia,fechaFinal,pT
         {header: 'Efectivo', key: 'valor_efectivo', width: 35},
         {header: 'Credito', key: 'valor_credito', width: 35},
     ]
-    const sheetName = new Date().getFullYear()+"-"+new Date().getMonth()+1
+    const colsNT = [
+        {header: 'Responsable', key: 'responsable', width: 40},
+        {header: 'Fecha', key: 'fecha', width: 40},
+        {header: 'Numero nota credito', key: 'numero', width: 40},
+        {header: 'Descripcion', key: 'descripcion', width: 40},
+        {header: 'Motivo', key: 'motivo', width: 40},
+        {header: 'Valor', key: 'valor', width: 40},
+    ]
+    const sheetName = "TRAN "+fechaInicia+" "+fechaFinal
+    const sheetNameNotaCred = "NTCRED "+fechaInicia+" "+fechaFinal
     var today = new Date()
     var timestamp = today.getDate()+""+today.getMonth()+""+today.getFullYear()+""+today.getHours()+""+today.getMinutes()+""+today.getSeconds()
     var filename = './public/xlsx/reporteGeneral_'+timestamp+'.xlsx'
     try {
-        
         const workbook = new Excel.Workbook();
         await workbook.xlsx.readFile(filename);
         var newWorksheet = workbook.getWorksheet(sheetName);
         if(!newWorksheet){
             var newWorksheet = workbook.addWorksheet(sheetName);
         }
+        var newWorksheetNtcr = workbook.getWorksheet(sheetNameNotaCred);
+        if(!newWorksheetNtcr){
+            var newWorksheetNtcr = workbook.addWorksheet(sheetNameNotaCred);
+        }
         newWorksheet.columns = cols
-        newWorksheet.addRows(getData(fechaInicia,fechaFinal,pTransaccion, pUsuario, pEntidad, pDoctores, pServicio))
+        newWorksheetNtcr.columns = colsNT
+        newWorksheet.addRows(getData(fechaInicia,fechaFinal,pTransaccion, pUsuario, pEntidad, pDoctores, pServicio,pEmpleado,pFactura,pNotaCredito))
+        newWorksheetNtcr.addRows(getNTData(fechaInicia,fechaFinal,pEmpleado,pNotaCredito))
         await workbook.xlsx.writeFile(filename);
 
         return filename
@@ -104,8 +150,11 @@ Generador.GenerarReporteDiarioDeTransacciones = async (fechaInicia,fechaFinal,pT
         if(error.name == "Error"){
             const workbook = new Excel.Workbook();
             const worksheet = workbook.addWorksheet(sheetName);
+            const worksheetNtcr = workbook.addWorksheet(sheetNameNotaCred);
             worksheet.columns = cols
-            worksheet.addRows(getData(fechaInicia,fechaFinal,pTransaccion, pUsuario,  pEntidad, pDoctores, pServicio))
+            worksheetNtcr.columns = colsNT
+            worksheet.addRows(getData(fechaInicia,fechaFinal,pTransaccion, pUsuario,  pEntidad, pDoctores, pServicio,pEmpleado,pFactura,pNotaCredito))
+            worksheetNtcr.addRows(getNTData(fechaInicia,fechaFinal,pEmpleado,pNotaCredito))
             await workbook.xlsx.writeFile(filename);
             return filename
         }
