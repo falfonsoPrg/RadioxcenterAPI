@@ -4,6 +4,7 @@
 var js2xmlparser = require("js2xmlparser");
 const Constantes = require("../middlewares/Constantes")
 const Mailer = require("./Mailer")
+const EntidadDoctorController = require("../controllers/EntidadDoctorController")
 class Procesos {
 
     constructor() {
@@ -82,7 +83,6 @@ class Procesos {
             this.procesos.push(newUsuario)
             this.avanzarProcesoGeneral(data.documento_usuario)
             this.validar()
-            this.generateXml(data);
             this.generateLog("INICIA PROCESO",newUsuario);
             return true
         }
@@ -134,6 +134,7 @@ class Procesos {
             });
             this.avanzarProcesoGeneral(documento_usuario)
             this.validar()
+            this.generateXml(this.procesos[indexUsuario]);
             this.generateLog("AGREGAR TRANSACCION",this.procesos[indexUsuario]);
             return true
         }
@@ -267,8 +268,21 @@ class Procesos {
             if(err) console.log(err)
         })
     }
-    generateXml(data){
-        this.fs.writeFile('./public/xml/' + data.documento_usuario + "_" +new Date().toISOString().split("T")[0]+".xml", js2xmlparser.parse("Usuario", data), (err) => {
+    async generateXml(data){
+        var doctorName = ""
+        if(data.transaccion.cod_entidad_doctor != undefined){
+            const doctores = await EntidadDoctorController.getEntidadDoctores()
+            const doc = doctores.find(d => d.cod_entidad_doctor == data.transaccion.cod_entidad_doctor)
+            if(doc) doctorName = doc.Doctor.nombres_doctor + " " + doc.Doctor.apellidos_doctor
+        }
+        var dataToXml = {
+            paciente: data.data.nombres_usuario + " " + data.data.apellidos_usuario,
+            edad: this.getAge(data.data.fecha_nacimiento_usuario) + " AÑOS",
+            telefono: data.data.telefono_usuario,
+            fecha: new Date().toISOString().split("T")[0],
+            doctor: doctorName
+        }
+        this.fs.writeFile('./public/xml/' + data.data.documento_usuario + "_" +new Date().toISOString().split("T")[0]+".xml", js2xmlparser.parse("Usuario", dataToXml), (err) => {
             if(err) console.log(err)
         })
     }
@@ -281,6 +295,16 @@ class Procesos {
     log(message) {
         const timestamp = new Date().toISOString();
         console.log(`${timestamp} - ${message}`);
+    }
+    getAge(dateString) {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
     }
 }
 
