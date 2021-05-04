@@ -40,7 +40,6 @@ module.exports = (sequelize) => {
         },
         correo_usuario: {
             type: DataTypes.STRING,
-            unique: true,
             allowNull: true
         },
         genero_usuario: {
