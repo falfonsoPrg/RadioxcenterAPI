@@ -26,8 +26,7 @@ UsuarioController.getUsuarioPorDocumentoYCorreo = async(pDocumento_usuario,pCorr
         return await Usuario.findAll({
             where:{
                 [Op.or]:{
-                    documento_usuario: pDocumento_usuario,
-                    correo_usuario: pCorreo_usuario
+                    documento_usuario: pDocumento_usuario
                 }
             },
             include: Tipo_documento
