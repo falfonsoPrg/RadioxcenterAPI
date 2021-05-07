@@ -93,7 +93,12 @@ router.get('/',async(req,res)=>{
         for (let i = 0; i < transaccion.length; i++) {
             const t = transaccion[i].toJSON();
             var x = await UsuarioController.getUsuarioPorDocumento(t.documento_usuario);
-            t.usuario = x[0].nombres_usuario + " " + x[0].apellidos_usuario
+            if(x[0] != undefined){
+                t.usuario = x[0].nombres_usuario + " " + x[0].apellidos_usuario
+            }
+            else{
+                t.usuario = "N/A"
+            }
             rta.push(t)
         }
         return res.send({
