@@ -42,6 +42,8 @@ function getData(fechaInicia,fechaFinal,pTransaccion,pUsuario,pEntidad,pDoctor,p
             numero_documento: t.documento_usuario,
             nombres: usuario.nombres_usuario,
             apellidos: usuario.apellidos_usuario,
+            fecha_nacimiento: usuario.fecha_nacimiento_usuario,
+            motivo: t.motivo_transaccion,
             numero_transaccion: t.numero_transaccion,
             numero_factura: nFactura,
             nombre_acudiente:t.nombres_acudiente + " " + t.apellidos_acudiente == "" ? "N/A": t.nombres_acudiente + " " + t.apellidos_acudiente,
@@ -55,9 +57,9 @@ function getData(fechaInicia,fechaFinal,pTransaccion,pUsuario,pEntidad,pDoctor,p
             nombre_entidad: nombreEntidad,
             resumen:resumenTransaccion,
             fpago: t.forma_de_pago,
-            valor_total: t.valor_transaccion,
-            valor_efectivo: t.cod_entidad_doctor ? 0:t.valor_transaccion,
-            valor_credito: t.cod_entidad_doctor ? t.valor_transaccion:0,
+            valor_total: t.forma_de_pago == "Efectivo" || t.forma_de_pago == "Tarjeta" ? t.valor_transaccion : 0,
+            valor_otro: t.forma_de_pago == "Otro" ? t.valor_transaccion : 0,
+            valor_entidad: t.forma_de_pago == "Entidad" ? t.valor_transaccion : 0,
         }
         dataToReturn.push(exampleObj)
     });
@@ -98,6 +100,8 @@ Generador.GenerarReporteDiarioDeTransacciones = async (fechaInicia,fechaFinal,pT
         {header: 'Número de Documento.', key: 'numero_documento', width: 35},
         {header: 'Nombres.', key: 'nombres', width: 35},
         {header: 'Apellidos.', key: 'apellidos', width: 35},
+        {header: 'Fecha de nacimiento.', key: 'fecha_nacimiento', width: 35},
+        {header: 'Causa de la RX.', key: 'motivo', width: 35},
         {header: 'Numero Transaccion', key: 'numero_transaccion', width: 35},
         {header: 'Numero Factura', key: 'numero_factura', width: 35},
         {header: 'Nombre de Adulto Responsable', key: 'nombre_acudiente', width: 35},
@@ -111,9 +115,9 @@ Generador.GenerarReporteDiarioDeTransacciones = async (fechaInicia,fechaFinal,pT
         {header: 'Entidad o Aseguradora', key: 'nombre_entidad', width: 35},
         {header: 'Servicios', key: 'resumen', width: 35},
         {header: 'Forma de pago', key: 'fpago', width: 35},
-        {header: 'VALOR', key: 'valor_total', width: 35},
-        {header: 'Efectivo', key: 'valor_efectivo', width: 35},
-        {header: 'Credito', key: 'valor_credito', width: 35},
+        {header: 'Valor pagado en RX', key: 'valor_total', width: 35},
+        {header: 'Datafono', key: 'valor_otro', width: 35},
+        {header: 'Valor pagado en entidad', key: 'valor_entidad', width: 35},
     ]
     const colsNT = [
         {header: 'Responsable', key: 'responsable', width: 40},
