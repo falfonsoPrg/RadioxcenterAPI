@@ -8,60 +8,63 @@ function getData(fechaInicia,fechaFinal,pTransaccion,pUsuario,pEntidad,pDoctor,p
     var dataToReturn = []
     transaccionesDelDia.forEach(t =>{
         var usuario = pUsuario.find(u => u.documento_usuario == t.documento_usuario)
-        var tipoDoc = usuario.Tipo_Documento.nombre_tipo_documento
-        var nombreDoctor = "N/A"
-        var nombreEntidad = "N/A"
-        if(t.cod_entidad_doctor != null){
-            var doc = pDoctor.find(d => d.cod_doctor == t.Entidad_doctor.cod_doctor)
-            nombreDoctor = doc.nombres_doctor + " " + doc.apellidos_doctor
-            nombreEntidad = pEntidad.find(d => d.cod_entidad == t.Entidad_doctor.cod_entidad).razon_social_entidad
-        }
-
-        var resumenTransaccion = ""
-        t.Transaccion_servicios.forEach(ts => {
-            var servi = pServicio.find(s => s.cod_servicio == ts.cod_servicio)
-            if(servi != undefined){
-                resumenTransaccion += servi.nombre_servicio + " X" + ts.cantidad + " / "
+        if(usuario != undefined){
+            var tipoDoc = usuario.Tipo_Documento.nombre_tipo_documento
+            var nombreDoctor = "N/A"
+            var nombreEntidad = "N/A"
+            if(t.cod_entidad_doctor != null){
+                var doc = pDoctor.find(d => d.cod_doctor == t.Entidad_doctor.cod_doctor)
+                nombreDoctor = doc.nombres_doctor + " " + doc.apellidos_doctor
+                nombreEntidad = pEntidad.find(d => d.cod_entidad == t.Entidad_doctor.cod_entidad).razon_social_entidad
             }
-        })
 
-        var empleado = pEmpleado.find(e => e.cod_empleado == t.cod_empleado)
-        var nFactura = "N/A"
-        if(t.Transaccion_Facturas.length > 0){
-            var fac = pFactura.find(f => f.cod_factura == t.Transaccion_Facturas[0].cod_factura)
-            nFactura = fac.numero_factura
-        }
+            var resumenTransaccion = ""
+            t.Transaccion_servicios.forEach(ts => {
+                var servi = pServicio.find(s => s.cod_servicio == ts.cod_servicio)
+                if(servi != undefined){
+                    resumenTransaccion += servi.nombre_servicio + " X" + ts.cantidad + " / "
+                }
+            })
 
-        //Armar objeto
-        var exampleObj = {
-            responsable: empleado.nombres_empleado + " " + empleado.apellidos_empleado,
-            fecha: usuario.updatedAt,
-            hora_llegada: usuario.updatedAt,
-            hora_atencion: t.updatedAt,
-            tipo_documento: tipoDoc,
-            numero_documento: t.documento_usuario,
-            nombres: usuario.nombres_usuario,
-            apellidos: usuario.apellidos_usuario,
-            fecha_nacimiento: usuario.fecha_nacimiento_usuario,
-            motivo: t.motivo_transaccion,
-            numero_transaccion: t.numero_transaccion,
-            numero_factura: nFactura,
-            nombre_acudiente:t.nombres_acudiente + " " + t.apellidos_acudiente == "" ? "N/A": t.nombres_acudiente + " " + t.apellidos_acudiente,
-            parentesco_acudiente: t.parentesco_acudiente == "" ? "N/A":t.parentesco_acudiente ,
-            usuario_telefono:usuario.telefono_usuario,
-            usuario_celular:usuario.celular_usuario,
-            usuario_direccion: usuario.direccion_usuario,
-            usuario_ciudad: usuario.Ciudad.nom_ciudad,
-            departamento_ciudad: usuario.Ciudad.Departamento.nom_departamento,
-            nombre_doctor: nombreDoctor,
-            nombre_entidad: nombreEntidad,
-            resumen:resumenTransaccion,
-            fpago: t.forma_de_pago,
-            valor_total: t.forma_de_pago == "Efectivo" || t.forma_de_pago == "Tarjeta" ? t.valor_transaccion : 0,
-            valor_otro: t.forma_de_pago == "Otro" ? t.valor_transaccion : 0,
-            valor_entidad: t.forma_de_pago == "Entidad" ? t.valor_transaccion : 0,
+            var empleado = pEmpleado.find(e => e.cod_empleado == t.cod_empleado)
+            var nFactura = "N/A"
+            if(t.Transaccion_Facturas.length > 0){
+                var fac = pFactura.find(f => f.cod_factura == t.Transaccion_Facturas[0].cod_factura)
+                nFactura = fac.numero_factura
+            }
+
+            //Armar objeto
+            var exampleObj = {
+                responsable: empleado.nombres_empleado + " " + empleado.apellidos_empleado,
+                fecha: usuario.updatedAt,
+                hora_llegada: usuario.updatedAt,
+                hora_atencion: t.updatedAt,
+                tipo_documento: tipoDoc,
+                numero_documento: t.documento_usuario,
+                nombres: usuario.nombres_usuario,
+                apellidos: usuario.apellidos_usuario,
+                fecha_nacimiento: usuario.fecha_nacimiento_usuario,
+                motivo: t.motivo_transaccion,
+                numero_transaccion: t.numero_transaccion,
+                numero_factura: nFactura,
+                nombre_acudiente:t.nombres_acudiente + " " + t.apellidos_acudiente == "" ? "N/A": t.nombres_acudiente + " " + t.apellidos_acudiente,
+                parentesco_acudiente: t.parentesco_acudiente == "" ? "N/A":t.parentesco_acudiente ,
+                usuario_telefono:usuario.telefono_usuario,
+                usuario_celular:usuario.celular_usuario,
+                usuario_direccion: usuario.direccion_usuario,
+                usuario_ciudad: usuario.Ciudad.nom_ciudad,
+                departamento_ciudad: usuario.Ciudad.Departamento.nom_departamento,
+                nombre_doctor: nombreDoctor,
+                nombre_entidad: nombreEntidad,
+                resumen:resumenTransaccion,
+                fpago: t.forma_de_pago,
+                valor_total: t.forma_de_pago == "Efectivo"? t.valor_transaccion : 0,
+                valor_tarjeta: t.forma_de_pago == "Tarjeta" ? t.valor_transaccion : 0,
+                valor_otro: t.forma_de_pago == "Otro" ? t.valor_transaccion : 0,
+                valor_entidad: t.forma_de_pago == "Entidad" ? t.valor_transaccion : 0,
+            }
+            dataToReturn.push(exampleObj)
         }
-        dataToReturn.push(exampleObj)
     });
     return dataToReturn
 }
@@ -116,7 +119,8 @@ Generador.GenerarReporteDiarioDeTransacciones = async (fechaInicia,fechaFinal,pT
         {header: 'Servicios', key: 'resumen', width: 35},
         {header: 'Forma de pago', key: 'fpago', width: 35},
         {header: 'Valor pagado en RX', key: 'valor_total', width: 35},
-        {header: 'Datafono', key: 'valor_otro', width: 35},
+        {header: 'Datafono', key: 'valor_tarjeta', width: 35},
+        {header: 'Otro', key: 'valor_otro', width: 35},
         {header: 'Valor pagado en entidad', key: 'valor_entidad', width: 35},
     ]
     const colsNT = [
