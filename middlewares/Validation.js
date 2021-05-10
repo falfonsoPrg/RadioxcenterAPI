@@ -131,6 +131,8 @@ module.exports.CreateUsuarioValidation = CreateUsuarioValidation = (data) =>{
         genero_usuario: Joi.string().allow(''),
         tutor: Joi.bool().required(),
         esNuevo: Joi.bool().required(),
+        tiempo_inicial: Joi.date().required(),
+        tiempo_final: Joi.date().required(),
         celular_usuario: Joi.string().allow(''),
         cod_sexo: Joi.number().required(),
         cod_tipo_documento: Joi.number().required(),
