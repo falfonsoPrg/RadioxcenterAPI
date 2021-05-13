@@ -83,8 +83,6 @@ class Procesos {
             this.procesos.push(newUsuario)
             this.avanzarProcesoGeneral(data.documento_usuario)
             this.validar()
-            this.generateLog("INICIA PROCESO",newUsuario, new Date(data.tiempo_inicial).toISOString());
-            this.generateLog("FINALIZA TOMA DE DATOS",newUsuario, new Date(data.tiempo_final).toISOString());
             return true
         }
         return false
@@ -99,7 +97,6 @@ class Procesos {
             this.procesos[indexUsuario].tutor = tutor
             this.avanzarProcesoGeneral(documento_usuario)
             this.validar()
-            this.generateLog("AGREGA TUTOR",this.procesos[indexUsuario],undefined);
             return true
         }
         return false
@@ -136,7 +133,6 @@ class Procesos {
             this.avanzarProcesoGeneral(documento_usuario)
             this.validar()
             this.generateXml(this.procesos[indexUsuario]);
-            this.generateLog("AGREGAR TRANSACCION",this.procesos[indexUsuario],undefined);
             return true
         }
         return false
@@ -151,7 +147,6 @@ class Procesos {
             this.procesos[indexUsuario].consentimiento = pConsentimiento;
             this.avanzarProcesoGeneral(documento_usuario)
             this.validar()
-            this.generateLog("AGREGAR CONSENTIMIENTO",this.procesos[indexUsuario],undefined);
             return true
         }
         return false
@@ -258,7 +253,6 @@ class Procesos {
 
             if(!this.procesos[indexUsuario].procesosGenerales.actual){
                 Mailer.sendEmailSatisfaccion(this.procesos[indexUsuario].data.correo_usuario)
-                this.generateLog("FINALIZO PROCESO",this.procesos[indexUsuario],undefined);
                 this.deleteUsuario(pCodUsuario)
             }
         }
